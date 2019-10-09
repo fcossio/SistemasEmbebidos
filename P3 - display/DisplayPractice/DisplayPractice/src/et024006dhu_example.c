@@ -76,7 +76,9 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-#if BOARD == EVK1105
+#include "act7.c"
+
+// Init pwm
 #include "pwm.h"
 avr32_pwm_channel_t pwm_channel6 = {
 /*
@@ -89,11 +91,8 @@ avr32_pwm_channel_t pwm_channel6 = {
   .cdty = 0,
   .cprd = 100
 };
-void draw_gradient_rectangle( uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color1, uint16_t color2, uint8_t vertical);
-uint16_t color16(uint8_t r, uint8_t g, uint8_t b);
 static void tft_bl_init(void)
 {
-
   pwm_opt_t opt = {
     .diva = 0,
     .divb = 0,
@@ -117,32 +116,22 @@ static void tft_bl_init(void)
   pwm_start_channels(AVR32_PWM_ENA_CHID6_MASK);
 
 }
-#endif
 
 // Main function
 int main(void)
 {
-  U32 i;
-
   // Set CPU and PBA clock
   pcl_switch_to_osc(PCL_OSC0, FOSC0, OSC0_STARTUP);
-
   gpio_enable_gpio_pin(LED0_GPIO);
   gpio_enable_gpio_pin(LED1_GPIO);
   gpio_enable_gpio_pin(LED2_GPIO);
   gpio_enable_gpio_pin(LED3_GPIO);
-
   et024006_Init( FOSC0, FOSC0 );
 
-#if BOARD == EVK1105
   /* PWM is fed by PBA bus clock which is by default the same
    * as the CPU speed. We set a 0 duty cycle and thus keep the
    * display black*/
   tft_bl_init();
-#elif BOARD == EVK1104 || BOARD == UC3C_EK
-  gpio_set_gpio_pin(ET024006DHU_BL_PIN);
-#endif
-#if BOARD == EVK1105
   /* Lets do a nice fade in by increasing the duty cycle */
   while(pwm_channel6.cdty < pwm_channel6.cprd)
   {
@@ -152,73 +141,10 @@ int main(void)
     pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
     delay_ms(1);
   }
-#endif
   // Clear the display i.e. make it black
   et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
-
   // Draw the background AVR32 logo.
-  et024006_PutPixmap(avr32_logo, 320, 0, 0, 0, 0, 320, 240);
-
-  //Pure colors
-  int colors[] = {
-    color16(63,000,00), //red 0
-    color16(00,127,00), //green 1
-    color16(00,000,63), //blue 2
-    color16(63,127,63), //white 3
-    color16(63,127,00), //yellow 4
-    color16(00,127,63), //cyan 5
-    color16(63,000,63), //magenta 6
-    color16(63,127,63), //white 7
-    color16(00,000,00) //black 8
-  };
-  int position = 0;
-  for( int i=0 ; i<7 ; i++ ){
-    if(i%3){
-      et024006_DrawFilledRect(position, 0, 46, 120, colors[i] );
-      position += 46;
-    }else{
-      et024006_DrawFilledRect(position, 0, 45, 120, colors[i] );
-      position += 45;
-    }
-  }
-  for( int i=0 ; i<8 ; i++ ){
-      et024006_DrawFilledRect(40 * i, 120, 40, 40, colors[ (i+2) % 8 ] );
-  }
-  draw_gradient_rectangle( 0, 160, 320, 10, color16(63,127,63), color16(00,000,00),0);
-  draw_gradient_rectangle( 0, 170, 160, 10, color16(00,000,00), color16(63,000,00),0);
-  draw_gradient_rectangle( 160, 170, 160, 10, color16(63,000,00), color16(63,127,63),0);
-  draw_gradient_rectangle( 0, 180, 160, 10, color16(00,000,00), color16(00,127,00),0);
-  draw_gradient_rectangle( 160, 180, 160, 10, color16(00,127,00), color16(63,127,63),0);
-  draw_gradient_rectangle( 0, 190, 160, 10, color16(00,000,00), color16(00,000,63),0);
-  draw_gradient_rectangle( 160, 190, 160, 10, color16(00,000,63), color16(63,127,63),0);
-
-  draw_gradient_rectangle( 0, 200, 160, 10, color16(63,000,00), color16(63,127,00),0);
-  draw_gradient_rectangle( 160, 200, 160, 10, color16(63,127,00), color16(00,127,00),0);
-  draw_gradient_rectangle( 0, 210, 160, 10, color16(00,127,00), color16(00,127,63),0);
-  draw_gradient_rectangle( 160, 210, 160, 10, color16(00,127,63), color16(00,000,63),0);
-  draw_gradient_rectangle( 0, 220, 160, 10, color16(00,000,63), color16(63,000,63),0);
-  draw_gradient_rectangle( 160, 220, 160, 10, color16(63,000,63), color16(63,000,00),0);
-
-
-  for( int i=0 ; i<16 ; i++ ){
-      et024006_DrawFilledRect(20 * i, 230, 20, 10, colors[ (i+4) % 8 ] );
-  }
-  // Display lines of colored squares.
-  // for( i=0 ; i<16 ; i++ )
-  // {
-  //   // From black to white.
-  //   et024006_DrawFilledRect(20*i,   0, 20, 20, (2*i)/*B:5*/ | ((4*i)<<5)/*G:6*/ | ((2*i)<<11)/*R:5*/ );
-  //   // From black to blue.
-  //   et024006_DrawFilledRect(20*i,  20, 20, 20, (2*i) /*B:5*/);
-  //   // From black to green
-  //   et024006_DrawFilledRect(20*i, 200, 20, 20, ((4*i)<<5) /*G:6*/);
-  //   // From black to red
-  //   et024006_DrawFilledRect(20*i, 220, 20, 20, ((2*i)<<11) /*R:5*/);
-  // }
-
-
-
-
+  // et024006_PutPixmap(avr32_logo, 320, 0, 0, 0, 0, 320, 240);
   // Draw a crossed square.
   et024006_DrawHorizLine(10, 50, 20, BLACK);
   et024006_DrawVertLine(10, 50, 20, BLACK);
@@ -227,52 +153,40 @@ int main(void)
   et024006_DrawLine(10, 50, 30, 70, BLACK);
   et024006_DrawLine(30, 50, 10, 70, BLACK);
 
+  uint8_t act = 1;
+  switch(act){
+    case 1:
+      //act1();
+      break;
+    case 2:
+      //act2();
+      break;
+    case 3:
+      //act3();
+      break;
+    case 4:
+      //act4();
+      break;
+    case 5:
+      //act5();
+      break;
+    case 6:
+      //act6();
+      break;
+    case 7:
+      //act7();
+      break;
+    case 8:
+      //act8();
+      break;
+  }
+  act7();
+
   // Display text.
-  et024006_PrintString("Actividad 7: prueba de color",
-    (const unsigned char *)&FONT6x8, 0, 0, BLUE, -1
+  et024006_PrintString(
+    "Actividad 7: prueba de color",
+    (const unsigned char *)&FONT6x8,
+    0, 0, BLUE, -1
   );
   while(true);
-}
-
-void draw_gradient_rectangle( uint16_t x, uint16_t y, uint16_t width,
-    uint16_t height, uint16_t color1, uint16_t color2, uint8_t vertical){
-  int r, g, b, delta_r, delta_g, delta_b;
-  delta_r = ((color2&0xF800)>>11) - ((color1&0xF800)>>11);
-  delta_g = ((color2&0x7E0)>>5) - ((color1&0x7E0)>>5);
-  delta_b = (color2&0x1F) - (color1&0x1F);
-  if(vertical){
-    for (uint16_t i = 0; i < height; i++){
-      r = delta_r * i;
-      r = r/height + (color1>>11);
-      g = delta_g *  i;
-      g = g/height + ((color1&0x7E0)>>5);
-      b = delta_b * i;
-      b = b/height + (color1&0x1F);
-      et024006_DrawHorizLine(x, y + i, width, color16(r,g,b));
-    }
-  }else{
-    for (uint16_t i = 0; i < width; i++){
-      r = delta_r * i;
-      r = r/width + (color1>>11);
-      g = delta_g *  i;
-      g = g/width + ((color1&0x7E0)>>5);
-      b = delta_b * i;
-      b = b/width + (color1&0x1F);
-      et024006_DrawVertLine(x + i, y, height, color16(r,g,b));
-      //debugging
-      // char r_str[8], g_str[8], b_str[8];
-      // et024006_DrawFilledRect(0, 0, 45, 120, color16(63,127,63) );
-      // sprintf(r_str,"%d", delta_r);
-      // sprintf(g_str,"%d", delta_g);
-      // sprintf(b_str,"%d", delta_b);
-      // et024006_PrintString(r_str, (const unsigned char *)&FONT6x8, 0, 0, BLUE, -1);
-      // et024006_PrintString(g_str, (const unsigned char *)&FONT6x8, 0, 10, BLUE, -1);
-      // et024006_PrintString(b_str, (const unsigned char *)&FONT6x8, 0, 20, BLUE, -1);
-      delay_ms(1);
-    }
-  }
-}
-uint16_t color16(uint8_t r, uint8_t g, uint8_t b){
-  uint16_t color = (b)|((g)<<5)|((r)<<11);
-  return(color);
 }
