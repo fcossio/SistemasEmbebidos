@@ -171,11 +171,12 @@ void Izq_Der(void){
 	
 	while (center!=1){   //Mientras no haya entrado un Enter
 		for (int i=0; i<4; i++){ //Prende de Izq a der
-			delay_ms(500);
+			delay_ms(1000);
 			Prender_Leds(numero); //Imprime la primera vez 1000
 			numero=numero/2;
-			delay_ms(500);
+			delay_ms(1000);
 			
+			/*
 			if (i==3) //Si se cumple, ya hizo una corrida entera 1000, 0100, 0010, 0001
 			{
 				//FN PARA CAMBIAR FRECUENCIA DE PLL
@@ -189,6 +190,7 @@ void Izq_Der(void){
 				numero=8; //Empieza el corrimiento otra vez
 				i=0;
 			}//Fin IF
+			*/
 			if (center == 1){break;} //Si se PRESIONO LA TECLA CENTER, Sale de aqui y mantiene el valor que quedo
 		}//Fin FOR
 	}//Fin de While
