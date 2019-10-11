@@ -26,7 +26,6 @@ void Prender_Leds(uint8_t value);
 void state0(void);
 void state1(void);
 void state2(void);
-void Prender_Leds_Cero(uint8_t value);
 
 int main (void)
 {
@@ -113,6 +112,8 @@ void state1(void){
 	while(state==1){
 			if (btn_pressed != CENTER){
 				if (numero == 1){
+					mul = (mul+1)%4 + 3
+					Inicializa_PLL();
 					numero =0b1000;
 				}else{
 						numero = numero >> 1;
@@ -125,7 +126,7 @@ void state1(void){
 			if (i==3) //Si se cumple, ya hizo una corrida entera 1000, 0100, 0010, 0001
 			{
 				//FN PARA CAMBIAR FRECUENCIA DE PLL
-				Inicializa_PLL(mul);
+
 				if (mul ==6){
 					back=1;
 					} else if (mul == 3){ //limite para Fout, tiene que ir de regreso
