@@ -75,8 +75,29 @@
 #include "conf_clock.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "display_utils.c"
 
+// #include "act1.c"
+// #include "act2.c"
+// #include "act3.c"
+#include "act4.c"
+// #include "act5.c"
+// #include "act6.c"
 #include "act7.c"
+#include "act8.c"
+// #include "act9.c"
+// #include "act10.c"
+// #include "act11.c"
+// #include "act12.c"
+// #include "act13.c"
+#include "act14.c"
+// #include "act15.c"
+// #include "act16.c"
+// #include "act17.c"
+// #include "act18.c"
+// #include "act19.c"
+// #include "act20.c"
+
 
 // Init pwm
 #include "pwm.h"
@@ -153,7 +174,7 @@ int main(void)
   et024006_DrawLine(10, 50, 30, 70, BLACK);
   et024006_DrawLine(30, 50, 10, 70, BLACK);
 
-  uint8_t act = 1;
+  uint8_t act = 14;
   switch(act){
     case 1:
       //act1();
@@ -165,7 +186,7 @@ int main(void)
       //act3();
       break;
     case 4:
-      //act4();
+      act4();
       break;
     case 5:
       //act5();
@@ -174,13 +195,36 @@ int main(void)
       //act6();
       break;
     case 7:
-      //act7();
+      act7();
       break;
     case 8:
-      //act8();
+      act8();
+      break;
+    case 9:
+      //act9();
+      break;
+    case 10:
+      //act10();
+      break;
+    case 11:
+      //act11();
+      break;
+    case 12:
+      // act12();
+      break;
+    case 13:
+      //act13();
+      break;
+    case 14:
+      act14();
+      break;
+    case 15:
+      // act15();
+      break;
+    case 16:
+      // act16();
       break;
   }
-  act7();
 
   // Display text.
   et024006_PrintString(

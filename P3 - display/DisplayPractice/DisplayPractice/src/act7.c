@@ -1,8 +1,7 @@
 #include "et024006dhu.h"
-#include "display_utils.c"
 
 void act7(void){
-  
+
   uint16_t colors[] = {
     color16(63,000,00), //red 0
     color16(00,127,00), //green 1
