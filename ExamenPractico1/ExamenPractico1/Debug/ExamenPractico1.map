@@ -605,7 +605,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
 .plt
  *(.plt)
 
-.text           0x80002008      0xa78
+.text           0x80002008      0xaa0
  *(.text .stub .text.* .gnu.linkonce.t.*)
  .text.flashc_set_wait_state
                 0x80002008        0xe src/ASF/avr32/drivers/flashc/flashc.o
@@ -698,20 +698,20 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .text.inicializa_PM
                 0x80002574       0x24 src/main.o
                 0x80002574                inicializa_PM
- .text.Botones  0x80002598       0x74 src/main.o
+ .text.Botones  0x80002598       0x88 src/main.o
                 0x80002598                Botones
  .text.Prender_Leds
-                0x8000260c       0x8c src/main.o
-                0x8000260c                Prender_Leds
+                0x80002620       0x8c src/main.o
+                0x80002620                Prender_Leds
  .text.Prender_Leds_Cero
-                0x80002698       0x84 src/main.o
-                0x80002698                Prender_Leds_Cero
- .text.Izq_Der  0x8000271c       0xbc src/main.o
-                0x8000271c                Izq_Der
- .text.Der_Izq  0x800027d8       0xbc src/main.o
-                0x800027d8                Der_Izq
- .text.main     0x80002894      0x1ec src/main.o
-                0x80002894                main
+                0x800026ac       0x84 src/main.o
+                0x800026ac                Prender_Leds_Cero
+ .text.Izq_Der  0x80002730       0xec src/main.o
+                0x80002730                Izq_Der
+ .text.Der_Izq  0x8000281c       0xbc src/main.o
+                0x8000281c                Der_Izq
+ .text.main     0x800028d8      0x1d0 src/main.o
+                0x800028d8                main
  *(.text.*personality*)
  *(.gnu.warning)
 
@@ -984,7 +984,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_pubnames
                 0x00000f12       0xc3 src/main.o
 
-.debug_info     0x00000000     0x5db0
+.debug_info     0x00000000     0x5e20
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x1c72 src/ASF/avr32/drivers/flashc/flashc.o
  .debug_info    0x00001c72     0x1a57 src/ASF/avr32/drivers/pm/pm.o
@@ -994,9 +994,9 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_info    0x000043db      0x5ae src/ASF/avr32/drivers/intc/intc.o
  .debug_info    0x00004989       0xa1 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_info    0x00004a2a       0xa8 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_info    0x00004ad2     0x12de src/main.o
+ .debug_info    0x00004ad2     0x134e src/main.o
 
-.debug_abbrev   0x00000000      0xdce
+.debug_abbrev   0x00000000      0xdf4
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x331 src/ASF/avr32/drivers/flashc/flashc.o
  .debug_abbrev  0x00000331      0x2d1 src/ASF/avr32/drivers/pm/pm.o
@@ -1006,9 +1006,9 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_abbrev  0x0000094f      0x1d4 src/ASF/avr32/drivers/intc/intc.o
  .debug_abbrev  0x00000b23       0x12 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_abbrev  0x00000b35       0x14 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_abbrev  0x00000b49      0x285 src/main.o
+ .debug_abbrev  0x00000b49      0x2ab src/main.o
 
-.debug_line     0x00000000     0x38b8
+.debug_line     0x00000000     0x38c6
  *(.debug_line)
  .debug_line    0x00000000      0xbde src/ASF/avr32/drivers/flashc/flashc.o
  .debug_line    0x00000bde      0x9ca src/ASF/avr32/drivers/pm/pm.o
@@ -1018,7 +1018,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_line    0x0000265c      0x695 src/ASF/avr32/drivers/intc/intc.o
  .debug_line    0x00002cf1       0xf2 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_line    0x00002de3       0x67 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_line    0x00002e4a      0xa6e src/main.o
+ .debug_line    0x00002e4a      0xa7c src/main.o
 
 .debug_frame    0x00000000      0xdf8
  *(.debug_frame)
@@ -1029,7 +1029,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_frame   0x00000c60       0x64 src/ASF/avr32/drivers/intc/intc.o
  .debug_frame   0x00000cc4      0x134 src/main.o
 
-.debug_str      0x00000000     0x1cdc
+.debug_str      0x00000000     0x1cdb
  *(.debug_str)
  .debug_str     0x00000000      0xb6a src/ASF/avr32/drivers/flashc/flashc.o
                                 0xc50 (size before relaxing)
@@ -1041,17 +1041,17 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
                                 0x53e (size before relaxing)
  .debug_str     0x000017b4      0x37d src/ASF/avr32/drivers/intc/intc.o
                                 0x492 (size before relaxing)
- .debug_str     0x00001b31      0x1ab src/main.o
-                                0x5da (size before relaxing)
+ .debug_str     0x00001b31      0x1aa src/main.o
+                                0x5d9 (size before relaxing)
 
-.debug_loc      0x00000000     0x1e0d
+.debug_loc      0x00000000     0x1e2b
  *(.debug_loc)
  .debug_loc     0x00000000     0x10f4 src/ASF/avr32/drivers/flashc/flashc.o
  .debug_loc     0x000010f4      0x559 src/ASF/avr32/drivers/pm/pm.o
  .debug_loc     0x0000164d       0x1f src/ASF/avr32/boards/evk1105/init.o
  .debug_loc     0x0000166c      0x368 src/ASF/avr32/drivers/gpio/gpio.o
  .debug_loc     0x000019d4       0xd3 src/ASF/avr32/drivers/intc/intc.o
- .debug_loc     0x00001aa7      0x366 src/main.o
+ .debug_loc     0x00001aa7      0x384 src/main.o
 
 .debug_macinfo  0x00000000   0x594f2a
  *(.debug_macinfo)
@@ -1094,11 +1094,11 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  *(.note.GNU-stack)
 OUTPUT(ExamenPractico1.elf elf32-avr32)
 
-.debug_ranges   0x00000000      0x5a0
+.debug_ranges   0x00000000      0x5d0
  .debug_ranges  0x00000000      0x210 src/ASF/avr32/drivers/flashc/flashc.o
  .debug_ranges  0x00000210      0x188 src/ASF/avr32/drivers/pm/pm.o
  .debug_ranges  0x00000398       0x18 src/ASF/avr32/boards/evk1105/init.o
  .debug_ranges  0x000003b0       0xf8 src/ASF/avr32/drivers/gpio/gpio.o
  .debug_ranges  0x000004a8       0x48 src/ASF/avr32/drivers/intc/intc.o
  .debug_ranges  0x000004f0       0x20 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_ranges  0x00000510       0x90 src/main.o
+ .debug_ranges  0x00000510       0xc0 src/main.o

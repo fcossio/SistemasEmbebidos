@@ -98,16 +98,13 @@ int main (void)
 			break;
 			
 			case 4: //CENTER
-			//if (specificFlag==1){ //Es el center de UP/DOWN
-			gpio_set_gpio_pin(LED0); //LEDS apagados
-			gpio_set_gpio_pin(LED1);
-			gpio_set_gpio_pin(LED2);
-			gpio_set_gpio_pin(LED3);
-			//specificFlag=0;
-			//}
+			counter=0;
+			Prender_Leds(0);
 			break;
-			default:
-			specificFlag=0; //??? no estoy seguro
+			if (specificFlag==2){ center=1; } //En el caso de que se haya presionado la tecla RIGHT para corrimiento
+			
+			default: //Default
+			specificFlag=0;
 			delay_ms(10);
 			break;
 		} //Fin switch
@@ -146,6 +143,7 @@ void Der_Izq(void){
 
 
 void Prender_Leds_Cero(uint8_t value){
+
 	uint8_t num = value;
 	uint8_t result;
 	gpio_set_gpio_pin(LED0);
@@ -167,16 +165,18 @@ void Prender_Leds_Cero(uint8_t value){
 }//Fin Fn
 
 void Izq_Der(void){
-	uint8_t numero=8;
+	uint8_t numero=8;//Este numero en bin: 1000, 0100, 0010, 0001 (8,4,2,1) 
 	uint8_t mul=3; //Para PLL0
 	uint8_t back=0;
 	
 	while (center!=1){   //Mientras no haya entrado un Enter
 		for (int i=0; i<4; i++){ //Prende de Izq a der
-			Prender_Leds(numero);
+			delay_ms(500);
+			Prender_Leds(numero); //Imprime la primera vez 1000
 			numero=numero/2;
 			delay_ms(500);
-			if (i==3)
+			
+			if (i==3) //Si se cumple, ya hizo una corrida entera 1000, 0100, 0010, 0001
 			{
 				//FN PARA CAMBIAR FRECUENCIA DE PLL
 				Inicializa_PLL(mul);
@@ -189,16 +189,17 @@ void Izq_Der(void){
 				numero=8; //Empieza el corrimiento otra vez
 				i=0;
 			}//Fin IF
-			if (center == 1){break;}
+			if (center == 1){break;} //Si se PRESIONO LA TECLA CENTER, Sale de aqui y mantiene el valor que quedo
 		}//Fin FOR
 	}//Fin de While
-
 }//Fin IzqDer
 
 
 void Prender_Leds(uint8_t value){
-	uint8_t num = value;
+	
+	uint8_t num=value;
 	uint8_t result;
+	
 	gpio_set_gpio_pin(LED0);
 	gpio_set_gpio_pin(LED1);
 	gpio_set_gpio_pin(LED2);
@@ -227,28 +228,31 @@ void Botones (void){
 		gpio_clear_pin_interrupt_flag(BTN_UP);
 	}
 	
-	if (gpio_get_pin_interrupt_flag(BTN_DOWN)==1){
+	if (gpio_get_pin_interrupt_flag(BTN_DOWN)){
 		generalFlag=1;
 		gpio_clear_pin_interrupt_flag(BTN_DOWN);
 	}
 	
-	if (gpio_get_pin_interrupt_flag(BTN_RIGHT)==1){
+	if (gpio_get_pin_interrupt_flag(BTN_RIGHT)){
 		generalFlag=2;
 		gpio_clear_pin_interrupt_flag(BTN_RIGHT);
 	}
 	
-	if (gpio_get_pin_interrupt_flag(BTN_LEFT)==1){
+	if (gpio_get_pin_interrupt_flag(BTN_LEFT)){
 		generalFlag=3;
 		gpio_clear_pin_interrupt_flag(BTN_LEFT);
 	}
-	
-	if (gpio_get_pin_interrupt_flag(BTN_CENTER)== true){
-		generalFlag=0;
 		
-		
-		//center =1;
+	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
 		gpio_clear_pin_interrupt_flag(BTN_CENTER);
+		generalFlag=4;
+		}
+		
+	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
+		gpio_clear_pin_interrupt_flag(BTN_CENTER);
+		generalFlag=4;
 	}
+	
 } //Fin Botones
 
 
