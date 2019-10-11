@@ -245,6 +245,7 @@ void Botones (void){
 	if (gpio_get_pin_interrupt_flag(BTN_CENTER)== true){
 		generalFlag=0;
 		
+		
 		//center =1;
 		gpio_clear_pin_interrupt_flag(BTN_CENTER);
 	}
