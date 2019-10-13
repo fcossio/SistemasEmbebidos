@@ -1,6 +1,6 @@
 #include "et024006dhu.h"
 
-void act9(){
+void act9(uint8_t valid_state, uint8_t * actual_state){
 
 		int x = 160;
 		int y = 120; //para obtener el centro
@@ -33,5 +33,6 @@ void act9(){
 			);
 
 		}
+		while(valid_state == *actual_state){}
 
 }

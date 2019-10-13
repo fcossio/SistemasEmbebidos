@@ -9,11 +9,22 @@
 #define TFT_QUADRANT2   ((1 << 5) | (1 << 4))
 #define TFT_QUADRANT3   ((1 << 7) | (1 << 6))
 
+typedef struct point2D{
+ float x;
+ float y;
+} point2D;
+
 // Function names and descriptions
 uint16_t color16(uint8_t r, uint8_t g, uint8_t b);
 void draw_gradient_rectangle( uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color1, uint16_t color2, uint8_t vertical);
 void drawHollowTriangle(int centerx, int centery, int radio, int dir, int color);
 void drawFilledTriangle(int centerx, int centery, int radio, int dir, int color);
+void draw_point2D(point2D * p);
+void draw_line2D(point2D * p1, point2D * p2);
+void draw_square2D(point2D * p1, uint16_t size, uint16_t color);
+float euclidian_distance(point2D * p1, point2D * p2);
+float to_deg(float radians);
+float to_rad(float degrees);
 void clr_disp(void);
 
 // Functions
@@ -95,3 +106,32 @@ void drawFilledTriangle(int centerx, int centery, int radio, int dir, int color)
 		drawHollowTriangle(centerx,centery,radio-i,dir,color);
 	}//For
 }//drawFilledTriangle
+
+void draw_point2D(point2D * p){
+  if (p->x >= 0.0 && p->x <= 320.4 && p->y >= 0.0 && p->y <= 240.4){
+    et024006_DrawPixel( round(p->x), round(p->y), color16(63,000,63));
+  }
+}
+void draw_line2D(point2D * p1, point2D * p2){
+  if (p1->x >= 0.0 && p1->x <= 320.4 && p1->y >= 0.0 && p1->y <= 240.4){
+    if (p2->x >= 0.0 && p2->x <= 320.4 && p2->y >= 0.0 && p2->y <= 240.4){
+      et024006_DrawLine(round(p1->x), round(p1->y), round(p2->x), round(p2->y), BLACK);
+    }
+  }
+}
+void draw_square2D(point2D * p1, uint16_t size, uint16_t color){
+  if (p1->x >= 0.0 && p1->x <= 320.4 - size && p1->y >= 0.0 && p1->y <= 240.4 - size){
+    if (p2->x >= 0.0 && p2->x <= 320.4 - size && p2->y >= 0.0 && p2->y <= 240.4 - size){
+      et024006_DrawFilledRect(round(p1->x), round(p1->y), size, size, color);
+    }
+  }
+}
+float euclidian_distance(point2D * p1, point2D * p2){
+  return ( sqrt(pow(p1->x - p2->x,2) + pow(p1->y - p2->y,2)) );
+}
+float to_deg(float radians) {
+    return (radians * (180.0 / M_PI));
+}
+float to_rad(float degrees) {
+    return ( (degrees * M_PI) / 180.0);
+}

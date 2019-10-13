@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "delay.h"
 
-void act8(void){
+void act8(uint8_t valid_state, uint8_t * actual_state){
 
   uint16_t colors[] = {
     0xD9E6, //red 0
@@ -59,7 +59,7 @@ void act8(void){
     et024006_DrawFilledRect(20*x1+1, 20*y1+1, 20*width-2, 20*height-2, color);
     delay_ms(50);
   }
-  while(1){
+  while(valid_state == *actual_state){
     et024006_DrawFilledRect(0, 0, 20, 20, 0x0000);
     delay_ms(500);
     et024006_DrawFilledRect(0, 0, 20, 20, 0xFF00);

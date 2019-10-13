@@ -114,7 +114,7 @@ static void tft_bl_init(void)
 
 enum btn{NONE, UP, DOWN, LEFT, RIGHT, CENTER};
 enum btn btn_pressed = NONE;
-uint8_t state = 0, state_num = 16; //state_num will keep state within possible states
+uint8_t state = 1, state_num = 19; //state_num will keep state within possible states
 
 // Import all activities
 #include "act1.c"
@@ -194,7 +194,7 @@ int main(void)
         act2(2, &state, &btn_pressed);
         break;
       case 3:
-        //act3();
+        act3(3, &state, &btn_pressed);
         break;
       case 4:
         act4(4, &state);
@@ -209,10 +209,10 @@ int main(void)
         act7(7, &state);
         break;
       case 8:
-        act8();
+        act8(8, &state);
         break;
       case 9:
-        act9();
+        act9(9, &state);
         break;
       case 10:
         act10(10, &state);
@@ -224,17 +224,16 @@ int main(void)
         act12(12, &state);
         break;
       case 13:
-        //act13();
+        act13(13, &state);
         break;
       case 14:
-        act14();
-        break;
-      case 15:
-        // act15();
+        act14(14, &state);
         break;
       case 19:
         act19(19, &state);
         break;
+      default:
+        state = (state + 1) % state_num;
     }
   };
 } // main end
