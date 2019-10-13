@@ -1,6 +1,6 @@
 #include "et024006dhu.h"
 
-void act7(void){
+void act7(uint8_t valid_state, uint8_t * actual_state){//Video test screen
 
   uint16_t colors[] = {
     color16(63,000,00), //red 0
@@ -44,4 +44,5 @@ void act7(void){
   for( int i=0 ; i<16 ; i++ ){
       et024006_DrawFilledRect(20 * i, 230, 20, 10, colors[ (i+4) % 9 ] );
   }
+  while(*actual_state == valid_state){}
 }

@@ -1,10 +1,5 @@
 #include "et024006dhu.h"
 
-#define TFT_QUADRANT0 ((1 << 1) | (1 << 0))
-#define TFT_QUADRANT1 ((1 << 3) | (1 << 2))
-#define TFT_QUADRANT2 ((1 << 5) | (1 << 4))
-#define TFT_QUADRANT3 ((1 << 7) | (1 << 6))
-
 void act9(){
 
 		int x = 160;

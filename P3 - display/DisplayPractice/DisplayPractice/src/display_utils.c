@@ -4,17 +4,26 @@
 #include "et024006dhu.h"
 #include "delay.h"
 
+#define TFT_QUADRANT0   ((1 << 1) | (1 << 0))
+#define TFT_QUADRANT1   ((1 << 3) | (1 << 2))
+#define TFT_QUADRANT2   ((1 << 5) | (1 << 4))
+#define TFT_QUADRANT3   ((1 << 7) | (1 << 6))
 
 // Function names and descriptions
 uint16_t color16(uint8_t r, uint8_t g, uint8_t b);
 void draw_gradient_rectangle( uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color1, uint16_t color2, uint8_t vertical);
+void drawHollowTriangle(int centerx, int centery, int radio, int dir, int color);
+void drawFilledTriangle(int centerx, int centery, int radio, int dir, int color);
+void clr_disp(void);
 
 // Functions
 uint16_t color16(uint8_t r, uint8_t g, uint8_t b){
   uint16_t color = (b)|((g)<<5)|((r)<<11);
   return(color);
 }
-
+void clr_disp(void){
+	et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
+}
 void draw_gradient_rectangle( uint16_t x, uint16_t y, uint16_t width,
     uint16_t height, uint16_t color1, uint16_t color2, uint8_t vertical){
   int r, g, b, delta_r, delta_g, delta_b;
@@ -53,3 +62,36 @@ void draw_gradient_rectangle( uint16_t x, uint16_t y, uint16_t width,
     }
   }
 }
+
+void drawHollowTriangle(int centerx, int centery, int radio, int dir, int color){ //dir=0 VOLTEADO ; dir=1 NORMAL
+  int l,b,p1x,p1y,p2x,p2y,p3x,p3y;
+  b= radio*(0.866);
+	l = (radio)*(0.5);
+	if (dir ==1) //TRIANGULO NORMAL
+	{	p1x=centerx;
+		p1y=centery-radio;
+		p2x=centerx-b;
+		p2y=centery+l;
+		p3x=centerx+b;
+		p3y=centery+l;
+		et024006_DrawLine(p1x,p1y,p2x,p2y,color);
+		et024006_DrawLine(p1x,p1y,p3x,p3y,color);
+		et024006_DrawLine(p2x,p2y,p3x,p3y,color);
+		} else { //TRIANGULO INVERTIDO
+		p1x=centerx;
+		p1y=centery+radio;
+		p2x=centerx-b;
+		p2y=centery-l;
+		p3x=centerx+b;
+		p3y=centery-l;
+		et024006_DrawLine(p1x,p1y,p2x,p2y,color);
+		et024006_DrawLine(p1x,p1y,p3x,p3y,color);
+		et024006_DrawLine(p2x,p2y,p3x,p3y,color);
+	}//Fin if
+}//Fin fn
+
+void drawFilledTriangle(int centerx, int centery, int radio, int dir, int color){
+	for(int i=0; i<=radio; i++){
+		drawHollowTriangle(centerx,centery,radio-i,dir,color);
+	}//For
+}//drawFilledTriangle
