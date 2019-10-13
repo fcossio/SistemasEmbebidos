@@ -1,7 +1,7 @@
 #include "et024006dhu.h"
 #include "delay.h"
 
-void act4(uint8_t valid_state, uint8_t * actual_state, enum btn * btn_pressed){
+void act3(uint8_t valid_state, uint8_t * actual_state, enum btn * btn_pressed){
   point2D v = {.x = 0.0,.y = 0.0}, r = {.x = 0.0,.y = 0.0};
   while(*actual_state == valid_state){
     if(*btn_pressed == UP){

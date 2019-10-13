@@ -119,7 +119,7 @@ uint8_t state = 1, state_num = 19; //state_num will keep state within possible s
 // Import all activities
 #include "act1.c"
 #include "act2.c"
-// #include "act3.c"
+#include "act3.c"
 #include "act4.c"
 #include "act5.c"
 #include "act6.c"
@@ -129,7 +129,7 @@ uint8_t state = 1, state_num = 19; //state_num will keep state within possible s
 #include "act10.c"
 #include "act11.c"
 #include "act12.c"
-// #include "act13.c"
+#include "act13.c"
 #include "act14.c"
 // #include "act15.c"
 // #include "act16.c"

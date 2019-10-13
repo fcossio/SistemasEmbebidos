@@ -3,6 +3,8 @@
 
 #include "et024006dhu.h"
 #include "delay.h"
+#include "math.h"
+#include "stdlib.h"
 
 #define TFT_QUADRANT0   ((1 << 1) | (1 << 0))
 #define TFT_QUADRANT1   ((1 << 3) | (1 << 2))
@@ -121,9 +123,7 @@ void draw_line2D(point2D * p1, point2D * p2){
 }
 void draw_square2D(point2D * p1, uint16_t size, uint16_t color){
   if (p1->x >= 0.0 && p1->x <= 320.4 - size && p1->y >= 0.0 && p1->y <= 240.4 - size){
-    if (p2->x >= 0.0 && p2->x <= 320.4 - size && p2->y >= 0.0 && p2->y <= 240.4 - size){
-      et024006_DrawFilledRect(round(p1->x), round(p1->y), size, size, color);
-    }
+    et024006_DrawFilledRect(round(p1->x), round(p1->y), size, size, color);
   }
 }
 float euclidian_distance(point2D * p1, point2D * p2){
