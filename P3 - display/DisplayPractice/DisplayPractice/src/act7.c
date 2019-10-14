@@ -1,5 +1,5 @@
 #include "et024006dhu.h"
-
+#include "delay.h"
 void act7(uint8_t valid_state, uint8_t * actual_state){//Video test screen
 
   uint16_t colors[] = {
@@ -44,5 +44,10 @@ void act7(uint8_t valid_state, uint8_t * actual_state){//Video test screen
   for( int i=0 ; i<16 ; i++ ){
       et024006_DrawFilledRect(20 * i, 230, 20, 10, colors[ (i+4) % 9 ] );
   }
-  while(*actual_state == valid_state){}
+  while(*actual_state == valid_state){
+    light_leds(0b1000);
+    delay_ms(500);
+    light_leds(0b0100);
+    delay_ms(500);
+  }
 }

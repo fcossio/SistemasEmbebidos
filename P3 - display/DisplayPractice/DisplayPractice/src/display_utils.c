@@ -5,11 +5,16 @@
 #include "delay.h"
 #include "math.h"
 #include "stdlib.h"
+#include <asf.h>
 
 #define TFT_QUADRANT0   ((1 << 1) | (1 << 0))
 #define TFT_QUADRANT1   ((1 << 3) | (1 << 2))
 #define TFT_QUADRANT2   ((1 << 5) | (1 << 4))
 #define TFT_QUADRANT3   ((1 << 7) | (1 << 6))
+#define LED0   AVR32_PIN_PB27
+#define LED1   AVR32_PIN_PB28
+#define LED2   AVR32_PIN_PA05
+#define LED3   AVR32_PIN_PA06
 
 typedef struct point2D{
  float x;
@@ -17,6 +22,7 @@ typedef struct point2D{
 } point2D;
 
 // Function names and descriptions
+void light_leds(uint8_t value)ñ
 uint16_t color16(uint8_t r, uint8_t g, uint8_t b);
 void draw_gradient_rectangle( uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color1, uint16_t color2, uint8_t vertical);
 void drawHollowTriangle(int centerx, int centery, int radio, int dir, int color);
@@ -135,3 +141,9 @@ float to_deg(float radians) {
 float to_rad(float degrees) {
     return ( (degrees * M_PI) / 180.0);
 }
+void light_leds(uint8_t value){
+	if ((value & 0b1000)>>3)gpio_clr_gpio_pin(LED0); else gpio_set_gpio_pin(LED0);
+	if ((value & 0b0100)>>2)gpio_clr_gpio_pin(LED1); else gpio_set_gpio_pin(LED1);
+	if ((value & 0b0010)>>1)gpio_clr_gpio_pin(LED2); else gpio_set_gpio_pin(LED2);
+	if (value & 0b0001 ) 	gpio_clr_gpio_pin(LED3); else gpio_set_gpio_pin(LED3);
+}//Fin Fn
