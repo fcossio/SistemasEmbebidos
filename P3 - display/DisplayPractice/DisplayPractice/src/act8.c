@@ -60,10 +60,10 @@ void act8(uint8_t valid_state, uint8_t * actual_state){
     delay_ms(50);
   }
   while(valid_state == *actual_state){
-    et024006_DrawFilledRect(0, 0, 20, 20, 0x0000);
-    delay_ms(500);
-    et024006_DrawFilledRect(0, 0, 20, 20, 0xFF00);
-    delay_ms(500);
-
+    //et024006_DrawFilledRect(0, 0, 20, 20, 0x0000);
+    //delay_ms(500);
+    //et024006_DrawFilledRect(0, 0, 20, 20, 0xFF00);
+    //delay_ms(500);
+	delay_us(1);
   }
 }

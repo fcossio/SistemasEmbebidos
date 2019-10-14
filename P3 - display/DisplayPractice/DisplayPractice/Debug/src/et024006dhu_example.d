@@ -80,10 +80,12 @@ src/et024006dhu_example.d src/et024006dhu_example.o \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/machine/types.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/sys/features.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/sys/stdio.h \
- ../src/display_utils.c ../src/act4.c ../src/act7.c ../src/act8.c \
- ../src/act14.c \
+ ../src/display_utils.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/math.h \
- ../src/ASF/avr32/drivers/pwm/pwm.h
+ ../src/ASF/avr32/drivers/pwm/pwm.h ../src/act1.c ../src/act2.c \
+ ../src/act3.c ../src/act4.c ../src/act5.c ../src/act6.c ../src/act7.c \
+ ../src/act8.c ../src/act9.c ../src/act10.c ../src/act11.c ../src/act12.c \
+ ../src/act13.c ../src/act14.c ../src/act19.c
 
 ../src/ASF/common/boards/board.h:
 
@@ -251,14 +253,36 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bi
 
 ../src/display_utils.c:
 
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/math.h:
+
+../src/ASF/avr32/drivers/pwm/pwm.h:
+
+../src/act1.c:
+
+../src/act2.c:
+
+../src/act3.c:
+
 ../src/act4.c:
+
+../src/act5.c:
+
+../src/act6.c:
 
 ../src/act7.c:
 
 ../src/act8.c:
 
+../src/act9.c:
+
+../src/act10.c:
+
+../src/act11.c:
+
+../src/act12.c:
+
+../src/act13.c:
+
 ../src/act14.c:
 
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/math.h:
-
-../src/ASF/avr32/drivers/pwm/pwm.h:
+../src/act19.c:

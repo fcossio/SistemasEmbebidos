@@ -2,6 +2,8 @@
 #include "stdlib.h"
 
 void act1(uint8_t valid_state, uint8_t * actual_state){
+	  et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
+
     int c=WHITE;
   	for(int i=0; i<8; i++){
   		if(i%2)
@@ -17,5 +19,5 @@ void act1(uint8_t valid_state, uint8_t * actual_state){
   			delay_ms(10);
   		}//For
   	}//For
-  while(*actual_state == valid_state){}
+  while(*actual_state == valid_state){delay_us(1);}
 }

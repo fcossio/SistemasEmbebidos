@@ -114,7 +114,7 @@ static void tft_bl_init(void)
 
 enum btn{NONE, UP, DOWN, LEFT, RIGHT, CENTER};
 enum btn btn_pressed = NONE;
-uint8_t state = 1, state_num = 19; //state_num will keep state within possible states
+uint8_t state = 1, state_num = 16; //state_num will keep state within possible states
 
 // Import all activities
 #include "act1.c"
@@ -131,12 +131,7 @@ uint8_t state = 1, state_num = 19; //state_num will keep state within possible s
 #include "act12.c"
 #include "act13.c"
 #include "act14.c"
-// #include "act15.c"
-// #include "act16.c"
-// #include "act17.c"
-// #include "act18.c"
 #include "act19.c"
-// #include "act20.c"
 
 __attribute__ ((__interrupt__));
 void buttons_interrupt_routine (void);
@@ -229,8 +224,8 @@ int main(void)
       case 14:
         act14(14, &state);
         break;
-      case 19:
-        act19(19, &state);
+      case 15:
+        act19(15, &state);
         break;
       default:
         state = (state + 1) % state_num;
@@ -256,12 +251,10 @@ void buttons_interrupt_routine (void){
 		gpio_clear_pin_interrupt_flag(BTN_LEFT);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
-    btn_pressed=CENTER;
-    state = (state + 1) % state_num;
+		btn_pressed=CENTER;
+		state = (state + 1) % state_num;
 		gpio_clear_pin_interrupt_flag(BTN_CENTER);
+		gpio_tgl_gpio_pin(LED0_GPIO);
 	}
-	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
-		gpio_clear_pin_interrupt_flag(BTN_CENTER);//TODO: descubrir por que se necesita esto
-
-	}
+	gpio_get_pin_interrupt_flag(BTN_CENTER);
 } //Fin Botones

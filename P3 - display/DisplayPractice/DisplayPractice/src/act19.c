@@ -13,5 +13,5 @@ void act19(uint8_t valid_state, uint8_t * actual_state){
       }//If
     }//For X
   }//For Y
-  while (valid_state == *actual_state){}
+  while (valid_state == *actual_state){delay_us(1);}
 }

@@ -33,6 +33,6 @@ void act9(uint8_t valid_state, uint8_t * actual_state){
 			);
 
 		}
-		while(valid_state == *actual_state){}
+	while(valid_state == *actual_state){delay_us(1);}
 
 }

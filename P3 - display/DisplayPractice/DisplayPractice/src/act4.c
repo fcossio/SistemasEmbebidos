@@ -2,6 +2,7 @@
 #include "stdlib.h"
 
 void act4(uint8_t valid_state, uint8_t * actual_state){
+et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
   while(*actual_state == valid_state){
     uint16_t rnd_px_x = rand()%320;
     uint16_t rnd_px_y = rand()%240;

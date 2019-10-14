@@ -18,5 +18,5 @@ void act13(uint8_t valid_state, uint8_t * actual_state){
 	et024006_DrawFilledCircle(90,60,14,WHITE,TFT_QUADRANT2);
 	et024006_DrawFilledCircle(90,60,15,BLACK,TFT_QUADRANT1);
 	et024006_DrawFilledCircle(90,60,14,WHITE,TFT_QUADRANT1);
-  while(*actual_state == valid_state){}
+  while(*actual_state == valid_state){delay_us(1);}
 }

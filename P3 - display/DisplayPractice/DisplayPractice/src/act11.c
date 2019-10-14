@@ -32,5 +32,7 @@ void act11(uint8_t valid_state, uint8_t * actual_state){
     et024006_DrawLine( 195, 154, 160, 0, BLUE);delay_ms(50);
     et024006_DrawLine( 195, 111, 160, 0, BLUE);delay_ms(50);
     et024006_DrawLine( 256, 111, 160, 0, BLUE);delay_ms(50);
-  while(*actual_state == valid_state){}
+  while(*actual_state == valid_state){
+	  delay_us(1);
+  }
 }
