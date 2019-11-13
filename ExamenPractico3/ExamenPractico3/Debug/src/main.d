@@ -64,7 +64,20 @@ src/main.d src/main.o src/main.o: ../src/main.c \
  ../src/config/conf_access.h ../src/ASF/avr32/drivers/usart/usart.h \
  ../src/ASF/avr32/utils/debug/print_funcs.h \
  ../src/ASF/avr32/drivers/pdca/pdca.h ../src/ASF/avr32/drivers/pm/pm.h \
- ../src/dummy.h
+ ../src/ASF/avr32/components/display/et024006dhu/et024006dhu.h \
+ ../src/ASF/common/services/delay/delay.h \
+ ../src/ASF/common/services/clock/sysclk.h ../src/config/conf_clock.h \
+ ../src/ASF/common/services/clock/uc3a0_a1/sysclk.h \
+ ../src/ASF/common/services/clock/osc.h \
+ ../src/ASF/common/services/clock/uc3a0_a1/osc.h \
+ ../src/ASF/common/services/clock/pll.h \
+ ../src/ASF/common/services/clock/uc3a0_a1/pll.h \
+ ../src/ASF/common/services/clock/genclk.h \
+ ../src/ASF/common/services/clock/uc3a0_a1/genclk.h \
+ ../src/ASF/avr32/drivers/cpu/cycle_counter/cycle_counter.h \
+ ../src/ASF/avr32/drivers/pwm/pwm.h \
+ ../src/ASF/avr32/drivers/pm/power_clocks_lib.h \
+ ../src/ASF/avr32/drivers/pm/pm.h
 
 C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\UC3A_DFP\1.0.53\include\AT32UC3A0512/avr32/io.h:
 
@@ -206,4 +219,32 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bi
 
 ../src/ASF/avr32/drivers/pm/pm.h:
 
-../src/dummy.h:
+../src/ASF/avr32/components/display/et024006dhu/et024006dhu.h:
+
+../src/ASF/common/services/delay/delay.h:
+
+../src/ASF/common/services/clock/sysclk.h:
+
+../src/config/conf_clock.h:
+
+../src/ASF/common/services/clock/uc3a0_a1/sysclk.h:
+
+../src/ASF/common/services/clock/osc.h:
+
+../src/ASF/common/services/clock/uc3a0_a1/osc.h:
+
+../src/ASF/common/services/clock/pll.h:
+
+../src/ASF/common/services/clock/uc3a0_a1/pll.h:
+
+../src/ASF/common/services/clock/genclk.h:
+
+../src/ASF/common/services/clock/uc3a0_a1/genclk.h:
+
+../src/ASF/avr32/drivers/cpu/cycle_counter/cycle_counter.h:
+
+../src/ASF/avr32/drivers/pwm/pwm.h:
+
+../src/ASF/avr32/drivers/pm/power_clocks_lib.h:
+
+../src/ASF/avr32/drivers/pm/pm.h:

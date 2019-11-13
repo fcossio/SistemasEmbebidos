@@ -52,9 +52,18 @@
  * running the ASF driver selector tool. Any changes will be discarded.
  */
 
+// From module: CPU Cycle Counter
+#include <cycle_counter.h>
+
 // From module: Compiler abstraction layer and code utilities
 #include <compiler.h>
 #include <status_codes.h>
+
+// From module: Delay routines
+#include <delay.h>
+
+// From module: EBI Static Memory Controller (SMC)
+#include <smc.h>
 
 // From module: EVK1105
 #include <led.h>
@@ -71,8 +80,17 @@
 // From module: INTC - Interrupt Controller
 #include <intc.h>
 
+// From module: IOPORT - General purpose I/O service
+#include <ioport.h>
+
 // From module: Interrupt management - UC3 implementation
 #include <interrupt.h>
+
+// From module: LCD - ILI9341 Display Controller
+#include <ili9341.h>
+
+// From module: LCD Display - DIP204B-4ORT01
+#include <dip204.h>
 
 // From module: Memory Control Access Interface
 #include <ctrl_access.h>
@@ -84,6 +102,9 @@
 #include <power_clocks_lib.h>
 #include <sleep.h>
 
+// From module: PWM - UC3 A/B implementation
+#include <pwm.h>
+
 // From module: Part identification macros
 #include <parts.h>
 
@@ -93,6 +114,13 @@
 
 // From module: SPI - Serial Peripheral Interface
 #include <spi.h>
+
+// From module: SPI - UC3 implementation
+#include <spi_master.h>
+#include <spi_master.h>
+
+// From module: System Clock Control - UC3 A implementation
+#include <sysclk.h>
 
 // From module: USART - Universal Synchronous/Asynchronous Receiver/Transmitter
 #include <usart.h>
