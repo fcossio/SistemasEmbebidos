@@ -128,10 +128,11 @@ int main(void){
 		pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
 		delay_ms(1);
 	}//PWM
-	
+
 	while (1){
 		switch (state){
 			case 0://Do nothing
+				et024006_PrintString("Estado 0", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 			break;
 			case 1:/*
 				if (!usart_dma_started){
@@ -303,4 +304,3 @@ void btn_interrupt_routine (void){
 	}
 	gpio_get_pin_interrupt_flag(BTN_CENTER);
 } //Fin Botones
-
