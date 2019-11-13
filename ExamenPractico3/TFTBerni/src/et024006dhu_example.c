@@ -52,6 +52,7 @@ volatile avr32_pdca_channel_t* pdca_channelrx ;
 volatile avr32_pdca_channel_t* pdca_channeltx ;
 volatile bool end_of_transfer;
 volatile char ram_buffer[1000];
+volatile char usart_message[51]; //Read from USART (UP Key)
 
 //Functions
 static void tft_bl_init(void);
@@ -89,7 +90,7 @@ int main(void){
 	Enable_global_interrupt();
 	local_pdca_init();
 
-	for(j = 1; j <= 3; j++){ //3 Sectores
+	for(j = 1; j <= 5; j++){ //5 Sectores
 
 		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
 		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
@@ -144,9 +145,10 @@ int main(void){
 						delay_ms(100);
 					}//If
 				}//IF */
-				leds(1);
+				leds(1);//Change to LED0
 			break;
 			case 2://Desplegar mensaje de memoria en display
+				//Don at handler
 				leds(2);
 			break;
 			case 3://Guardar mensaje en la SD
@@ -274,14 +276,15 @@ void btn_interrupt_routine (void){
 	CLR_disp();
 	if (gpio_get_pin_interrupt_flag(BTN_UP)) {
 		btn_pressed=UP;
-		state=1;
-		et024006_PrintString("Estado 1", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+		usart_read();
 		gpio_clear_pin_interrupt_flag(BTN_UP);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_DOWN)){
 		btn_pressed=DOWN;
 		state=2;
-		et024006_PrintString("Estado 2", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+		//et024006_PrintString("Estado 2", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+		et024006_PrintString("Mensaje recibido:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+		et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1); //test
 		gpio_clear_pin_interrupt_flag(BTN_DOWN);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_RIGHT)){
@@ -304,3 +307,10 @@ void btn_interrupt_routine (void){
 	}
 	gpio_get_pin_interrupt_flag(BTN_CENTER);
 } //Fin Botones
+
+void usart_read(void){
+	//We should read USART
+	usart_message = {"usart message"};
+	state=1;
+	et024006_PrintString("Estado 1", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+}//usart_read
