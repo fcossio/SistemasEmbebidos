@@ -1,0 +1,4361 @@
+
+ExamenPractico3.elf:     file format elf32-avr32
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .reset        00002008  80000000  80000000  00000400  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .rela.got     00000000  80002008  80002008  00002408  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .text         000014a8  80002008  80002008  00002408  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  3 .exception    00000200  80003600  80003600  00003a00  2**9
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  4 .rodata       000005e0  80003800  80003800  00003c00  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  5 .dalign       00000004  00000004  00000004  00000000  2**0
+                  ALLOC
+  6 .bss          00000730  00000008  00000008  00000000  2**2
+                  ALLOC
+  7 .heap         0000e8c8  00000738  00000738  00000000  2**0
+                  ALLOC
+  8 .comment      00000030  00000000  00000000  000041e0  2**0
+                  CONTENTS, READONLY
+  9 .debug_aranges 00000710  00000000  00000000  00004210  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_pubnames 000012a7  00000000  00000000  00004920  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_info   0000b042  00000000  00000000  00005bc7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_abbrev 000016d4  00000000  00000000  00010c09  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_line   00005038  00000000  00000000  000122dd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_frame  00001164  00000000  00000000  00017318  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_str    000024d8  00000000  00000000  0001847c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 16 .debug_loc    00002ade  00000000  00000000  0001a954  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 17 .debug_macinfo 00860f0d  00000000  00000000  0001d432  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 18 .stack        00001000  0000f000  0000f000  00000000  2**0
+                  ALLOC
+ 19 .debug_ranges 00000698  00000000  00000000  0087e340  2**3
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .reset:
+
+80000000 <_start>:
+
+  .global _start
+  .type _start, @function
+_start:
+  // Jump to the C runtime startup routine.
+  lda.w   pc, _stext
+80000000:	fe cf ce 3c 	sub	pc,pc,-12740
+
+80000004 <_trampoline>:
+80000004:	e0 8f 10 00 	bral	80002004 <program_start>
+	...
+
+80002004 <program_start>:
+  rjmp    program_start
+
+  .org  PROGRAM_START_OFFSET
+program_start:
+  // Jump to the C runtime startup routine.
+  lda.w   pc, _stext
+80002004:	fe cf ee 40 	sub	pc,pc,-4544
+
+Disassembly of section .text:
+
+80002008 <sd_mmc_spi_get_capacity>:
+80002008:	d4 01       	pushm	lr
+8000200a:	4c 18       	lddpc	r8,8000210c <sd_mmc_spi_get_capacity+0x104>
+  uint8_t  read_bl_len;
+  uint8_t  erase_grp_size;
+  uint8_t  erase_grp_mult;
+
+  // extract variables from CSD array
+  read_bl_len = csd[5] & 0x0F;
+8000200c:	11 db       	ld.ub	r11,r8[0x5]
+  if (card_type == SD_CARD_2_SDHC) {
+8000200e:	4c 18       	lddpc	r8,80002110 <sd_mmc_spi_get_capacity+0x108>
+80002010:	11 8a       	ld.ub	r10,r8[0x0]
+80002012:	30 38       	mov	r8,3
+80002014:	f0 0a 18 00 	cp.b	r10,r8
+80002018:	c2 71       	brne	80002066 <sd_mmc_spi_get_capacity+0x5e>
+    c_size = ((csd[7] & 0x3F) << 16) | (csd[8] << 8) | csd[9];
+8000201a:	4b d8       	lddpc	r8,8000210c <sd_mmc_spi_get_capacity+0x104>
+8000201c:	f1 3a 00 08 	ld.ub	r10,r8[8]
+80002020:	f1 39 00 09 	ld.ub	r9,r8[9]
+80002024:	f3 ea 10 89 	or	r9,r9,r10<<0x8
+80002028:	11 fa       	ld.ub	r10,r8[0x7]
+8000202a:	f5 da c0 06 	bfextu	r10,r10,0x0,0x6
+8000202e:	f3 ea 11 0a 	or	r10,r9,r10<<0x10
+    ++c_size;
+80002032:	2f fa       	sub	r10,-1
+    capacity = (uint64_t)c_size << 19;
+80002034:	f4 0b 16 0d 	lsr	r11,r10,0xd
+80002038:	16 99       	mov	r9,r11
+8000203a:	f4 08 15 13 	lsl	r8,r10,0x13
+8000203e:	4b 6a       	lddpc	r10,80002114 <sd_mmc_spi_get_capacity+0x10c>
+80002040:	f4 e9 00 00 	st.d	r10[0],r8
+    capacity_mult = (c_size >> 13) & 0x01FF;
+80002044:	f7 db c0 09 	bfextu	r11,r11,0x0,0x9
+80002048:	4b 48       	lddpc	r8,80002118 <sd_mmc_spi_get_capacity+0x110>
+8000204a:	b0 0b       	st.h	r8[0x0],r11
+    sd_mmc_spi_last_block_address = (capacity >> 9) + (capacity_mult << 23) - 1;
+8000204c:	f4 ea 00 00 	ld.d	r10,r10[0]
+80002050:	90 09       	ld.sh	r9,r8[0x0]
+80002052:	f4 08 16 09 	lsr	r8,r10,0x9
+80002056:	f1 eb 11 78 	or	r8,r8,r11<<0x17
+8000205a:	20 18       	sub	r8,1
+8000205c:	b7 79       	lsl	r9,0x17
+8000205e:	12 08       	add	r8,r9
+80002060:	4a f9       	lddpc	r9,8000211c <sd_mmc_spi_get_capacity+0x114>
+80002062:	93 08       	st.w	r9[0x0],r8
+80002064:	c4 28       	rjmp	800020e8 <sd_mmc_spi_get_capacity+0xe0>
+  } else {
+    c_size      = ((csd[6] & 0x03) << 10) + (csd[7] << 2) + ((csd[8] & 0xC0) >> 6);
+    c_size_mult = ((csd[9] & 0x03) << 1) + ((csd[10] & 0x80) >> 7);
+80002066:	4a a8       	lddpc	r8,8000210c <sd_mmc_spi_get_capacity+0x104>
+80002068:	f1 3c 00 0a 	ld.ub	r12,r8[10]
+    sd_mmc_spi_last_block_address = ((uint32_t)(c_size + 1) * (uint32_t)((1 << (c_size_mult + 2)))) - 1;
+8000206c:	f1 39 00 08 	ld.ub	r9,r8[8]
+80002070:	a7 89       	lsr	r9,0x6
+80002072:	11 fe       	ld.ub	lr,r8[0x7]
+80002074:	f2 0e 00 29 	add	r9,r9,lr<<0x2
+80002078:	11 ee       	ld.ub	lr,r8[0x6]
+8000207a:	fd de c0 02 	bfextu	lr,lr,0x0,0x2
+8000207e:	ab 6e       	lsl	lr,0xa
+80002080:	1c 09       	add	r9,lr
+80002082:	2f f9       	sub	r9,-1
+80002084:	f1 38 00 09 	ld.ub	r8,r8[9]
+80002088:	f1 d8 c0 02 	bfextu	r8,r8,0x0,0x2
+8000208c:	f8 0e 16 07 	lsr	lr,r12,0x7
+80002090:	fc 08 00 18 	add	r8,lr,r8<<0x1
+80002094:	2f e8       	sub	r8,-2
+80002096:	f2 08 09 49 	lsl	r9,r9,r8
+8000209a:	20 19       	sub	r9,1
+8000209c:	4a 08       	lddpc	r8,8000211c <sd_mmc_spi_get_capacity+0x114>
+8000209e:	91 09       	st.w	r8[0x0],r9
+    capacity = (1 << read_bl_len) * (sd_mmc_spi_last_block_address + 1);
+800020a0:	70 0e       	ld.w	lr,r8[0x0]
+800020a2:	f7 db c0 04 	bfextu	r11,r11,0x0,0x4
+800020a6:	2f fe       	sub	lr,-1
+800020a8:	fc 0b 09 48 	lsl	r8,lr,r11
+800020ac:	30 09       	mov	r9,0
+800020ae:	49 ae       	lddpc	lr,80002114 <sd_mmc_spi_get_capacity+0x10c>
+800020b0:	fc e9 00 00 	st.d	lr[0],r8
+    capacity_mult = 0;
+800020b4:	49 98       	lddpc	r8,80002118 <sd_mmc_spi_get_capacity+0x110>
+800020b6:	b0 09       	st.h	r8[0x0],r9
+    if (read_bl_len > 9) {  // 9 means 2^9 = 512b
+800020b8:	30 98       	mov	r8,9
+800020ba:	f0 0b 18 00 	cp.b	r11,r8
+800020be:	e0 88 00 08 	brls	800020ce <sd_mmc_spi_get_capacity+0xc6>
+      sd_mmc_spi_last_block_address <<= (read_bl_len - 9);
+800020c2:	49 78       	lddpc	r8,8000211c <sd_mmc_spi_get_capacity+0x114>
+800020c4:	70 09       	ld.w	r9,r8[0x0]
+800020c6:	20 9b       	sub	r11,9
+800020c8:	f2 0b 09 4b 	lsl	r11,r9,r11
+800020cc:	91 0b       	st.w	r8[0x0],r11
+    }
+  }
+  if (card_type == MMC_CARD)
+800020ce:	58 0a       	cp.w	r10,0
+800020d0:	c0 c1       	brne	800020e8 <sd_mmc_spi_get_capacity+0xe0>
+  {
+    erase_grp_size = ((csd[10] & 0x7C) >> 2);
+800020d2:	f1 dc c0 45 	bfextu	r8,r12,0x2,0x5
+    erase_grp_mult = ((csd[10] & 0x03) << 3) | ((csd[11] & 0xE0) >> 5);
+800020d6:	f9 dc c0 02 	bfextu	r12,r12,0x0,0x2
+800020da:	48 d9       	lddpc	r9,8000210c <sd_mmc_spi_get_capacity+0x104>
+800020dc:	f3 39 00 0b 	ld.ub	r9,r9[11]
+800020e0:	a3 7c       	lsl	r12,0x3
+800020e2:	f9 e9 12 59 	or	r9,r12,r9>>0x5
+800020e6:	c0 c8       	rjmp	800020fe <sd_mmc_spi_get_capacity+0xf6>
+  }
+  else
+  {
+    erase_grp_size = ((csd[10] & 0x3F) << 1) + ((csd[11] & 0x80) >> 7);
+800020e8:	48 9a       	lddpc	r10,8000210c <sd_mmc_spi_get_capacity+0x104>
+800020ea:	f5 39 00 0a 	ld.ub	r9,r10[10]
+800020ee:	f3 d9 c0 06 	bfextu	r9,r9,0x0,0x6
+800020f2:	f5 38 00 0b 	ld.ub	r8,r10[11]
+800020f6:	a7 98       	lsr	r8,0x7
+800020f8:	f0 09 00 18 	add	r8,r8,r9<<0x1
+800020fc:	30 09       	mov	r9,0
+    erase_grp_mult = 0;
+  }
+  erase_group_size = (erase_grp_size + 1) * (erase_grp_mult + 1);
+800020fe:	2f f9       	sub	r9,-1
+80002100:	2f f8       	sub	r8,-1
+80002102:	b1 39       	mul	r9,r8
+80002104:	48 78       	lddpc	r8,80002120 <sd_mmc_spi_get_capacity+0x118>
+80002106:	b0 09       	st.h	r8[0x0],r9
+}
+80002108:	d8 02       	popm	pc
+8000210a:	00 00       	add	r0,r0
+8000210c:	00 00       	add	r0,r0
+8000210e:	03 2c       	ld.uh	r12,r1++
+80002110:	00 00       	add	r0,r0
+80002112:	03 2a       	ld.uh	r10,r1++
+80002114:	00 00       	add	r0,r0
+80002116:	03 18       	ld.sh	r8,r1++
+80002118:	00 00       	add	r0,r0
+8000211a:	03 20       	ld.uh	r0,r1++
+8000211c:	00 00       	add	r0,r0
+8000211e:	03 24       	ld.uh	r4,r1++
+80002120:	00 00       	add	r0,r0
+80002122:	03 22       	ld.uh	r2,r1++
+
+80002124 <sd_mmc_spi_read_close_PDCA>:
+//! Stop PDCA transfer
+//! @brief This function closes a PDCA read transfer
+//! page programming.
+//!
+void sd_mmc_spi_read_close_PDCA (void)
+{
+80002124:	d4 01       	pushm	lr
+
+  // load 16-bit CRC (ignored)
+  spi_write(SD_MMC_SPI,0xFF);
+80002126:	e0 6b 00 ff 	mov	r11,255
+8000212a:	fe 7c 24 00 	mov	r12,-56320
+8000212e:	f0 1f 00 0e 	mcall	80002164 <sd_mmc_spi_read_close_PDCA+0x40>
+  spi_write(SD_MMC_SPI,0xFF);
+80002132:	e0 6b 00 ff 	mov	r11,255
+80002136:	fe 7c 24 00 	mov	r12,-56320
+8000213a:	f0 1f 00 0b 	mcall	80002164 <sd_mmc_spi_read_close_PDCA+0x40>
+
+  // continue delivering some clock cycles
+  spi_write(SD_MMC_SPI,0xFF);
+8000213e:	e0 6b 00 ff 	mov	r11,255
+80002142:	fe 7c 24 00 	mov	r12,-56320
+80002146:	f0 1f 00 08 	mcall	80002164 <sd_mmc_spi_read_close_PDCA+0x40>
+  spi_write(SD_MMC_SPI,0xFF);
+8000214a:	e0 6b 00 ff 	mov	r11,255
+8000214e:	fe 7c 24 00 	mov	r12,-56320
+80002152:	f0 1f 00 05 	mcall	80002164 <sd_mmc_spi_read_close_PDCA+0x40>
+
+  spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+80002156:	30 1b       	mov	r11,1
+80002158:	fe 7c 24 00 	mov	r12,-56320
+8000215c:	f0 1f 00 03 	mcall	80002168 <sd_mmc_spi_read_close_PDCA+0x44>
+
+}
+80002160:	d8 02       	popm	pc
+80002162:	00 00       	add	r0,r0
+80002164:	80 00       	ld.sh	r0,r0[0x0]
+80002166:	2f f6       	sub	r6,-1
+80002168:	80 00       	ld.sh	r0,r0[0x0]
+8000216a:	2f 10       	sub	r0,-15
+
+8000216c <sd_mmc_spi_send_and_read>:
+//! @param  data_to_send   byte to send over SPI
+//!
+//! @return uint8_t
+//!   Byte read from the slave
+uint8_t sd_mmc_spi_send_and_read(uint8_t data_to_send)
+{
+8000216c:	d4 01       	pushm	lr
+8000216e:	20 1d       	sub	sp,4
+   unsigned short data_read;
+   spi_write(SD_MMC_SPI, data_to_send);
+80002170:	18 9b       	mov	r11,r12
+80002172:	fe 7c 24 00 	mov	r12,-56320
+80002176:	f0 1f 00 09 	mcall	80002198 <sd_mmc_spi_send_and_read+0x2c>
+   if( SPI_ERROR_TIMEOUT == spi_read(SD_MMC_SPI, &data_read) )
+8000217a:	fa cb ff fe 	sub	r11,sp,-2
+8000217e:	fe 7c 24 00 	mov	r12,-56320
+80002182:	f0 1f 00 07 	mcall	8000219c <sd_mmc_spi_send_and_read+0x30>
+80002186:	58 1c       	cp.w	r12,1
+80002188:	c0 41       	brne	80002190 <sd_mmc_spi_send_and_read+0x24>
+8000218a:	e0 6c 00 ff 	mov	r12,255
+8000218e:	c0 28       	rjmp	80002192 <sd_mmc_spi_send_and_read+0x26>
+     return 0xFF;
+   return data_read;
+80002190:	1b bc       	ld.ub	r12,sp[0x3]
+}
+80002192:	2f fd       	sub	sp,-4
+80002194:	d8 02       	popm	pc
+80002196:	00 00       	add	r0,r0
+80002198:	80 00       	ld.sh	r0,r0[0x0]
+8000219a:	2f f6       	sub	r6,-1
+8000219c:	80 00       	ld.sh	r0,r0[0x0]
+8000219e:	30 12       	mov	r2,1
+
+800021a0 <sd_mmc_spi_wait_not_busy>:
+//! @brief This function waits until the SD/MMC is not busy.
+//!
+//! @return bit
+//!          true when card is not busy
+bool sd_mmc_spi_wait_not_busy(void)
+{
+800021a0:	d4 21       	pushm	r4-r7,lr
+  uint32_t retry;
+
+  // Select the SD_MMC memory gl_ptr_mem points to
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);
+800021a2:	30 1b       	mov	r11,1
+800021a4:	fe 7c 24 00 	mov	r12,-56320
+800021a8:	f0 1f 00 10 	mcall	800021e8 <sd_mmc_spi_wait_not_busy+0x48>
+800021ac:	30 07       	mov	r7,0
+  retry = 0;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) != 0xFF)
+800021ae:	e0 65 00 ff 	mov	r5,255
+800021b2:	48 f4       	lddpc	r4,800021ec <sd_mmc_spi_wait_not_busy+0x4c>
+800021b4:	3f f6       	mov	r6,-1
+800021b6:	c0 b8       	rjmp	800021cc <sd_mmc_spi_wait_not_busy+0x2c>
+  {
+    retry++;
+800021b8:	2f f7       	sub	r7,-1
+    if (retry == 200000)
+800021ba:	e2 57 0d 40 	cp.w	r7,200000
+800021be:	c0 71       	brne	800021cc <sd_mmc_spi_wait_not_busy+0x2c>
+    {
+      spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);
+800021c0:	30 1b       	mov	r11,1
+800021c2:	fe 7c 24 00 	mov	r12,-56320
+800021c6:	f0 1f 00 0b 	mcall	800021f0 <sd_mmc_spi_wait_not_busy+0x50>
+800021ca:	d8 2a       	popm	r4-r7,pc,r12=0
+  uint32_t retry;
+
+  // Select the SD_MMC memory gl_ptr_mem points to
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);
+  retry = 0;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) != 0xFF)
+800021cc:	0a 9c       	mov	r12,r5
+800021ce:	f0 1f 00 0a 	mcall	800021f4 <sd_mmc_spi_wait_not_busy+0x54>
+800021d2:	a8 8c       	st.b	r4[0x0],r12
+800021d4:	ec 0c 18 00 	cp.b	r12,r6
+800021d8:	cf 01       	brne	800021b8 <sd_mmc_spi_wait_not_busy+0x18>
+    {
+      spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);
+      return false;
+    }
+  }
+  spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);
+800021da:	30 1b       	mov	r11,1
+800021dc:	fe 7c 24 00 	mov	r12,-56320
+800021e0:	f0 1f 00 04 	mcall	800021f0 <sd_mmc_spi_wait_not_busy+0x50>
+800021e4:	da 2a       	popm	r4-r7,pc,r12=1
+800021e6:	00 00       	add	r0,r0
+800021e8:	80 00       	ld.sh	r0,r0[0x0]
+800021ea:	2e c4       	sub	r4,-20
+800021ec:	00 00       	add	r0,r0
+800021ee:	03 3c       	ld.ub	r12,r1++
+800021f0:	80 00       	ld.sh	r0,r0[0x0]
+800021f2:	2f 10       	sub	r0,-15
+800021f4:	80 00       	ld.sh	r0,r0[0x0]
+800021f6:	21 6c       	sub	r12,22
+
+800021f8 <sd_mmc_spi_command>:
+//! @param  arg       argument of the command
+//!
+//! @return uint8_t
+//!         R1 response (R1 == 0xFF time out error)
+uint8_t sd_mmc_spi_command(uint8_t command, uint32_t arg)
+{
+800021f8:	eb cd 40 f8 	pushm	r3-r7,lr
+800021fc:	18 96       	mov	r6,r12
+800021fe:	16 97       	mov	r7,r11
+  uint8_t retry;
+
+  spi_write(SD_MMC_SPI, 0xFF);            // write dummy byte
+80002200:	e0 6b 00 ff 	mov	r11,255
+80002204:	fe 7c 24 00 	mov	r12,-56320
+80002208:	f0 1f 00 2b 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+  spi_write(SD_MMC_SPI, command | 0x40);  // send command
+8000220c:	0c 9b       	mov	r11,r6
+8000220e:	a7 ab       	sbr	r11,0x6
+80002210:	5c 5b       	castu.b	r11
+80002212:	fe 7c 24 00 	mov	r12,-56320
+80002216:	f0 1f 00 28 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+  spi_write(SD_MMC_SPI, arg>>24);         // send parameter
+8000221a:	ee 0b 16 18 	lsr	r11,r7,0x18
+8000221e:	fe 7c 24 00 	mov	r12,-56320
+80002222:	f0 1f 00 25 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+  spi_write(SD_MMC_SPI, arg>>16);
+80002226:	ee 0b 16 10 	lsr	r11,r7,0x10
+8000222a:	fe 7c 24 00 	mov	r12,-56320
+8000222e:	f0 1f 00 22 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+  spi_write(SD_MMC_SPI, arg>>8 );
+80002232:	f7 d7 c1 10 	bfextu	r11,r7,0x8,0x10
+80002236:	fe 7c 24 00 	mov	r12,-56320
+8000223a:	f0 1f 00 1f 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+  spi_write(SD_MMC_SPI, arg    );
+8000223e:	0e 9b       	mov	r11,r7
+80002240:	5c 7b       	castu.h	r11
+80002242:	fe 7c 24 00 	mov	r12,-56320
+80002246:	f0 1f 00 1c 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+  switch(command)
+8000224a:	30 08       	mov	r8,0
+8000224c:	f0 06 18 00 	cp.b	r6,r8
+80002250:	c0 60       	breq	8000225c <sd_mmc_spi_command+0x64>
+80002252:	30 88       	mov	r8,8
+80002254:	f0 06 18 00 	cp.b	r6,r8
+80002258:	c1 01       	brne	80002278 <sd_mmc_spi_command+0x80>
+8000225a:	c0 88       	rjmp	8000226a <sd_mmc_spi_command+0x72>
+  {
+      case MMC_GO_IDLE_STATE:
+         spi_write(SD_MMC_SPI, 0x95);
+8000225c:	e0 6b 00 95 	mov	r11,149
+80002260:	fe 7c 24 00 	mov	r12,-56320
+80002264:	f0 1f 00 14 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+         break;
+80002268:	c0 e8       	rjmp	80002284 <sd_mmc_spi_command+0x8c>
+      case MMC_SEND_IF_COND:
+         spi_write(SD_MMC_SPI, 0x87);
+8000226a:	e0 6b 00 87 	mov	r11,135
+8000226e:	fe 7c 24 00 	mov	r12,-56320
+80002272:	f0 1f 00 11 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+         break;
+80002276:	c0 78       	rjmp	80002284 <sd_mmc_spi_command+0x8c>
+      default:
+         spi_write(SD_MMC_SPI, 0xff);
+80002278:	e0 6b 00 ff 	mov	r11,255
+8000227c:	fe 7c 24 00 	mov	r12,-56320
+80002280:	f0 1f 00 0d 	mcall	800022b4 <sd_mmc_spi_command+0xbc>
+
+  // end command
+  // wait for response
+  // if more than 8 retries, card has timed-out and return the received 0xFF
+  retry = 0;
+  r1    = 0xFF;
+80002284:	3f f9       	mov	r9,-1
+80002286:	48 d8       	lddpc	r8,800022b8 <sd_mmc_spi_command+0xc0>
+80002288:	b0 89       	st.b	r8[0x0],r9
+8000228a:	30 07       	mov	r7,0
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) == 0xFF)
+8000228c:	e0 64 00 ff 	mov	r4,255
+80002290:	10 93       	mov	r3,r8
+80002292:	12 96       	mov	r6,r9
+  {
+    retry++;
+    if(retry > 10) break;
+80002294:	30 b5       	mov	r5,11
+  // end command
+  // wait for response
+  // if more than 8 retries, card has timed-out and return the received 0xFF
+  retry = 0;
+  r1    = 0xFF;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) == 0xFF)
+80002296:	c0 68       	rjmp	800022a2 <sd_mmc_spi_command+0xaa>
+  {
+    retry++;
+80002298:	2f f7       	sub	r7,-1
+8000229a:	5c 57       	castu.b	r7
+    if(retry > 10) break;
+8000229c:	ea 07 18 00 	cp.b	r7,r5
+800022a0:	c0 80       	breq	800022b0 <sd_mmc_spi_command+0xb8>
+  // end command
+  // wait for response
+  // if more than 8 retries, card has timed-out and return the received 0xFF
+  retry = 0;
+  r1    = 0xFF;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) == 0xFF)
+800022a2:	08 9c       	mov	r12,r4
+800022a4:	f0 1f 00 06 	mcall	800022bc <sd_mmc_spi_command+0xc4>
+800022a8:	a6 8c       	st.b	r3[0x0],r12
+800022aa:	ec 0c 18 00 	cp.b	r12,r6
+800022ae:	cf 50       	breq	80002298 <sd_mmc_spi_command+0xa0>
+  {
+    retry++;
+    if(retry > 10) break;
+  }
+  return r1;
+}
+800022b0:	e3 cd 80 f8 	ldm	sp++,r3-r7,pc
+800022b4:	80 00       	ld.sh	r0,r0[0x0]
+800022b6:	2f f6       	sub	r6,-1
+800022b8:	00 00       	add	r0,r0
+800022ba:	03 3c       	ld.ub	r12,r1++
+800022bc:	80 00       	ld.sh	r0,r0[0x0]
+800022be:	21 6c       	sub	r12,22
+
+800022c0 <sd_mmc_spi_send_command>:
+//! @param  arg       argument of the command
+//!
+//! @return uint8_t
+//!         R1 response (R1 == 0xFF if time out error)
+uint8_t sd_mmc_spi_send_command(uint8_t command, uint32_t arg)
+{
+800022c0:	eb cd 40 c0 	pushm	r6-r7,lr
+800022c4:	18 97       	mov	r7,r12
+800022c6:	16 96       	mov	r6,r11
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);    // select SD_MMC_SPI
+800022c8:	30 1b       	mov	r11,1
+800022ca:	fe 7c 24 00 	mov	r12,-56320
+800022ce:	f0 1f 00 09 	mcall	800022f0 <sd_mmc_spi_send_command+0x30>
+  r1 = sd_mmc_spi_command(command, arg);
+800022d2:	0c 9b       	mov	r11,r6
+800022d4:	0e 9c       	mov	r12,r7
+800022d6:	f0 1f 00 08 	mcall	800022f4 <sd_mmc_spi_send_command+0x34>
+800022da:	48 87       	lddpc	r7,800022f8 <sd_mmc_spi_send_command+0x38>
+800022dc:	ae 8c       	st.b	r7[0x0],r12
+  spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+800022de:	30 1b       	mov	r11,1
+800022e0:	fe 7c 24 00 	mov	r12,-56320
+800022e4:	f0 1f 00 06 	mcall	800022fc <sd_mmc_spi_send_command+0x3c>
+  return r1;
+}
+800022e8:	0f 8c       	ld.ub	r12,r7[0x0]
+800022ea:	e3 cd 80 c0 	ldm	sp++,r6-r7,pc
+800022ee:	00 00       	add	r0,r0
+800022f0:	80 00       	ld.sh	r0,r0[0x0]
+800022f2:	2e c4       	sub	r4,-20
+800022f4:	80 00       	ld.sh	r0,r0[0x0]
+800022f6:	21 f8       	sub	r8,31
+800022f8:	00 00       	add	r0,r0
+800022fa:	03 3c       	ld.ub	r12,r1++
+800022fc:	80 00       	ld.sh	r0,r0[0x0]
+800022fe:	2f 10       	sub	r0,-15
+
+80002300 <sd_mmc_spi_check_presence>:
+//!
+//! @return bit
+//!   The memory is present (true)
+//!   The memory does not respond (disconnected) (false)
+bool sd_mmc_spi_check_presence(void)
+{
+80002300:	eb cd 40 fe 	pushm	r1-r7,lr
+  uint16_t retry;
+
+  retry = 0;
+  if (sd_mmc_spi_init_done == false)
+80002304:	49 a8       	lddpc	r8,8000236c <sd_mmc_spi_check_presence+0x6c>
+80002306:	11 89       	ld.ub	r9,r8[0x0]
+80002308:	30 08       	mov	r8,0
+8000230a:	f0 09 18 00 	cp.b	r9,r8
+8000230e:	c1 f1       	brne	8000234c <sd_mmc_spi_check_presence+0x4c>
+80002310:	30 07       	mov	r7,0
+  {
+    // If memory is not initialized, try to initialize it (CMD0)
+    // If no valid response, there is no card
+    while ((r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0)) != 0x01)
+80002312:	0e 94       	mov	r4,r7
+80002314:	49 73       	lddpc	r3,80002370 <sd_mmc_spi_check_presence+0x70>
+80002316:	30 16       	mov	r6,1
+    {
+      spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+80002318:	e0 62 00 ff 	mov	r2,255
+8000231c:	fe 71 24 00 	mov	r1,-56320
+      retry++;
+      if (retry > 10)
+80002320:	30 b5       	mov	r5,11
+80002322:	c0 c8       	rjmp	8000233a <sd_mmc_spi_check_presence+0x3a>
+  {
+    // If memory is not initialized, try to initialize it (CMD0)
+    // If no valid response, there is no card
+    while ((r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0)) != 0x01)
+    {
+      spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+80002324:	04 9b       	mov	r11,r2
+80002326:	02 9c       	mov	r12,r1
+80002328:	f0 1f 00 13 	mcall	80002374 <sd_mmc_spi_check_presence+0x74>
+      retry++;
+8000232c:	2f f7       	sub	r7,-1
+8000232e:	5c 87       	casts.h	r7
+      if (retry > 10)
+80002330:	ea 07 19 00 	cp.h	r7,r5
+80002334:	c0 31       	brne	8000233a <sd_mmc_spi_check_presence+0x3a>
+80002336:	e3 cf 80 fe 	ldm	sp++,r1-r7,pc,r12=0
+  retry = 0;
+  if (sd_mmc_spi_init_done == false)
+  {
+    // If memory is not initialized, try to initialize it (CMD0)
+    // If no valid response, there is no card
+    while ((r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0)) != 0x01)
+8000233a:	08 9b       	mov	r11,r4
+8000233c:	08 9c       	mov	r12,r4
+8000233e:	f0 1f 00 0f 	mcall	80002378 <sd_mmc_spi_check_presence+0x78>
+80002342:	a6 8c       	st.b	r3[0x0],r12
+80002344:	ec 0c 18 00 	cp.b	r12,r6
+80002348:	ce e1       	brne	80002324 <sd_mmc_spi_check_presence+0x24>
+8000234a:	c0 e8       	rjmp	80002366 <sd_mmc_spi_check_presence+0x66>
+    return true;
+  }
+  else
+  {
+    // If memory already initialized, send a CRC command (CMD59) (supported only if card is initialized)
+    if ((r1 = sd_mmc_spi_send_command(MMC_CRC_ON_OFF, 0)) == 0x00)
+8000234c:	30 0b       	mov	r11,0
+8000234e:	33 bc       	mov	r12,59
+80002350:	f0 1f 00 0a 	mcall	80002378 <sd_mmc_spi_check_presence+0x78>
+80002354:	48 78       	lddpc	r8,80002370 <sd_mmc_spi_check_presence+0x70>
+80002356:	b0 8c       	st.b	r8[0x0],r12
+80002358:	58 0c       	cp.w	r12,0
+8000235a:	c0 60       	breq	80002366 <sd_mmc_spi_check_presence+0x66>
+      return true;
+    sd_mmc_spi_init_done = false;
+8000235c:	30 09       	mov	r9,0
+8000235e:	48 48       	lddpc	r8,8000236c <sd_mmc_spi_check_presence+0x6c>
+80002360:	b0 89       	st.b	r8[0x0],r9
+80002362:	e3 cf 80 fe 	ldm	sp++,r1-r7,pc,r12=0
+    return false;
+80002366:	e3 cf 90 fe 	ldm	sp++,r1-r7,pc,r12=1
+8000236a:	00 00       	add	r0,r0
+8000236c:	00 00       	add	r0,r0
+8000236e:	00 24       	rsub	r4,r0
+80002370:	00 00       	add	r0,r0
+80002372:	03 3c       	ld.ub	r12,r1++
+80002374:	80 00       	ld.sh	r0,r0[0x0]
+80002376:	2f f6       	sub	r6,-1
+80002378:	80 00       	ld.sh	r0,r0[0x0]
+8000237a:	22 c0       	sub	r0,44
+
+8000237c <sd_mmc_spi_read_open_PDCA>:
+//!
+//! @return bit
+//!   The open succeeded      -> true
+//!/
+bool sd_mmc_spi_read_open_PDCA (uint32_t pos)
+{
+8000237c:	d4 21       	pushm	r4-r7,lr
+  uint16_t read_time_out;
+
+  // Set the global memory ptr at a Byte address.
+  gl_ptr_mem = (uint64_t)pos << 9;                    // gl_ptr_mem = pos * 512
+8000237e:	4a e8       	lddpc	r8,80002434 <sd_mmc_spi_read_open_PDCA+0xb8>
+80002380:	f8 09 16 17 	lsr	r9,r12,0x17
+80002384:	91 09       	st.w	r8[0x0],r9
+80002386:	a9 7c       	lsl	r12,0x9
+80002388:	91 1c       	st.w	r8[0x4],r12
+
+  // wait for MMC not busy
+  if (false == sd_mmc_spi_wait_not_busy())
+8000238a:	f0 1f 00 2c 	mcall	80002438 <sd_mmc_spi_read_open_PDCA+0xbc>
+8000238e:	c5 20       	breq	80002432 <sd_mmc_spi_read_open_PDCA+0xb6>
+    return false;
+
+
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);          // select SD_MMC_SPI
+80002390:	30 1b       	mov	r11,1
+80002392:	fe 7c 24 00 	mov	r12,-56320
+80002396:	f0 1f 00 2a 	mcall	8000243c <sd_mmc_spi_read_open_PDCA+0xc0>
+
+  // issue command
+  if(card_type == SD_CARD_2_SDHC) {
+8000239a:	4a a8       	lddpc	r8,80002440 <sd_mmc_spi_read_open_PDCA+0xc4>
+8000239c:	11 89       	ld.ub	r9,r8[0x0]
+8000239e:	30 38       	mov	r8,3
+800023a0:	f0 09 18 00 	cp.b	r9,r8
+800023a4:	c0 d1       	brne	800023be <sd_mmc_spi_read_open_PDCA+0x42>
+    r1 = sd_mmc_spi_command(MMC_READ_SINGLE_BLOCK, gl_ptr_mem>>9);
+800023a6:	4a 48       	lddpc	r8,80002434 <sd_mmc_spi_read_open_PDCA+0xb8>
+800023a8:	70 0b       	ld.w	r11,r8[0x0]
+800023aa:	70 18       	ld.w	r8,r8[0x4]
+800023ac:	a9 98       	lsr	r8,0x9
+800023ae:	f1 eb 11 7b 	or	r11,r8,r11<<0x17
+800023b2:	31 1c       	mov	r12,17
+800023b4:	f0 1f 00 24 	mcall	80002444 <sd_mmc_spi_read_open_PDCA+0xc8>
+800023b8:	4a 48       	lddpc	r8,80002448 <sd_mmc_spi_read_open_PDCA+0xcc>
+800023ba:	b0 8c       	st.b	r8[0x0],r12
+800023bc:	c0 88       	rjmp	800023cc <sd_mmc_spi_read_open_PDCA+0x50>
+  } else {
+    r1 = sd_mmc_spi_command(MMC_READ_SINGLE_BLOCK, gl_ptr_mem);
+800023be:	49 e8       	lddpc	r8,80002434 <sd_mmc_spi_read_open_PDCA+0xb8>
+800023c0:	70 1b       	ld.w	r11,r8[0x4]
+800023c2:	31 1c       	mov	r12,17
+800023c4:	f0 1f 00 20 	mcall	80002444 <sd_mmc_spi_read_open_PDCA+0xc8>
+800023c8:	4a 08       	lddpc	r8,80002448 <sd_mmc_spi_read_open_PDCA+0xcc>
+800023ca:	b0 8c       	st.b	r8[0x0],r12
+  }
+
+  // check for valid response
+  if (r1 != 0x00)
+800023cc:	49 f8       	lddpc	r8,80002448 <sd_mmc_spi_read_open_PDCA+0xcc>
+800023ce:	11 89       	ld.ub	r9,r8[0x0]
+800023d0:	30 08       	mov	r8,0
+800023d2:	f0 09 18 00 	cp.b	r9,r8
+800023d6:	c1 00       	breq	800023f6 <sd_mmc_spi_read_open_PDCA+0x7a>
+  {
+    spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+800023d8:	30 1b       	mov	r11,1
+800023da:	fe 7c 24 00 	mov	r12,-56320
+800023de:	f0 1f 00 1c 	mcall	8000244c <sd_mmc_spi_read_open_PDCA+0xd0>
+800023e2:	d8 2a       	popm	r4-r7,pc,r12=0
+
+  // wait for token (may be a datablock start token OR a data error token !)
+  read_time_out = 30000;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) == 0xFF)
+  {
+     read_time_out--;
+800023e4:	20 17       	sub	r7,1
+800023e6:	5c 87       	casts.h	r7
+     if (read_time_out == 0)   // TIME-OUT
+800023e8:	c0 d1       	brne	80002402 <sd_mmc_spi_read_open_PDCA+0x86>
+     {
+       spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS); // unselect SD_MMC_SPI
+800023ea:	30 1b       	mov	r11,1
+800023ec:	fe 7c 24 00 	mov	r12,-56320
+800023f0:	f0 1f 00 17 	mcall	8000244c <sd_mmc_spi_read_open_PDCA+0xd0>
+800023f4:	d8 2a       	popm	r4-r7,pc,r12=0
+       return false;
+800023f6:	e0 67 75 30 	mov	r7,30000
+    return false;
+  }
+
+  // wait for token (may be a datablock start token OR a data error token !)
+  read_time_out = 30000;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) == 0xFF)
+800023fa:	e0 65 00 ff 	mov	r5,255
+800023fe:	49 34       	lddpc	r4,80002448 <sd_mmc_spi_read_open_PDCA+0xcc>
+80002400:	3f f6       	mov	r6,-1
+80002402:	0a 9c       	mov	r12,r5
+80002404:	f0 1f 00 13 	mcall	80002450 <sd_mmc_spi_read_open_PDCA+0xd4>
+80002408:	a8 8c       	st.b	r4[0x0],r12
+8000240a:	ec 0c 18 00 	cp.b	r12,r6
+8000240e:	ce b0       	breq	800023e4 <sd_mmc_spi_read_open_PDCA+0x68>
+       return false;
+     }
+  }
+
+  // check token
+  if (r1 != MMC_STARTBLOCK_READ)
+80002410:	3f e8       	mov	r8,-2
+80002412:	f0 0c 18 00 	cp.b	r12,r8
+80002416:	c0 21       	brne	8000241a <sd_mmc_spi_read_open_PDCA+0x9e>
+80002418:	da 2a       	popm	r4-r7,pc,r12=1
+  {
+    spi_write(SD_MMC_SPI,0xFF);
+8000241a:	e0 6b 00 ff 	mov	r11,255
+8000241e:	fe 7c 24 00 	mov	r12,-56320
+80002422:	f0 1f 00 0d 	mcall	80002454 <sd_mmc_spi_read_open_PDCA+0xd8>
+    spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+80002426:	30 1b       	mov	r11,1
+80002428:	fe 7c 24 00 	mov	r12,-56320
+8000242c:	f0 1f 00 08 	mcall	8000244c <sd_mmc_spi_read_open_PDCA+0xd0>
+80002430:	30 0c       	mov	r12,0
+    return false;
+  }
+  return true;   // Read done.
+}
+80002432:	d8 22       	popm	r4-r7,pc
+80002434:	00 00       	add	r0,r0
+80002436:	00 08       	add	r8,r0
+80002438:	80 00       	ld.sh	r0,r0[0x0]
+8000243a:	21 a0       	sub	r0,26
+8000243c:	80 00       	ld.sh	r0,r0[0x0]
+8000243e:	2e c4       	sub	r4,-20
+80002440:	00 00       	add	r0,r0
+80002442:	03 2a       	ld.uh	r10,r1++
+80002444:	80 00       	ld.sh	r0,r0[0x0]
+80002446:	21 f8       	sub	r8,31
+80002448:	00 00       	add	r0,r0
+8000244a:	03 3c       	ld.ub	r12,r1++
+8000244c:	80 00       	ld.sh	r0,r0[0x0]
+8000244e:	2f 10       	sub	r0,-15
+80002450:	80 00       	ld.sh	r0,r0[0x0]
+80002452:	21 6c       	sub	r12,22
+80002454:	80 00       	ld.sh	r0,r0[0x0]
+80002456:	2f f6       	sub	r6,-1
+
+80002458 <sd_mmc_spi_check_hc>:
+//!           SD_CARD      Detected card is SD
+//!           ERROR
+
+
+int sd_mmc_spi_check_hc(void)
+{
+80002458:	eb cd 40 c0 	pushm	r6-r7,lr
+  unsigned char hc_bit;
+  // wait for MMC not busy
+  if (false == sd_mmc_spi_wait_not_busy())
+8000245c:	f0 1f 00 1c 	mcall	800024cc <sd_mmc_spi_check_hc+0x74>
+80002460:	c0 31       	brne	80002466 <sd_mmc_spi_check_hc+0xe>
+80002462:	e3 cf c0 c0 	ldm	sp++,r6-r7,pc,r12=-1
+    return SD_FAILURE;
+
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);    // select SD_MMC_SPI
+80002466:	30 1b       	mov	r11,1
+80002468:	fe 7c 24 00 	mov	r12,-56320
+8000246c:	f0 1f 00 19 	mcall	800024d0 <sd_mmc_spi_check_hc+0x78>
+  r1 = sd_mmc_spi_command(SD_READ_OCR, 0);
+80002470:	30 0b       	mov	r11,0
+80002472:	33 ac       	mov	r12,58
+80002474:	f0 1f 00 18 	mcall	800024d4 <sd_mmc_spi_check_hc+0x7c>
+80002478:	49 88       	lddpc	r8,800024d8 <sd_mmc_spi_check_hc+0x80>
+8000247a:	b0 8c       	st.b	r8[0x0],r12
+  // check for valid response
+  if(r1 != 0) {
+8000247c:	58 0c       	cp.w	r12,0
+8000247e:	c0 80       	breq	8000248e <sd_mmc_spi_check_hc+0x36>
+    spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+80002480:	30 1b       	mov	r11,1
+80002482:	fe 7c 24 00 	mov	r12,-56320
+80002486:	f0 1f 00 16 	mcall	800024dc <sd_mmc_spi_check_hc+0x84>
+8000248a:	e3 cf c0 c0 	ldm	sp++,r6-r7,pc,r12=-1
+    return SD_FAILURE;
+  }
+  hc_bit = sd_mmc_spi_send_and_read(0xFF);
+8000248e:	e0 6c 00 ff 	mov	r12,255
+80002492:	f0 1f 00 14 	mcall	800024e0 <sd_mmc_spi_check_hc+0x88>
+80002496:	18 96       	mov	r6,r12
+  r1 = sd_mmc_spi_send_and_read(0xFF);
+80002498:	e0 6c 00 ff 	mov	r12,255
+8000249c:	f0 1f 00 11 	mcall	800024e0 <sd_mmc_spi_check_hc+0x88>
+800024a0:	48 e7       	lddpc	r7,800024d8 <sd_mmc_spi_check_hc+0x80>
+800024a2:	ae 8c       	st.b	r7[0x0],r12
+  r1 = sd_mmc_spi_send_and_read(0xFF);
+800024a4:	e0 6c 00 ff 	mov	r12,255
+800024a8:	f0 1f 00 0e 	mcall	800024e0 <sd_mmc_spi_check_hc+0x88>
+800024ac:	ae 8c       	st.b	r7[0x0],r12
+  r1 = sd_mmc_spi_send_and_read(0xFF);
+800024ae:	e0 6c 00 ff 	mov	r12,255
+800024b2:	f0 1f 00 0c 	mcall	800024e0 <sd_mmc_spi_check_hc+0x88>
+800024b6:	ae 8c       	st.b	r7[0x0],r12
+  spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+800024b8:	30 1b       	mov	r11,1
+800024ba:	fe 7c 24 00 	mov	r12,-56320
+800024be:	f0 1f 00 08 	mcall	800024dc <sd_mmc_spi_check_hc+0x84>
+800024c2:	f9 d6 c0 c1 	bfextu	r12,r6,0x6,0x1
+  if(hc_bit & 0x40) {
+      return SDHC_CARD;
+  }
+  return 0;
+}
+800024c6:	e3 cd 80 c0 	ldm	sp++,r6-r7,pc
+800024ca:	00 00       	add	r0,r0
+800024cc:	80 00       	ld.sh	r0,r0[0x0]
+800024ce:	21 a0       	sub	r0,26
+800024d0:	80 00       	ld.sh	r0,r0[0x0]
+800024d2:	2e c4       	sub	r4,-20
+800024d4:	80 00       	ld.sh	r0,r0[0x0]
+800024d6:	21 f8       	sub	r8,31
+800024d8:	00 00       	add	r0,r0
+800024da:	03 3c       	ld.ub	r12,r1++
+800024dc:	80 00       	ld.sh	r0,r0[0x0]
+800024de:	2f 10       	sub	r0,-15
+800024e0:	80 00       	ld.sh	r0,r0[0x0]
+800024e2:	21 6c       	sub	r12,22
+
+800024e4 <sd_mmc_spi_get_if>:
+//!                true
+//!                SD_MMC
+
+
+int sd_mmc_spi_get_if(void)
+{
+800024e4:	eb cd 40 80 	pushm	r7,lr
+  // wait for MMC not busy
+  if (false == sd_mmc_spi_wait_not_busy())
+800024e8:	f0 1f 00 27 	mcall	80002584 <sd_mmc_spi_get_if+0xa0>
+800024ec:	c0 31       	brne	800024f2 <sd_mmc_spi_get_if+0xe>
+800024ee:	e3 cf c0 80 	ldm	sp++,r7,pc,r12=-1
+    return SD_FAILURE;
+
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);    // select SD_MMC_SPI
+800024f2:	30 1b       	mov	r11,1
+800024f4:	fe 7c 24 00 	mov	r12,-56320
+800024f8:	f0 1f 00 24 	mcall	80002588 <sd_mmc_spi_get_if+0xa4>
+  r1 = sd_mmc_spi_command(MMC_SEND_IF_COND, 0x000001AA);
+800024fc:	e0 6b 01 aa 	mov	r11,426
+80002500:	30 8c       	mov	r12,8
+80002502:	f0 1f 00 23 	mcall	8000258c <sd_mmc_spi_get_if+0xa8>
+80002506:	4a 38       	lddpc	r8,80002590 <sd_mmc_spi_get_if+0xac>
+80002508:	b0 8c       	st.b	r8[0x0],r12
+  // check for valid response
+  if((r1 & MMC_R1_ILLEGAL_COM) != 0) {
+8000250a:	e2 1c 00 04 	andl	r12,0x4,COH
+8000250e:	c0 80       	breq	8000251e <sd_mmc_spi_get_if+0x3a>
+    spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+80002510:	30 1b       	mov	r11,1
+80002512:	fe 7c 24 00 	mov	r12,-56320
+80002516:	f0 1f 00 20 	mcall	80002594 <sd_mmc_spi_get_if+0xb0>
+8000251a:	e3 cf 80 80 	ldm	sp++,r7,pc,r12=0
+    return SD_MMC;
+  }
+  r1 = sd_mmc_spi_send_and_read(0xFF);
+8000251e:	e0 6c 00 ff 	mov	r12,255
+80002522:	f0 1f 00 1e 	mcall	80002598 <sd_mmc_spi_get_if+0xb4>
+80002526:	49 b7       	lddpc	r7,80002590 <sd_mmc_spi_get_if+0xac>
+80002528:	ae 8c       	st.b	r7[0x0],r12
+  r1 = sd_mmc_spi_send_and_read(0xFF);
+8000252a:	e0 6c 00 ff 	mov	r12,255
+8000252e:	f0 1f 00 1b 	mcall	80002598 <sd_mmc_spi_get_if+0xb4>
+80002532:	ae 8c       	st.b	r7[0x0],r12
+  r1 = sd_mmc_spi_send_and_read(0xFF);
+80002534:	e0 6c 00 ff 	mov	r12,255
+80002538:	f0 1f 00 18 	mcall	80002598 <sd_mmc_spi_get_if+0xb4>
+8000253c:	ae 8c       	st.b	r7[0x0],r12
+  if((r1 & 0x01) == 0) {
+8000253e:	f9 dc c0 01 	bfextu	r12,r12,0x0,0x1
+80002542:	c0 81       	brne	80002552 <sd_mmc_spi_get_if+0x6e>
+    spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+80002544:	30 1b       	mov	r11,1
+80002546:	fe 7c 24 00 	mov	r12,-56320
+8000254a:	f0 1f 00 13 	mcall	80002594 <sd_mmc_spi_get_if+0xb0>
+8000254e:	e3 cf c0 80 	ldm	sp++,r7,pc,r12=-1
+    return SD_FAILURE;
+  }
+  r1 = sd_mmc_spi_send_and_read(0xFF);
+80002552:	e0 6c 00 ff 	mov	r12,255
+80002556:	f0 1f 00 11 	mcall	80002598 <sd_mmc_spi_get_if+0xb4>
+8000255a:	48 e8       	lddpc	r8,80002590 <sd_mmc_spi_get_if+0xac>
+8000255c:	b0 8c       	st.b	r8[0x0],r12
+  if(r1 != 0xaa) {
+8000255e:	3a a8       	mov	r8,-86
+80002560:	f0 0c 18 00 	cp.b	r12,r8
+80002564:	c0 80       	breq	80002574 <sd_mmc_spi_get_if+0x90>
+    spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+80002566:	30 1b       	mov	r11,1
+80002568:	fe 7c 24 00 	mov	r12,-56320
+8000256c:	f0 1f 00 0a 	mcall	80002594 <sd_mmc_spi_get_if+0xb0>
+80002570:	e3 cf c0 80 	ldm	sp++,r7,pc,r12=-1
+    return SD_FAILURE; /* wrong test pattern */
+  }
+  spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+80002574:	30 1b       	mov	r11,1
+80002576:	fe 7c 24 00 	mov	r12,-56320
+8000257a:	f0 1f 00 07 	mcall	80002594 <sd_mmc_spi_get_if+0xb0>
+8000257e:	e3 cf 90 80 	ldm	sp++,r7,pc,r12=1
+80002582:	00 00       	add	r0,r0
+80002584:	80 00       	ld.sh	r0,r0[0x0]
+80002586:	21 a0       	sub	r0,26
+80002588:	80 00       	ld.sh	r0,r0[0x0]
+8000258a:	2e c4       	sub	r4,-20
+8000258c:	80 00       	ld.sh	r0,r0[0x0]
+8000258e:	21 f8       	sub	r8,31
+80002590:	00 00       	add	r0,r0
+80002592:	03 3c       	ld.ub	r12,r1++
+80002594:	80 00       	ld.sh	r0,r0[0x0]
+80002596:	2f 10       	sub	r0,-15
+80002598:	80 00       	ld.sh	r0,r0[0x0]
+8000259a:	21 6c       	sub	r12,22
+
+8000259c <sd_mmc_spi_get_csd>:
+//! @param  buffer to fill
+//!
+//! @return bit
+//!         true / false
+bool sd_mmc_spi_get_csd(uint8_t *buffer)
+{
+8000259c:	eb cd 40 fc 	pushm	r2-r7,lr
+800025a0:	20 1d       	sub	sp,4
+800025a2:	18 92       	mov	r2,r12
+uint8_t retry;
+unsigned short data_read;
+  // wait for MMC not busy
+  if (false == sd_mmc_spi_wait_not_busy())
+800025a4:	f0 1f 00 32 	mcall	8000266c <sd_mmc_spi_get_csd+0xd0>
+800025a8:	c5 f0       	breq	80002666 <sd_mmc_spi_get_csd+0xca>
+    return false;
+
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);    // select SD_MMC_SPI
+800025aa:	30 1b       	mov	r11,1
+800025ac:	fe 7c 24 00 	mov	r12,-56320
+800025b0:	f0 1f 00 30 	mcall	80002670 <sd_mmc_spi_get_csd+0xd4>
+  // issue command
+  r1 = sd_mmc_spi_command(MMC_SEND_CSD, 0);
+800025b4:	30 0b       	mov	r11,0
+800025b6:	30 9c       	mov	r12,9
+800025b8:	f0 1f 00 2f 	mcall	80002674 <sd_mmc_spi_get_csd+0xd8>
+800025bc:	4a f8       	lddpc	r8,80002678 <sd_mmc_spi_get_csd+0xdc>
+800025be:	b0 8c       	st.b	r8[0x0],r12
+  // check for valid response
+  if(r1 != 0x00)
+800025c0:	58 0c       	cp.w	r12,0
+800025c2:	c0 81       	brne	800025d2 <sd_mmc_spi_get_csd+0x36>
+800025c4:	30 07       	mov	r7,0
+    sd_mmc_spi_init_done = false;
+    return false;
+  }
+  // wait for block start
+  retry = 0;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) != MMC_STARTBLOCK_READ)
+800025c6:	e0 64 00 ff 	mov	r4,255
+800025ca:	10 93       	mov	r3,r8
+800025cc:	3f e6       	mov	r6,-2
+  {
+    if (retry > 8)
+800025ce:	30 95       	mov	r5,9
+800025d0:	c1 78       	rjmp	800025fe <sd_mmc_spi_get_csd+0x62>
+  // issue command
+  r1 = sd_mmc_spi_command(MMC_SEND_CSD, 0);
+  // check for valid response
+  if(r1 != 0x00)
+  {
+    spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+800025d2:	30 1b       	mov	r11,1
+800025d4:	fe 7c 24 00 	mov	r12,-56320
+800025d8:	f0 1f 00 29 	mcall	8000267c <sd_mmc_spi_get_csd+0xe0>
+    sd_mmc_spi_init_done = false;
+800025dc:	30 09       	mov	r9,0
+800025de:	4a 98       	lddpc	r8,80002680 <sd_mmc_spi_get_csd+0xe4>
+800025e0:	b0 89       	st.b	r8[0x0],r9
+800025e2:	30 0c       	mov	r12,0
+    return false;
+800025e4:	c4 18       	rjmp	80002666 <sd_mmc_spi_get_csd+0xca>
+  }
+  // wait for block start
+  retry = 0;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) != MMC_STARTBLOCK_READ)
+  {
+    if (retry > 8)
+800025e6:	ea 07 18 00 	cp.b	r7,r5
+800025ea:	c0 81       	brne	800025fa <sd_mmc_spi_get_csd+0x5e>
+    {
+      spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+800025ec:	30 1b       	mov	r11,1
+800025ee:	fe 7c 24 00 	mov	r12,-56320
+800025f2:	f0 1f 00 23 	mcall	8000267c <sd_mmc_spi_get_csd+0xe0>
+800025f6:	30 0c       	mov	r12,0
+      return false;
+800025f8:	c3 78       	rjmp	80002666 <sd_mmc_spi_get_csd+0xca>
+    }
+    retry++;
+800025fa:	2f f7       	sub	r7,-1
+800025fc:	5c 57       	castu.b	r7
+    sd_mmc_spi_init_done = false;
+    return false;
+  }
+  // wait for block start
+  retry = 0;
+  while((r1 = sd_mmc_spi_send_and_read(0xFF)) != MMC_STARTBLOCK_READ)
+800025fe:	08 9c       	mov	r12,r4
+80002600:	f0 1f 00 21 	mcall	80002684 <sd_mmc_spi_get_csd+0xe8>
+80002604:	a6 8c       	st.b	r3[0x0],r12
+80002606:	ec 0c 18 00 	cp.b	r12,r6
+8000260a:	ce e1       	brne	800025e6 <sd_mmc_spi_get_csd+0x4a>
+8000260c:	30 07       	mov	r7,0
+    retry++;
+  }
+  // store valid data block
+  for (retry = 0; retry <16; retry++)
+  {
+   spi_write(SD_MMC_SPI,0xFF);
+8000260e:	e0 65 00 ff 	mov	r5,255
+80002612:	fe 76 24 00 	mov	r6,-56320
+   spi_read(SD_MMC_SPI,&data_read);
+80002616:	fa c4 ff fe 	sub	r4,sp,-2
+    retry++;
+  }
+  // store valid data block
+  for (retry = 0; retry <16; retry++)
+  {
+   spi_write(SD_MMC_SPI,0xFF);
+8000261a:	0a 9b       	mov	r11,r5
+8000261c:	0c 9c       	mov	r12,r6
+8000261e:	f0 1f 00 1b 	mcall	80002688 <sd_mmc_spi_get_csd+0xec>
+   spi_read(SD_MMC_SPI,&data_read);
+80002622:	08 9b       	mov	r11,r4
+80002624:	0c 9c       	mov	r12,r6
+80002626:	f0 1f 00 1a 	mcall	8000268c <sd_mmc_spi_get_csd+0xf0>
+    buffer[retry] = data_read;
+8000262a:	9a 18       	ld.sh	r8,sp[0x2]
+8000262c:	e4 07 0b 08 	st.b	r2[r7],r8
+80002630:	2f f7       	sub	r7,-1
+      return false;
+    }
+    retry++;
+  }
+  // store valid data block
+  for (retry = 0; retry <16; retry++)
+80002632:	59 07       	cp.w	r7,16
+80002634:	cf 31       	brne	8000261a <sd_mmc_spi_get_csd+0x7e>
+  {
+   spi_write(SD_MMC_SPI,0xFF);
+   spi_read(SD_MMC_SPI,&data_read);
+    buffer[retry] = data_read;
+  }
+   spi_write(SD_MMC_SPI,0xFF);   // load CRC (not used)
+80002636:	e0 6b 00 ff 	mov	r11,255
+8000263a:	fe 7c 24 00 	mov	r12,-56320
+8000263e:	f0 1f 00 13 	mcall	80002688 <sd_mmc_spi_get_csd+0xec>
+   spi_write(SD_MMC_SPI,0xFF);
+80002642:	e0 6b 00 ff 	mov	r11,255
+80002646:	fe 7c 24 00 	mov	r12,-56320
+8000264a:	f0 1f 00 10 	mcall	80002688 <sd_mmc_spi_get_csd+0xec>
+   spi_write(SD_MMC_SPI,0xFF);   // give clock again to end transaction
+8000264e:	e0 6b 00 ff 	mov	r11,255
+80002652:	fe 7c 24 00 	mov	r12,-56320
+80002656:	f0 1f 00 0d 	mcall	80002688 <sd_mmc_spi_get_csd+0xec>
+  spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+8000265a:	30 1b       	mov	r11,1
+8000265c:	fe 7c 24 00 	mov	r12,-56320
+80002660:	f0 1f 00 07 	mcall	8000267c <sd_mmc_spi_get_csd+0xe0>
+80002664:	30 1c       	mov	r12,1
+  return true;
+}
+80002666:	2f fd       	sub	sp,-4
+80002668:	e3 cd 80 fc 	ldm	sp++,r2-r7,pc
+8000266c:	80 00       	ld.sh	r0,r0[0x0]
+8000266e:	21 a0       	sub	r0,26
+80002670:	80 00       	ld.sh	r0,r0[0x0]
+80002672:	2e c4       	sub	r4,-20
+80002674:	80 00       	ld.sh	r0,r0[0x0]
+80002676:	21 f8       	sub	r8,31
+80002678:	00 00       	add	r0,r0
+8000267a:	03 3c       	ld.ub	r12,r1++
+8000267c:	80 00       	ld.sh	r0,r0[0x0]
+8000267e:	2f 10       	sub	r0,-15
+80002680:	00 00       	add	r0,r0
+80002682:	00 24       	rsub	r4,r0
+80002684:	80 00       	ld.sh	r0,r0[0x0]
+80002686:	21 6c       	sub	r12,22
+80002688:	80 00       	ld.sh	r0,r0[0x0]
+8000268a:	2f f6       	sub	r6,-1
+8000268c:	80 00       	ld.sh	r0,r0[0x0]
+8000268e:	30 12       	mov	r2,1
+
+80002690 <sd_mmc_spi_internal_init>:
+//!
+//!
+//! @return bit
+//!   The memory is ready     -> true (always)
+bool sd_mmc_spi_internal_init(void)
+{
+80002690:	d4 31       	pushm	r0-r7,lr
+  uint16_t retry;
+  int i;
+  int if_cond;
+
+  // Start at low frequency
+  sd_mmc_opt.baudrate = 400000;
+80002692:	fe fb 02 66 	ld.w	r11,pc[614]
+80002696:	e6 68 1a 80 	mov	r8,400000
+8000269a:	97 18       	st.w	r11[0x4],r8
+  spi_setupChipReg(SD_MMC_SPI, &sd_mmc_opt, sd_mmc_pba_hz);
+8000269c:	fe f8 02 60 	ld.w	r8,pc[608]
+800026a0:	70 0a       	ld.w	r10,r8[0x0]
+800026a2:	fe 7c 24 00 	mov	r12,-56320
+800026a6:	f0 1f 00 97 	mcall	80002900 <sd_mmc_spi_internal_init+0x270>
+
+  /* card needs 74 cycles minimum to start up */
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);    // select SD_MMC_SPI
+800026aa:	30 1b       	mov	r11,1
+800026ac:	fe 7c 24 00 	mov	r12,-56320
+800026b0:	f0 1f 00 95 	mcall	80002904 <sd_mmc_spi_internal_init+0x274>
+800026b4:	30 07       	mov	r7,0
+  for(i = 0; i < 10; ++i) {
+    spi_write(SD_MMC_SPI,0xFF);
+800026b6:	e0 66 00 ff 	mov	r6,255
+800026ba:	fe 75 24 00 	mov	r5,-56320
+800026be:	0c 9b       	mov	r11,r6
+800026c0:	0a 9c       	mov	r12,r5
+800026c2:	f0 1f 00 92 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+  sd_mmc_opt.baudrate = 400000;
+  spi_setupChipReg(SD_MMC_SPI, &sd_mmc_opt, sd_mmc_pba_hz);
+
+  /* card needs 74 cycles minimum to start up */
+  spi_selectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);    // select SD_MMC_SPI
+  for(i = 0; i < 10; ++i) {
+800026c6:	2f f7       	sub	r7,-1
+800026c8:	58 a7       	cp.w	r7,10
+800026ca:	cf a1       	brne	800026be <sd_mmc_spi_internal_init+0x2e>
+    spi_write(SD_MMC_SPI,0xFF);
+  }
+  spi_unselectChip(SD_MMC_SPI, SD_MMC_SPI_NPCS);  // unselect SD_MMC_SPI
+800026cc:	30 1b       	mov	r11,1
+800026ce:	fe 7c 24 00 	mov	r12,-56320
+800026d2:	f0 1f 00 8f 	mcall	8000290c <sd_mmc_spi_internal_init+0x27c>
+
+  // RESET THE MEMORY CARD
+  sd_mmc_spi_init_done = false;
+800026d6:	30 08       	mov	r8,0
+800026d8:	fe f9 02 38 	ld.w	r9,pc[568]
+800026dc:	b2 88       	st.b	r9[0x0],r8
+  card_type = MMC_CARD;
+800026de:	fe f9 02 36 	ld.w	r9,pc[566]
+800026e2:	b2 88       	st.b	r9[0x0],r8
+  retry = 0;
+  do
+  {
+    // reset card and go to SPI mode
+    r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0);
+800026e4:	30 0b       	mov	r11,0
+800026e6:	16 9c       	mov	r12,r11
+800026e8:	f0 1f 00 8c 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+800026ec:	fe f8 02 30 	ld.w	r8,pc[560]
+800026f0:	b0 8c       	st.b	r8[0x0],r12
+    spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+800026f2:	e0 6b 00 ff 	mov	r11,255
+800026f6:	fe 7c 24 00 	mov	r12,-56320
+800026fa:	f0 1f 00 84 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+800026fe:	30 17       	mov	r7,1
+    // do retry counter
+    retry++;
+    if(retry > 100)
+      return false;
+  }
+  while(r1 != 0x01);   // check memory enters idle_state
+80002700:	fe f6 02 1c 	ld.w	r6,pc[540]
+80002704:	30 15       	mov	r5,1
+  card_type = MMC_CARD;
+  retry = 0;
+  do
+  {
+    // reset card and go to SPI mode
+    r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0);
+80002706:	30 03       	mov	r3,0
+    spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+80002708:	e0 62 00 ff 	mov	r2,255
+8000270c:	fe 71 24 00 	mov	r1,-56320
+    // do retry counter
+    retry++;
+    if(retry > 100)
+80002710:	36 54       	mov	r4,101
+80002712:	c1 08       	rjmp	80002732 <sd_mmc_spi_internal_init+0xa2>
+  card_type = MMC_CARD;
+  retry = 0;
+  do
+  {
+    // reset card and go to SPI mode
+    r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0);
+80002714:	06 9b       	mov	r11,r3
+80002716:	06 9c       	mov	r12,r3
+80002718:	f0 1f 00 80 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+8000271c:	ac 8c       	st.b	r6[0x0],r12
+    spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+8000271e:	04 9b       	mov	r11,r2
+80002720:	02 9c       	mov	r12,r1
+80002722:	f0 1f 00 7a 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+    // do retry counter
+    retry++;
+80002726:	2f f7       	sub	r7,-1
+80002728:	5c 87       	casts.h	r7
+    if(retry > 100)
+8000272a:	e8 07 19 00 	cp.h	r7,r4
+8000272e:	e0 80 00 e4 	breq	800028f6 <sd_mmc_spi_internal_init+0x266>
+      return false;
+  }
+  while(r1 != 0x01);   // check memory enters idle_state
+80002732:	0d 88       	ld.ub	r8,r6[0x0]
+80002734:	ea 08 18 00 	cp.b	r8,r5
+80002738:	ce e1       	brne	80002714 <sd_mmc_spi_internal_init+0x84>
+
+  if_cond = sd_mmc_spi_get_if();
+8000273a:	f0 1f 00 7a 	mcall	80002920 <sd_mmc_spi_internal_init+0x290>
+  if(if_cond == -1) {
+8000273e:	5b fc       	cp.w	r12,-1
+80002740:	e0 80 00 db 	breq	800028f6 <sd_mmc_spi_internal_init+0x266>
+      return false; // card is bad
+  } else if (if_cond == 1) {
+80002744:	58 1c       	cp.w	r12,1
+80002746:	c0 51       	brne	80002750 <sd_mmc_spi_internal_init+0xc0>
+      card_type = SD_CARD_2;
+80002748:	30 29       	mov	r9,2
+8000274a:	4f 38       	lddpc	r8,80002914 <sd_mmc_spi_internal_init+0x284>
+8000274c:	b0 89       	st.b	r8[0x0],r9
+8000274e:	c4 c8       	rjmp	800027e6 <sd_mmc_spi_internal_init+0x156>
+  } else {
+    // IDENTIFICATION OF THE CARD TYPE (SD or MMC)
+    // Both cards will accept CMD55 command but only the SD card will respond to ACMD41
+    r1 = sd_mmc_spi_send_command(SD_APP_CMD55,0);
+80002750:	30 0b       	mov	r11,0
+80002752:	33 7c       	mov	r12,55
+80002754:	f0 1f 00 71 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+80002758:	4f 17       	lddpc	r7,8000291c <sd_mmc_spi_internal_init+0x28c>
+8000275a:	ae 8c       	st.b	r7[0x0],r12
+    spi_write(SD_MMC_SPI,0xFF);  // write dummy byte
+8000275c:	e0 6b 00 ff 	mov	r11,255
+80002760:	fe 7c 24 00 	mov	r12,-56320
+80002764:	f0 1f 00 69 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+
+    r1 = sd_mmc_spi_send_command(SD_SEND_OP_COND_ACMD, 0);
+80002768:	30 0b       	mov	r11,0
+8000276a:	32 9c       	mov	r12,41
+8000276c:	f0 1f 00 6b 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+80002770:	ae 8c       	st.b	r7[0x0],r12
+    spi_write(SD_MMC_SPI,0xFF);  // write dummy byte
+80002772:	e0 6b 00 ff 	mov	r11,255
+80002776:	fe 7c 24 00 	mov	r12,-56320
+8000277a:	f0 1f 00 64 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+
+    if ((r1&0xFE) == 0) {   // ignore "in_idle_state" flag bit
+8000277e:	0f 88       	ld.ub	r8,r7[0x0]
+80002780:	e2 18 00 fe 	andl	r8,0xfe,COH
+80002784:	c0 51       	brne	8000278e <sd_mmc_spi_internal_init+0xfe>
+      card_type = SD_CARD;    // card has accepted the command, this is a SD card
+80002786:	30 19       	mov	r9,1
+80002788:	4e 38       	lddpc	r8,80002914 <sd_mmc_spi_internal_init+0x284>
+8000278a:	b0 89       	st.b	r8[0x0],r9
+8000278c:	c2 d8       	rjmp	800027e6 <sd_mmc_spi_internal_init+0x156>
+    } else {
+      card_type = MMC_CARD;   // card has not responded, this is a MMC card
+8000278e:	30 09       	mov	r9,0
+80002790:	4e 18       	lddpc	r8,80002914 <sd_mmc_spi_internal_init+0x284>
+80002792:	b0 89       	st.b	r8[0x0],r9
+      // reset card again
+      retry = 0;
+      do {
+        // reset card again
+        r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0);
+80002794:	30 0b       	mov	r11,0
+80002796:	16 9c       	mov	r12,r11
+80002798:	f0 1f 00 60 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+8000279c:	4e 08       	lddpc	r8,8000291c <sd_mmc_spi_internal_init+0x28c>
+8000279e:	b0 8c       	st.b	r8[0x0],r12
+        spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+800027a0:	e0 6b 00 ff 	mov	r11,255
+800027a4:	fe 7c 24 00 	mov	r12,-56320
+800027a8:	f0 1f 00 58 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+800027ac:	30 17       	mov	r7,1
+        // do retry counter
+        retry++;
+        if(retry > 100)
+          return false;
+      }
+      while(r1 != 0x01);   // check memory enters idle_state
+800027ae:	4d c6       	lddpc	r6,8000291c <sd_mmc_spi_internal_init+0x28c>
+800027b0:	30 15       	mov	r5,1
+      card_type = MMC_CARD;   // card has not responded, this is a MMC card
+      // reset card again
+      retry = 0;
+      do {
+        // reset card again
+        r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0);
+800027b2:	30 03       	mov	r3,0
+        spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+800027b4:	e0 62 00 ff 	mov	r2,255
+800027b8:	fe 71 24 00 	mov	r1,-56320
+        // do retry counter
+        retry++;
+        if(retry > 100)
+800027bc:	36 54       	mov	r4,101
+800027be:	c1 08       	rjmp	800027de <sd_mmc_spi_internal_init+0x14e>
+      card_type = MMC_CARD;   // card has not responded, this is a MMC card
+      // reset card again
+      retry = 0;
+      do {
+        // reset card again
+        r1 = sd_mmc_spi_send_command(MMC_GO_IDLE_STATE, 0);
+800027c0:	06 9b       	mov	r11,r3
+800027c2:	06 9c       	mov	r12,r3
+800027c4:	f0 1f 00 55 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+800027c8:	ac 8c       	st.b	r6[0x0],r12
+        spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+800027ca:	04 9b       	mov	r11,r2
+800027cc:	02 9c       	mov	r12,r1
+800027ce:	f0 1f 00 4f 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+        // do retry counter
+        retry++;
+800027d2:	2f f7       	sub	r7,-1
+800027d4:	5c 87       	casts.h	r7
+        if(retry > 100)
+800027d6:	e8 07 19 00 	cp.h	r7,r4
+800027da:	e0 80 00 8e 	breq	800028f6 <sd_mmc_spi_internal_init+0x266>
+          return false;
+      }
+      while(r1 != 0x01);   // check memory enters idle_state
+800027de:	0d 88       	ld.ub	r8,r6[0x0]
+800027e0:	ea 08 18 00 	cp.b	r8,r5
+800027e4:	ce e1       	brne	800027c0 <sd_mmc_spi_internal_init+0x130>
+800027e6:	30 07       	mov	r7,0
+
+  // CONTINUE INTERNAL INITIALIZATION OF THE CARD
+  // Continue sending CMD1 while memory card is in idle state
+  retry = 0;
+  do {
+    switch(card_type) {
+800027e8:	4c b4       	lddpc	r4,80002914 <sd_mmc_spi_internal_init+0x284>
+800027ea:	30 15       	mov	r5,1
+    case MMC_CARD:
+      r1 = sd_mmc_spi_send_command(MMC_SEND_OP_COND, 0);
+      spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+      break;
+    case SD_CARD:
+      sd_mmc_spi_send_command(SD_APP_CMD55,0);
+800027ec:	0e 93       	mov	r3,r7
+800027ee:	33 70       	mov	r0,55
+      r1 = sd_mmc_spi_send_command(SD_SEND_OP_COND_ACMD, 0);
+800027f0:	4c b6       	lddpc	r6,8000291c <sd_mmc_spi_internal_init+0x28c>
+      spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+800027f2:	e0 62 00 ff 	mov	r2,255
+800027f6:	fe 71 24 00 	mov	r1,-56320
+
+  // CONTINUE INTERNAL INITIALIZATION OF THE CARD
+  // Continue sending CMD1 while memory card is in idle state
+  retry = 0;
+  do {
+    switch(card_type) {
+800027fa:	09 88       	ld.ub	r8,r4[0x0]
+800027fc:	ea 08 18 00 	cp.b	r8,r5
+80002800:	c1 10       	breq	80002822 <sd_mmc_spi_internal_init+0x192>
+80002802:	c0 63       	brcs	8000280e <sd_mmc_spi_internal_init+0x17e>
+80002804:	30 29       	mov	r9,2
+80002806:	f2 08 18 00 	cp.b	r8,r9
+8000280a:	c2 81       	brne	8000285a <sd_mmc_spi_internal_init+0x1ca>
+8000280c:	c1 98       	rjmp	8000283e <sd_mmc_spi_internal_init+0x1ae>
+    case MMC_CARD:
+      r1 = sd_mmc_spi_send_command(MMC_SEND_OP_COND, 0);
+8000280e:	06 9b       	mov	r11,r3
+80002810:	30 1c       	mov	r12,1
+80002812:	f0 1f 00 42 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+80002816:	ac 8c       	st.b	r6[0x0],r12
+      spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+80002818:	04 9b       	mov	r11,r2
+8000281a:	02 9c       	mov	r12,r1
+8000281c:	f0 1f 00 3b 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+      break;
+80002820:	c1 d8       	rjmp	8000285a <sd_mmc_spi_internal_init+0x1ca>
+    case SD_CARD:
+      sd_mmc_spi_send_command(SD_APP_CMD55,0);
+80002822:	06 9b       	mov	r11,r3
+80002824:	00 9c       	mov	r12,r0
+80002826:	f0 1f 00 3d 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+      r1 = sd_mmc_spi_send_command(SD_SEND_OP_COND_ACMD, 0);
+8000282a:	06 9b       	mov	r11,r3
+8000282c:	32 9c       	mov	r12,41
+8000282e:	f0 1f 00 3b 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+80002832:	ac 8c       	st.b	r6[0x0],r12
+      spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+80002834:	04 9b       	mov	r11,r2
+80002836:	02 9c       	mov	r12,r1
+80002838:	f0 1f 00 34 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+      break;
+8000283c:	c0 f8       	rjmp	8000285a <sd_mmc_spi_internal_init+0x1ca>
+    case SD_CARD_2:
+      // set high capacity bit mask
+      sd_mmc_spi_send_command(SD_APP_CMD55,0);
+8000283e:	06 9b       	mov	r11,r3
+80002840:	00 9c       	mov	r12,r0
+80002842:	f0 1f 00 36 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+      r1 = sd_mmc_spi_send_command(SD_SEND_OP_COND_ACMD, 0x40000000);
+80002846:	fc 1b 40 00 	movh	r11,0x4000
+8000284a:	32 9c       	mov	r12,41
+8000284c:	f0 1f 00 33 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+80002850:	ac 8c       	st.b	r6[0x0],r12
+      spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+80002852:	04 9b       	mov	r11,r2
+80002854:	02 9c       	mov	r12,r1
+80002856:	f0 1f 00 2d 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+      break;
+    }
+     // do retry counter
+     retry++;
+8000285a:	2f f7       	sub	r7,-1
+8000285c:	5c 87       	casts.h	r7
+     if(retry == 50000)    // measured approx. 500 on several cards
+8000285e:	fe 78 c3 50 	mov	r8,-15536
+80002862:	f0 07 19 00 	cp.h	r7,r8
+80002866:	c4 80       	breq	800028f6 <sd_mmc_spi_internal_init+0x266>
+        return false;
+  } while (r1);
+80002868:	0d 89       	ld.ub	r9,r6[0x0]
+8000286a:	30 08       	mov	r8,0
+8000286c:	f0 09 18 00 	cp.b	r9,r8
+80002870:	cc 51       	brne	800027fa <sd_mmc_spi_internal_init+0x16a>
+
+  // CHECK FOR SDHC
+  if(card_type == SD_CARD_2) {
+80002872:	4a 98       	lddpc	r8,80002914 <sd_mmc_spi_internal_init+0x284>
+80002874:	11 89       	ld.ub	r9,r8[0x0]
+80002876:	30 28       	mov	r8,2
+80002878:	f0 09 18 00 	cp.b	r9,r8
+8000287c:	c0 a1       	brne	80002890 <sd_mmc_spi_internal_init+0x200>
+    if_cond = sd_mmc_spi_check_hc();
+8000287e:	f0 1f 00 2a 	mcall	80002924 <sd_mmc_spi_internal_init+0x294>
+    if (if_cond == -1) {
+80002882:	5b fc       	cp.w	r12,-1
+80002884:	c3 90       	breq	800028f6 <sd_mmc_spi_internal_init+0x266>
+      return false;
+    } else if (if_cond == 1){
+80002886:	58 1c       	cp.w	r12,1
+80002888:	c0 41       	brne	80002890 <sd_mmc_spi_internal_init+0x200>
+          card_type = SD_CARD_2_SDHC;
+8000288a:	30 39       	mov	r9,3
+8000288c:	4a 28       	lddpc	r8,80002914 <sd_mmc_spi_internal_init+0x284>
+8000288e:	b0 89       	st.b	r8[0x0],r9
+      }
+  }
+
+  // DISABLE CRC TO SIMPLIFY AND SPEED UP COMMUNICATIONS
+  r1 = sd_mmc_spi_send_command(MMC_CRC_ON_OFF, 0);  // disable CRC (should be already initialized on SPI init)
+80002890:	30 0b       	mov	r11,0
+80002892:	33 bc       	mov	r12,59
+80002894:	f0 1f 00 21 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+80002898:	4a 17       	lddpc	r7,8000291c <sd_mmc_spi_internal_init+0x28c>
+8000289a:	ae 8c       	st.b	r7[0x0],r12
+  spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+8000289c:	e0 6b 00 ff 	mov	r11,255
+800028a0:	fe 7c 24 00 	mov	r12,-56320
+800028a4:	f0 1f 00 19 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+
+  // SET BLOCK LENGTH TO 512 BYTES
+  r1 = sd_mmc_spi_send_command(MMC_SET_BLOCKLEN, 512);
+800028a8:	e0 6b 02 00 	mov	r11,512
+800028ac:	31 0c       	mov	r12,16
+800028ae:	f0 1f 00 1b 	mcall	80002918 <sd_mmc_spi_internal_init+0x288>
+800028b2:	ae 8c       	st.b	r7[0x0],r12
+  spi_write(SD_MMC_SPI,0xFF);            // write dummy byte
+800028b4:	e0 6b 00 ff 	mov	r11,255
+800028b8:	fe 7c 24 00 	mov	r12,-56320
+800028bc:	f0 1f 00 13 	mcall	80002908 <sd_mmc_spi_internal_init+0x278>
+  if (r1 != 0x00)
+800028c0:	0f 89       	ld.ub	r9,r7[0x0]
+800028c2:	30 08       	mov	r8,0
+800028c4:	f0 09 18 00 	cp.b	r9,r8
+800028c8:	c1 71       	brne	800028f6 <sd_mmc_spi_internal_init+0x266>
+    return false;    // card unsupported if block length of 512b is not accepted
+
+  // GET CARD SPECIFIC DATA
+  if (false ==  sd_mmc_spi_get_csd(csd))
+800028ca:	49 8c       	lddpc	r12,80002928 <sd_mmc_spi_internal_init+0x298>
+800028cc:	f0 1f 00 18 	mcall	8000292c <sd_mmc_spi_internal_init+0x29c>
+800028d0:	c1 30       	breq	800028f6 <sd_mmc_spi_internal_init+0x266>
+    return false;
+
+  // GET CARD CAPACITY and NUMBER OF SECTORS
+  sd_mmc_spi_get_capacity();
+800028d2:	f0 1f 00 18 	mcall	80002930 <sd_mmc_spi_internal_init+0x2a0>
+#if (defined SD_MMC_READ_CID) && (SD_MMC_READ_CID == true)
+  if (false ==  sd_mmc_spi_get_cid(cid))
+    return false;
+#endif
+
+  sd_mmc_spi_init_done = true;
+800028d6:	30 19       	mov	r9,1
+800028d8:	48 e8       	lddpc	r8,80002910 <sd_mmc_spi_internal_init+0x280>
+800028da:	b0 89       	st.b	r8[0x0],r9
+
+  // Set SPI Speed to MAX
+  sd_mmc_opt.baudrate = SD_MMC_SPI_MASTER_SPEED;
+800028dc:	48 7b       	lddpc	r11,800028f8 <sd_mmc_spi_internal_init+0x268>
+800028de:	e0 68 1b 00 	mov	r8,6912
+800028e2:	ea 18 00 b7 	orh	r8,0xb7
+800028e6:	97 18       	st.w	r11[0x4],r8
+  spi_setupChipReg(SD_MMC_SPI, &sd_mmc_opt, sd_mmc_pba_hz);
+800028e8:	48 58       	lddpc	r8,800028fc <sd_mmc_spi_internal_init+0x26c>
+800028ea:	70 0a       	ld.w	r10,r8[0x0]
+800028ec:	fe 7c 24 00 	mov	r12,-56320
+800028f0:	f0 1f 00 04 	mcall	80002900 <sd_mmc_spi_internal_init+0x270>
+800028f4:	da 3a       	popm	r0-r7,pc,r12=1
+  return true;
+800028f6:	d8 3a       	popm	r0-r7,pc,r12=0
+800028f8:	00 00       	add	r0,r0
+800028fa:	00 10       	sub	r0,r0
+800028fc:	00 00       	add	r0,r0
+800028fe:	00 20       	rsub	r0,r0
+80002900:	80 00       	ld.sh	r0,r0[0x0]
+80002902:	2f 38       	sub	r8,-13
+80002904:	80 00       	ld.sh	r0,r0[0x0]
+80002906:	2e c4       	sub	r4,-20
+80002908:	80 00       	ld.sh	r0,r0[0x0]
+8000290a:	2f f6       	sub	r6,-1
+8000290c:	80 00       	ld.sh	r0,r0[0x0]
+8000290e:	2f 10       	sub	r0,-15
+80002910:	00 00       	add	r0,r0
+80002912:	00 24       	rsub	r4,r0
+80002914:	00 00       	add	r0,r0
+80002916:	03 2a       	ld.uh	r10,r1++
+80002918:	80 00       	ld.sh	r0,r0[0x0]
+8000291a:	22 c0       	sub	r0,44
+8000291c:	00 00       	add	r0,r0
+8000291e:	03 3c       	ld.ub	r12,r1++
+80002920:	80 00       	ld.sh	r0,r0[0x0]
+80002922:	24 e4       	sub	r4,78
+80002924:	80 00       	ld.sh	r0,r0[0x0]
+80002926:	24 58       	sub	r8,69
+80002928:	00 00       	add	r0,r0
+8000292a:	03 2c       	ld.uh	r12,r1++
+8000292c:	80 00       	ld.sh	r0,r0[0x0]
+8000292e:	25 9c       	sub	r12,89
+80002930:	80 00       	ld.sh	r0,r0[0x0]
+80002932:	20 08       	sub	r8,0
+
+80002934 <sd_mmc_spi_mem_check>:
+//!
+//! @return bit
+//!   The memory is ready     -> true
+//!   The memory check failed -> false
+bool sd_mmc_spi_mem_check(void)
+{
+80002934:	d4 01       	pushm	lr
+  if (sd_mmc_spi_check_presence())
+80002936:	f0 1f 00 07 	mcall	80002950 <sd_mmc_spi_mem_check+0x1c>
+8000293a:	c0 a0       	breq	8000294e <sd_mmc_spi_mem_check+0x1a>
+  {
+    if (sd_mmc_spi_init_done == false)
+8000293c:	48 68       	lddpc	r8,80002954 <sd_mmc_spi_mem_check+0x20>
+8000293e:	11 89       	ld.ub	r9,r8[0x0]
+80002940:	30 08       	mov	r8,0
+80002942:	f0 09 18 00 	cp.b	r9,r8
+80002946:	c0 20       	breq	8000294a <sd_mmc_spi_mem_check+0x16>
+80002948:	da 0a       	popm	pc,r12=1
+    {
+      return sd_mmc_spi_internal_init();
+8000294a:	f0 1f 00 04 	mcall	80002958 <sd_mmc_spi_mem_check+0x24>
+    }
+    else
+      return true;
+  }
+  return false;
+}
+8000294e:	d8 02       	popm	pc
+80002950:	80 00       	ld.sh	r0,r0[0x0]
+80002952:	23 00       	sub	r0,48
+80002954:	00 00       	add	r0,r0
+80002956:	00 24       	rsub	r4,r0
+80002958:	80 00       	ld.sh	r0,r0[0x0]
+8000295a:	26 90       	sub	r0,105
+
+8000295c <sd_mmc_spi_init>:
+//!
+//!
+//! @return bit
+//!   The memory is ready     -> true (always)
+bool sd_mmc_spi_init(spi_options_t spiOptions, unsigned int pba_hz)
+{
+8000295c:	eb cd 40 10 	pushm	r4,lr
+80002960:	fa c4 ff f8 	sub	r4,sp,-8
+  // Keep SPI options internally
+  sd_mmc_pba_hz = pba_hz;
+80002964:	48 88       	lddpc	r8,80002984 <sd_mmc_spi_init+0x28>
+80002966:	91 0c       	st.w	r8[0x0],r12
+  memcpy( &sd_mmc_opt, &spiOptions, sizeof(spi_options_t) );
+80002968:	48 88       	lddpc	r8,80002988 <sd_mmc_spi_init+0x2c>
+8000296a:	e8 ea 00 00 	ld.d	r10,r4[0]
+8000296e:	f0 eb 00 00 	st.d	r8[0],r10
+80002972:	e8 ea 00 08 	ld.d	r10,r4[8]
+80002976:	f0 eb 00 08 	st.d	r8[8],r10
+
+  // Initialize the SD/MMC controller.
+  return sd_mmc_spi_internal_init();
+8000297a:	f0 1f 00 05 	mcall	8000298c <sd_mmc_spi_init+0x30>
+}
+8000297e:	e3 cd 80 10 	ldm	sp++,r4,pc
+80002982:	00 00       	add	r0,r0
+80002984:	00 00       	add	r0,r0
+80002986:	00 20       	rsub	r0,r0
+80002988:	00 00       	add	r0,r0
+8000298a:	00 10       	sub	r0,r0
+8000298c:	80 00       	ld.sh	r0,r0[0x0]
+8000298e:	26 90       	sub	r0,105
+
+80002990 <pm_set_osc0_mode>:
+ * \param mode Oscillator 0 mode (i.e. AVR32_PM_OSCCTRL0_MODE_x).
+ */
+static void pm_set_osc0_mode(volatile avr32_pm_t *pm, unsigned int mode)
+{
+  // Read
+  u_avr32_pm_oscctrl0_t u_avr32_pm_oscctrl0 = {pm->oscctrl0};
+80002990:	78 a8       	ld.w	r8,r12[0x28]
+  // Modify
+  u_avr32_pm_oscctrl0.OSCCTRL0.mode = mode;
+80002992:	f1 db d0 03 	bfins	r8,r11,0x0,0x3
+  // Write
+  pm->oscctrl0 = u_avr32_pm_oscctrl0.oscctrl0;
+80002996:	99 a8       	st.w	r12[0x28],r8
+}
+80002998:	5e fc       	retal	r12
+8000299a:	d7 03       	nop
+
+8000299c <pm_enable_osc0_crystal>:
+  pm_set_osc0_mode(pm, AVR32_PM_OSCCTRL0_MODE_EXT_CLOCK);
+}
+
+
+void pm_enable_osc0_crystal(volatile avr32_pm_t *pm, unsigned int fosc0)
+{
+8000299c:	d4 01       	pushm	lr
+  pm_set_osc0_mode(pm, (fosc0 <  900000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G0 :
+8000299e:	ec 5b bb 9f 	cp.w	r11,899999
+800029a2:	e0 8b 00 04 	brhi	800029aa <pm_enable_osc0_crystal+0xe>
+800029a6:	30 4b       	mov	r11,4
+800029a8:	c1 38       	rjmp	800029ce <pm_enable_osc0_crystal+0x32>
+800029aa:	e0 68 c6 bf 	mov	r8,50879
+800029ae:	ea 18 00 2d 	orh	r8,0x2d
+800029b2:	10 3b       	cp.w	r11,r8
+800029b4:	e0 8b 00 04 	brhi	800029bc <pm_enable_osc0_crystal+0x20>
+800029b8:	30 5b       	mov	r11,5
+800029ba:	c0 a8       	rjmp	800029ce <pm_enable_osc0_crystal+0x32>
+800029bc:	e0 68 12 00 	mov	r8,4608
+800029c0:	ea 18 00 7a 	orh	r8,0x7a
+800029c4:	10 3b       	cp.w	r11,r8
+800029c6:	f9 bb 03 06 	movlo	r11,6
+800029ca:	f9 bb 02 07 	movhs	r11,7
+800029ce:	f0 1f 00 02 	mcall	800029d4 <pm_enable_osc0_crystal+0x38>
+                       (fosc0 < 3000000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G1 :
+                       (fosc0 < 8000000) ? AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G2 :
+                                           AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G3);
+}
+800029d2:	d8 02       	popm	pc
+800029d4:	80 00       	ld.sh	r0,r0[0x0]
+800029d6:	29 90       	sub	r0,-103
+
+800029d8 <pm_enable_clk0_no_wait>:
+
+
+void pm_enable_clk0_no_wait(volatile avr32_pm_t *pm, unsigned int startup)
+{
+  // Read register
+  u_avr32_pm_oscctrl0_t u_avr32_pm_oscctrl0 = {pm->oscctrl0};
+800029d8:	78 a8       	ld.w	r8,r12[0x28]
+  // Modify
+  u_avr32_pm_oscctrl0.OSCCTRL0.startup = startup;
+800029da:	f1 db d1 03 	bfins	r8,r11,0x8,0x3
+  // Write back
+  pm->oscctrl0 = u_avr32_pm_oscctrl0.oscctrl0;
+800029de:	99 a8       	st.w	r12[0x28],r8
+
+  pm->mcctrl |= AVR32_PM_MCCTRL_OSC0EN_MASK;
+800029e0:	78 08       	ld.w	r8,r12[0x0]
+800029e2:	a3 a8       	sbr	r8,0x2
+800029e4:	99 08       	st.w	r12[0x0],r8
+}
+800029e6:	5e fc       	retal	r12
+
+800029e8 <pm_wait_for_clk0_ready>:
+
+
+void pm_wait_for_clk0_ready(volatile avr32_pm_t *pm)
+{
+  while (!(pm->poscsr & AVR32_PM_POSCSR_OSC0RDY_MASK));
+800029e8:	79 58       	ld.w	r8,r12[0x54]
+800029ea:	e2 18 00 80 	andl	r8,0x80,COH
+800029ee:	cf d0       	breq	800029e8 <pm_wait_for_clk0_ready>
+}
+800029f0:	5e fc       	retal	r12
+800029f2:	d7 03       	nop
+
+800029f4 <pm_enable_clk0>:
+                                           AVR32_PM_OSCCTRL0_MODE_CRYSTAL_G3);
+}
+
+
+void pm_enable_clk0(volatile avr32_pm_t *pm, unsigned int startup)
+{
+800029f4:	eb cd 40 80 	pushm	r7,lr
+800029f8:	18 97       	mov	r7,r12
+  pm_enable_clk0_no_wait(pm, startup);
+800029fa:	f0 1f 00 04 	mcall	80002a08 <pm_enable_clk0+0x14>
+  pm_wait_for_clk0_ready(pm);
+800029fe:	0e 9c       	mov	r12,r7
+80002a00:	f0 1f 00 03 	mcall	80002a0c <pm_enable_clk0+0x18>
+}
+80002a04:	e3 cd 80 80 	ldm	sp++,r7,pc
+80002a08:	80 00       	ld.sh	r0,r0[0x0]
+80002a0a:	29 d8       	sub	r8,-99
+80002a0c:	80 00       	ld.sh	r0,r0[0x0]
+80002a0e:	29 e8       	sub	r8,-98
+
+80002a10 <pm_switch_to_clock>:
+
+
+void pm_switch_to_clock(volatile avr32_pm_t *pm, unsigned long clock)
+{
+  // Read
+  u_avr32_pm_mcctrl_t u_avr32_pm_mcctrl = {pm->mcctrl};
+80002a10:	78 08       	ld.w	r8,r12[0x0]
+  // Modify
+  u_avr32_pm_mcctrl.MCCTRL.mcsel = clock;
+80002a12:	f1 db d0 02 	bfins	r8,r11,0x0,0x2
+  // Write back
+  pm->mcctrl = u_avr32_pm_mcctrl.mcctrl;
+80002a16:	99 08       	st.w	r12[0x0],r8
+}
+80002a18:	5e fc       	retal	r12
+80002a1a:	d7 03       	nop
+
+80002a1c <pm_switch_to_osc0>:
+
+
+void pm_switch_to_osc0(volatile avr32_pm_t *pm, unsigned int fosc0, unsigned int startup)
+{
+80002a1c:	eb cd 40 c0 	pushm	r6-r7,lr
+80002a20:	18 97       	mov	r7,r12
+80002a22:	14 96       	mov	r6,r10
+  pm_enable_osc0_crystal(pm, fosc0);            // Enable the Osc0 in crystal mode
+80002a24:	f0 1f 00 06 	mcall	80002a3c <pm_switch_to_osc0+0x20>
+  pm_enable_clk0(pm, startup);                  // Crystal startup time - This parameter is critical and depends on the characteristics of the crystal
+80002a28:	0c 9b       	mov	r11,r6
+80002a2a:	0e 9c       	mov	r12,r7
+80002a2c:	f0 1f 00 05 	mcall	80002a40 <pm_switch_to_osc0+0x24>
+  pm_switch_to_clock(pm, AVR32_PM_MCSEL_OSC0);  // Then switch main clock to Osc0
+80002a30:	30 1b       	mov	r11,1
+80002a32:	0e 9c       	mov	r12,r7
+80002a34:	f0 1f 00 04 	mcall	80002a44 <pm_switch_to_osc0+0x28>
+}
+80002a38:	e3 cd 80 c0 	ldm	sp++,r6-r7,pc
+80002a3c:	80 00       	ld.sh	r0,r0[0x0]
+80002a3e:	29 9c       	sub	r12,-103
+80002a40:	80 00       	ld.sh	r0,r0[0x0]
+80002a42:	29 f4       	sub	r4,-97
+80002a44:	80 00       	ld.sh	r0,r0[0x0]
+80002a46:	2a 10       	sub	r0,-95
+
+80002a48 <usart_set_async_baudrate>:
+ *
+ * \retval USART_SUCCESS        Baud rate successfully initialized.
+ * \retval USART_INVALID_INPUT  Baud rate set point is out of range for the given input clock frequency.
+ */
+static int usart_set_async_baudrate(volatile avr32_usart_t *usart, unsigned int baudrate, unsigned long pba_hz)
+{
+80002a48:	d4 01       	pushm	lr
+  unsigned int over = (pba_hz >= 16 * baudrate) ? 16 : 8;
+80002a4a:	f6 08 15 04 	lsl	r8,r11,0x4
+80002a4e:	14 38       	cp.w	r8,r10
+80002a50:	f9 b8 08 10 	movls	r8,16
+80002a54:	f9 b8 0b 08 	movhi	r8,8
+  unsigned int cd_fp = ((1 << AVR32_USART_BRGR_FP_SIZE) * pba_hz + (over * baudrate) / 2) / (over * baudrate);
+80002a58:	f0 0b 02 4b 	mul	r11,r8,r11
+80002a5c:	f6 09 16 01 	lsr	r9,r11,0x1
+80002a60:	f2 0a 00 3a 	add	r10,r9,r10<<0x3
+80002a64:	f4 0b 0d 0a 	divu	r10,r10,r11
+  unsigned int cd = cd_fp >> AVR32_USART_BRGR_FP_SIZE;
+80002a68:	f4 09 16 03 	lsr	r9,r10,0x3
+  unsigned int fp = cd_fp & ((1 << AVR32_USART_BRGR_FP_SIZE) - 1);
+
+  if (cd < 1 || cd > (1 << AVR32_USART_BRGR_CD_SIZE) - 1)
+80002a6c:	f2 cb 00 01 	sub	r11,r9,1
+80002a70:	e0 4b ff fe 	cp.w	r11,65534
+80002a74:	e0 88 00 03 	brls	80002a7a <usart_set_async_baudrate+0x32>
+80002a78:	da 0a       	popm	pc,r12=1
+    return USART_INVALID_INPUT;
+
+  usart->mr = (usart->mr & ~(AVR32_USART_MR_USCLKS_MASK |
+                             AVR32_USART_MR_SYNC_MASK |
+                             AVR32_USART_MR_OVER_MASK)) |
+              AVR32_USART_MR_USCLKS_MCK << AVR32_USART_MR_USCLKS_OFFSET |
+80002a7a:	78 1b       	ld.w	r11,r12[0x4]
+  unsigned int fp = cd_fp & ((1 << AVR32_USART_BRGR_FP_SIZE) - 1);
+
+  if (cd < 1 || cd > (1 << AVR32_USART_BRGR_CD_SIZE) - 1)
+    return USART_INVALID_INPUT;
+
+  usart->mr = (usart->mr & ~(AVR32_USART_MR_USCLKS_MASK |
+80002a7c:	e8 6e 00 00 	mov	lr,524288
+80002a80:	59 08       	cp.w	r8,16
+80002a82:	fc 08 17 10 	movne	r8,lr
+80002a86:	f9 b8 00 00 	moveq	r8,0
+80002a8a:	e4 1b ff f7 	andh	r11,0xfff7
+80002a8e:	e0 1b fe cf 	andl	r11,0xfecf
+80002a92:	16 48       	or	r8,r11
+80002a94:	99 18       	st.w	r12[0x4],r8
+                             AVR32_USART_MR_SYNC_MASK |
+                             AVR32_USART_MR_OVER_MASK)) |
+              AVR32_USART_MR_USCLKS_MCK << AVR32_USART_MR_USCLKS_OFFSET |
+              ((over == 16) ? AVR32_USART_MR_OVER_X16 : AVR32_USART_MR_OVER_X8) << AVR32_USART_MR_OVER_OFFSET;
+
+  usart->brgr = cd << AVR32_USART_BRGR_CD_OFFSET |
+80002a96:	f5 da c0 03 	bfextu	r10,r10,0x0,0x3
+80002a9a:	f3 ea 11 09 	or	r9,r9,r10<<0x10
+80002a9e:	99 89       	st.w	r12[0x20],r9
+80002aa0:	d8 0a       	popm	pc,r12=0
+
+80002aa2 <usart_write_char>:
+ *
+ * \return \c 1 if the USART Transmit Holding Register is free, otherwise \c 0.
+ */
+__always_inline static int usart_tx_ready(volatile avr32_usart_t *usart)
+{
+  return (usart->csr & AVR32_USART_CSR_TXRDY_MASK) != 0;
+80002aa2:	78 58       	ld.w	r8,r12[0x14]
+}
+
+
+int usart_write_char(volatile avr32_usart_t *usart, int c)
+{
+  if (usart_tx_ready(usart))
+80002aa4:	e2 18 00 02 	andl	r8,0x2,COH
+80002aa8:	c0 31       	brne	80002aae <usart_write_char+0xc>
+80002aaa:	30 2c       	mov	r12,2
+80002aac:	5e fc       	retal	r12
+  {
+    usart->thr = (c << AVR32_USART_THR_TXCHR_OFFSET) & AVR32_USART_THR_TXCHR_MASK;
+80002aae:	f7 db c0 09 	bfextu	r11,r11,0x0,0x9
+80002ab2:	99 7b       	st.w	r12[0x1c],r11
+80002ab4:	5e fd       	retal	0
+80002ab6:	d7 03       	nop
+
+80002ab8 <usart_putchar>:
+    return USART_TX_BUSY;
+}
+
+
+int usart_putchar(volatile avr32_usart_t *usart, int c)
+{
+80002ab8:	eb cd 40 e0 	pushm	r5-r7,lr
+80002abc:	18 96       	mov	r6,r12
+80002abe:	16 95       	mov	r5,r11
+80002ac0:	e0 67 27 0f 	mov	r7,9999
+80002ac4:	c0 68       	rjmp	80002ad0 <usart_putchar+0x18>
+  int timeout = USART_DEFAULT_TIMEOUT;
+
+  do
+  {
+    if (!timeout--) return USART_FAILURE;
+80002ac6:	58 07       	cp.w	r7,0
+80002ac8:	c0 31       	brne	80002ace <usart_putchar+0x16>
+80002aca:	e3 cf c0 e0 	ldm	sp++,r5-r7,pc,r12=-1
+80002ace:	20 17       	sub	r7,1
+  } while (usart_write_char(usart, c) != USART_SUCCESS);
+80002ad0:	0a 9b       	mov	r11,r5
+80002ad2:	0c 9c       	mov	r12,r6
+80002ad4:	f0 1f 00 03 	mcall	80002ae0 <usart_putchar+0x28>
+80002ad8:	cf 71       	brne	80002ac6 <usart_putchar+0xe>
+
+  return USART_SUCCESS;
+}
+80002ada:	e3 cd 80 e0 	ldm	sp++,r5-r7,pc
+80002ade:	00 00       	add	r0,r0
+80002ae0:	80 00       	ld.sh	r0,r0[0x0]
+80002ae2:	2a a2       	sub	r2,-86
+
+80002ae4 <usart_write_line>:
+  return c;
+}
+
+
+void usart_write_line(volatile avr32_usart_t *usart, const char *string)
+{
+80002ae4:	eb cd 40 c0 	pushm	r6-r7,lr
+80002ae8:	18 96       	mov	r6,r12
+80002aea:	16 97       	mov	r7,r11
+  while (*string != '\0')
+80002aec:	17 8b       	ld.ub	r11,r11[0x0]
+80002aee:	58 0b       	cp.w	r11,0
+80002af0:	c0 80       	breq	80002b00 <usart_write_line+0x1c>
+    usart_putchar(usart, *string++);
+80002af2:	2f f7       	sub	r7,-1
+80002af4:	0c 9c       	mov	r12,r6
+80002af6:	f0 1f 00 04 	mcall	80002b04 <usart_write_line+0x20>
+}
+
+
+void usart_write_line(volatile avr32_usart_t *usart, const char *string)
+{
+  while (*string != '\0')
+80002afa:	0f 8b       	ld.ub	r11,r7[0x0]
+80002afc:	58 0b       	cp.w	r11,0
+80002afe:	cf a1       	brne	80002af2 <usart_write_line+0xe>
+80002b00:	e3 cd 80 c0 	ldm	sp++,r6-r7,pc
+80002b04:	80 00       	ld.sh	r0,r0[0x0]
+80002b06:	2a b8       	sub	r8,-85
+
+80002b08 <usart_reset>:
+//! @{
+
+
+void usart_reset(volatile avr32_usart_t *usart)
+{
+  bool global_interrupt_enabled = cpu_irq_is_enabled();
+80002b08:	e1 b8 00 00 	mfsr	r8,0x0
+
+  // Disable all USART interrupts.
+  // Interrupts needed should be set explicitly on every reset.
+  if (global_interrupt_enabled) cpu_irq_disable();
+80002b0c:	e6 18 00 01 	andh	r8,0x1,COH
+80002b10:	c0 71       	brne	80002b1e <usart_reset+0x16>
+80002b12:	d3 03       	ssrf	0x10
+  usart->idr = 0xFFFFFFFF;
+80002b14:	3f f8       	mov	r8,-1
+80002b16:	99 38       	st.w	r12[0xc],r8
+  usart->csr;
+80002b18:	78 58       	ld.w	r8,r12[0x14]
+  if (global_interrupt_enabled) cpu_irq_enable();
+80002b1a:	d5 03       	csrf	0x10
+80002b1c:	c0 48       	rjmp	80002b24 <usart_reset+0x1c>
+  bool global_interrupt_enabled = cpu_irq_is_enabled();
+
+  // Disable all USART interrupts.
+  // Interrupts needed should be set explicitly on every reset.
+  if (global_interrupt_enabled) cpu_irq_disable();
+  usart->idr = 0xFFFFFFFF;
+80002b1e:	3f f8       	mov	r8,-1
+80002b20:	99 38       	st.w	r12[0xc],r8
+  usart->csr;
+80002b22:	78 58       	ld.w	r8,r12[0x14]
+  if (global_interrupt_enabled) cpu_irq_enable();
+
+  // Reset mode and other registers that could cause unpredictable behavior after reset.
+  usart->mr = 0;
+80002b24:	30 08       	mov	r8,0
+80002b26:	99 18       	st.w	r12[0x4],r8
+  usart->rtor = 0;
+80002b28:	99 98       	st.w	r12[0x24],r8
+  usart->ttgr = 0;
+80002b2a:	99 a8       	st.w	r12[0x28],r8
+
+  // Shutdown TX and RX (will be re-enabled when setup has successfully completed),
+  // reset status bits and turn off DTR and RTS.
+  usart->cr = AVR32_USART_CR_RSTRX_MASK   |
+80002b2c:	ea 68 61 0c 	mov	r8,680204
+80002b30:	99 08       	st.w	r12[0x0],r8
+#ifndef AVR32_USART_440_H_INCLUDED
+// Note: Modem Signal Management DTR-DSR-DCD-RI are not included in USART rev.440.
+              AVR32_USART_CR_DTRDIS_MASK  |
+#endif
+              AVR32_USART_CR_RTSDIS_MASK;
+}
+80002b32:	5e fc       	retal	r12
+
+80002b34 <usart_init_rs232>:
+
+
+int usart_init_rs232(volatile avr32_usart_t *usart, const usart_options_t *opt, long pba_hz)
+{
+80002b34:	eb cd 40 e0 	pushm	r5-r7,lr
+80002b38:	18 96       	mov	r6,r12
+80002b3a:	16 97       	mov	r7,r11
+80002b3c:	14 95       	mov	r5,r10
+  // Reset the USART and shutdown TX and RX.
+  usart_reset(usart);
+80002b3e:	f0 1f 00 2f 	mcall	80002bf8 <usart_init_rs232+0xc4>
+
+  // Check input values.
+  if (!opt || // Null pointer.
+80002b42:	58 07       	cp.w	r7,0
+80002b44:	c5 80       	breq	80002bf4 <usart_init_rs232+0xc0>
+      opt->charlength < 5 || opt->charlength > 9 ||
+80002b46:	0f c8       	ld.ub	r8,r7[0x4]
+{
+  // Reset the USART and shutdown TX and RX.
+  usart_reset(usart);
+
+  // Check input values.
+  if (!opt || // Null pointer.
+80002b48:	30 49       	mov	r9,4
+80002b4a:	f2 08 18 00 	cp.b	r8,r9
+80002b4e:	e0 88 00 53 	brls	80002bf4 <usart_init_rs232+0xc0>
+80002b52:	30 99       	mov	r9,9
+80002b54:	f2 08 18 00 	cp.b	r8,r9
+80002b58:	e0 8b 00 4e 	brhi	80002bf4 <usart_init_rs232+0xc0>
+      opt->charlength < 5 || opt->charlength > 9 ||
+      opt->paritytype > 7 ||
+80002b5c:	0f d9       	ld.ub	r9,r7[0x5]
+80002b5e:	30 78       	mov	r8,7
+80002b60:	f0 09 18 00 	cp.b	r9,r8
+80002b64:	e0 8b 00 48 	brhi	80002bf4 <usart_init_rs232+0xc0>
+      opt->stopbits > 2 + 255 ||
+80002b68:	8e 39       	ld.sh	r9,r7[0x6]
+80002b6a:	e0 68 01 01 	mov	r8,257
+80002b6e:	f0 09 19 00 	cp.h	r9,r8
+80002b72:	e0 8b 00 41 	brhi	80002bf4 <usart_init_rs232+0xc0>
+      opt->channelmode > 3 ||
+80002b76:	ef 39 00 08 	ld.ub	r9,r7[8]
+80002b7a:	30 38       	mov	r8,3
+80002b7c:	f0 09 18 00 	cp.b	r9,r8
+80002b80:	e0 8b 00 3a 	brhi	80002bf4 <usart_init_rs232+0xc0>
+      usart_set_async_baudrate(usart, opt->baudrate, pba_hz) == USART_INVALID_INPUT)
+80002b84:	0a 9a       	mov	r10,r5
+80002b86:	6e 0b       	ld.w	r11,r7[0x0]
+80002b88:	0c 9c       	mov	r12,r6
+80002b8a:	f0 1f 00 1d 	mcall	80002bfc <usart_init_rs232+0xc8>
+{
+  // Reset the USART and shutdown TX and RX.
+  usart_reset(usart);
+
+  // Check input values.
+  if (!opt || // Null pointer.
+80002b8e:	58 1c       	cp.w	r12,1
+80002b90:	c3 20       	breq	80002bf4 <usart_init_rs232+0xc0>
+      opt->stopbits > 2 + 255 ||
+      opt->channelmode > 3 ||
+      usart_set_async_baudrate(usart, opt->baudrate, pba_hz) == USART_INVALID_INPUT)
+    return USART_INVALID_INPUT;
+
+  if (opt->charlength == 9)
+80002b92:	0f c8       	ld.ub	r8,r7[0x4]
+80002b94:	30 99       	mov	r9,9
+80002b96:	f2 08 18 00 	cp.b	r8,r9
+80002b9a:	c0 51       	brne	80002ba4 <usart_init_rs232+0x70>
+  {
+    // Character length set to 9 bits. MODE9 dominates CHRL.
+    usart->mr |= AVR32_USART_MR_MODE9_MASK;
+80002b9c:	6c 18       	ld.w	r8,r6[0x4]
+80002b9e:	b1 b8       	sbr	r8,0x11
+80002ba0:	8d 18       	st.w	r6[0x4],r8
+80002ba2:	c0 68       	rjmp	80002bae <usart_init_rs232+0x7a>
+  }
+  else
+  {
+    // CHRL gives the character length (- 5) when MODE9 = 0.
+    usart->mr |= (opt->charlength - 5) << AVR32_USART_MR_CHRL_OFFSET;
+80002ba4:	6c 19       	ld.w	r9,r6[0x4]
+80002ba6:	20 58       	sub	r8,5
+80002ba8:	f3 e8 10 68 	or	r8,r9,r8<<0x6
+80002bac:	8d 18       	st.w	r6[0x4],r8
+  }
+
+  usart->mr |= opt->paritytype << AVR32_USART_MR_PAR_OFFSET |
+80002bae:	6c 19       	ld.w	r9,r6[0x4]
+80002bb0:	ef 3a 00 08 	ld.ub	r10,r7[8]
+80002bb4:	0f d8       	ld.ub	r8,r7[0x5]
+80002bb6:	a9 78       	lsl	r8,0x9
+80002bb8:	f1 ea 10 e8 	or	r8,r8,r10<<0xe
+80002bbc:	12 48       	or	r8,r9
+80002bbe:	8d 18       	st.w	r6[0x4],r8
+               opt->channelmode << AVR32_USART_MR_CHMODE_OFFSET;
+
+  if (opt->stopbits > USART_2_STOPBITS)
+80002bc0:	8e 38       	ld.sh	r8,r7[0x6]
+80002bc2:	30 29       	mov	r9,2
+80002bc4:	f2 08 19 00 	cp.h	r8,r9
+80002bc8:	e0 88 00 09 	brls	80002bda <usart_init_rs232+0xa6>
+  {
+    // Set two stop bits
+    usart->mr |= AVR32_USART_MR_NBSTOP_2 << AVR32_USART_MR_NBSTOP_OFFSET;
+80002bcc:	6c 18       	ld.w	r8,r6[0x4]
+80002bce:	ad b8       	sbr	r8,0xd
+80002bd0:	8d 18       	st.w	r6[0x4],r8
+    // and a timeguard period gives the rest.
+    usart->ttgr = opt->stopbits - USART_2_STOPBITS;
+80002bd2:	8e b8       	ld.uh	r8,r7[0x6]
+80002bd4:	20 28       	sub	r8,2
+80002bd6:	8d a8       	st.w	r6[0x28],r8
+80002bd8:	c0 68       	rjmp	80002be4 <usart_init_rs232+0xb0>
+  }
+  else
+    // Insert 1, 1.5 or 2 stop bits.
+    usart->mr |= opt->stopbits << AVR32_USART_MR_NBSTOP_OFFSET;
+80002bda:	6c 19       	ld.w	r9,r6[0x4]
+80002bdc:	5c 78       	castu.h	r8
+80002bde:	f3 e8 10 c8 	or	r8,r9,r8<<0xc
+80002be2:	8d 18       	st.w	r6[0x4],r8
+
+  // Set normal mode.
+  usart->mr = (usart->mr & ~AVR32_USART_MR_MODE_MASK) |
+80002be4:	6c 18       	ld.w	r8,r6[0x4]
+80002be6:	e0 18 ff f0 	andl	r8,0xfff0
+80002bea:	8d 18       	st.w	r6[0x4],r8
+              AVR32_USART_MR_MODE_NORMAL << AVR32_USART_MR_MODE_OFFSET;
+
+  // Setup complete; enable communication.
+  // Enable input and output.
+  usart->cr = AVR32_USART_CR_RXEN_MASK |
+80002bec:	35 08       	mov	r8,80
+80002bee:	8d 08       	st.w	r6[0x0],r8
+80002bf0:	e3 cf 80 e0 	ldm	sp++,r5-r7,pc,r12=0
+              AVR32_USART_CR_TXEN_MASK;
+
+  return USART_SUCCESS;
+80002bf4:	e3 cf 90 e0 	ldm	sp++,r5-r7,pc,r12=1
+80002bf8:	80 00       	ld.sh	r0,r0[0x0]
+80002bfa:	2b 08       	sub	r8,-80
+80002bfc:	80 00       	ld.sh	r0,r0[0x0]
+80002bfe:	2a 48       	sub	r8,-92
+
+80002c00 <print>:
+  print_hex(DBG_USART, n);
+}
+
+
+void print(volatile avr32_usart_t *usart, const char *str)
+{
+80002c00:	d4 01       	pushm	lr
+  // Invoke the USART driver to transmit the input string with the given USART.
+  usart_write_line(usart, str);
+80002c02:	f0 1f 00 02 	mcall	80002c08 <print+0x8>
+}
+80002c06:	d8 02       	popm	pc
+80002c08:	80 00       	ld.sh	r0,r0[0x0]
+80002c0a:	2a e4       	sub	r4,-82
+
+80002c0c <print_char_hex>:
+  print(usart, tmp + i);
+}
+
+
+void print_char_hex(volatile avr32_usart_t *usart, unsigned char n)
+{
+80002c0c:	d4 01       	pushm	lr
+80002c0e:	20 1d       	sub	sp,4
+  char tmp[3];
+  int i;
+
+  // Convert the given number to an ASCII hexadecimal representation.
+  tmp[2] = '\0';
+80002c10:	30 08       	mov	r8,0
+80002c12:	ba a8       	st.b	sp[0x2],r8
+  for (i = 1; i >= 0; i--)
+  {
+    tmp[i] = HEX_DIGITS[n & 0xF];
+80002c14:	48 88       	lddpc	r8,80002c34 <print_char_hex+0x28>
+80002c16:	f3 db c0 04 	bfextu	r9,r11,0x0,0x4
+80002c1a:	f0 09 07 09 	ld.ub	r9,r8[r9]
+80002c1e:	ba 99       	st.b	sp[0x1],r9
+80002c20:	f7 db c0 84 	bfextu	r11,r11,0x4,0x4
+80002c24:	f0 0b 07 08 	ld.ub	r8,r8[r11]
+80002c28:	ba 88       	st.b	sp[0x0],r8
+    n >>= 4;
+  }
+
+  // Transmit the resulting string with the given USART.
+  print(usart, tmp);
+80002c2a:	1a 9b       	mov	r11,sp
+80002c2c:	f0 1f 00 03 	mcall	80002c38 <print_char_hex+0x2c>
+}
+80002c30:	2f fd       	sub	sp,-4
+80002c32:	d8 02       	popm	pc
+80002c34:	80 00       	ld.sh	r0,r0[0x0]
+80002c36:	38 10       	mov	r0,-127
+80002c38:	80 00       	ld.sh	r0,r0[0x0]
+80002c3a:	2c 00       	sub	r0,-64
+
+80002c3c <print_dbg_char_hex>:
+  print_ulong(DBG_USART, n);
+}
+
+
+void print_dbg_char_hex(unsigned char n)
+{
+80002c3c:	d4 01       	pushm	lr
+  // Redirection to the debug USART.
+  print_char_hex(DBG_USART, n);
+80002c3e:	18 9b       	mov	r11,r12
+80002c40:	fe 7c 14 00 	mov	r12,-60416
+80002c44:	f0 1f 00 02 	mcall	80002c4c <print_dbg_char_hex+0x10>
+}
+80002c48:	d8 02       	popm	pc
+80002c4a:	00 00       	add	r0,r0
+80002c4c:	80 00       	ld.sh	r0,r0[0x0]
+80002c4e:	2c 0c       	sub	r12,-64
+
+80002c50 <print_ulong>:
+  usart_putchar(usart, c);
+}
+
+
+void print_ulong(volatile avr32_usart_t *usart, unsigned long n)
+{
+80002c50:	eb cd 40 e0 	pushm	r5-r7,lr
+80002c54:	20 3d       	sub	sp,12
+  char tmp[11];
+  int i = sizeof(tmp) - 1;
+
+  // Convert the given number to an ASCII decimal representation.
+  tmp[i] = '\0';
+80002c56:	30 08       	mov	r8,0
+80002c58:	fb 68 00 0a 	st.b	sp[10],r8
+80002c5c:	30 a9       	mov	r9,10
+  do
+  {
+    tmp[--i] = '0' + n % 10;
+80002c5e:	1a 95       	mov	r5,sp
+80002c60:	e0 6e cc cd 	mov	lr,52429
+80002c64:	ea 1e cc cc 	orh	lr,0xcccc
+80002c68:	20 19       	sub	r9,1
+80002c6a:	f6 0e 06 46 	mulu.d	r6,r11,lr
+80002c6e:	0e 98       	mov	r8,r7
+80002c70:	a3 98       	lsr	r8,0x3
+80002c72:	f0 08 00 2a 	add	r10,r8,r8<<0x2
+80002c76:	f6 0a 01 1b 	sub	r11,r11,r10<<0x1
+80002c7a:	2d 0b       	sub	r11,-48
+80002c7c:	ea 09 0b 0b 	st.b	r5[r9],r11
+    n /= 10;
+80002c80:	10 9b       	mov	r11,r8
+  } while (n);
+80002c82:	58 08       	cp.w	r8,0
+80002c84:	cf 21       	brne	80002c68 <print_ulong+0x18>
+
+  // Transmit the resulting string with the given USART.
+  print(usart, tmp + i);
+80002c86:	1a 9b       	mov	r11,sp
+80002c88:	12 0b       	add	r11,r9
+80002c8a:	f0 1f 00 03 	mcall	80002c94 <print_ulong+0x44>
+}
+80002c8e:	2f dd       	sub	sp,-12
+80002c90:	e3 cd 80 e0 	ldm	sp++,r5-r7,pc
+80002c94:	80 00       	ld.sh	r0,r0[0x0]
+80002c96:	2c 00       	sub	r0,-64
+
+80002c98 <print_dbg_ulong>:
+  print_char(DBG_USART, c);
+}
+
+
+void print_dbg_ulong(unsigned long n)
+{
+80002c98:	d4 01       	pushm	lr
+  // Redirection to the debug USART.
+  print_ulong(DBG_USART, n);
+80002c9a:	18 9b       	mov	r11,r12
+80002c9c:	fe 7c 14 00 	mov	r12,-60416
+80002ca0:	f0 1f 00 02 	mcall	80002ca8 <print_dbg_ulong+0x10>
+}
+80002ca4:	d8 02       	popm	pc
+80002ca6:	00 00       	add	r0,r0
+80002ca8:	80 00       	ld.sh	r0,r0[0x0]
+80002caa:	2c 50       	sub	r0,-59
+
+80002cac <print_dbg>:
+  usart_init_rs232(DBG_USART, &dbg_usart_options, pba_hz);
+}
+
+
+void print_dbg(const char *str)
+{
+80002cac:	d4 01       	pushm	lr
+  // Redirection to the debug USART.
+  print(DBG_USART, str);
+80002cae:	18 9b       	mov	r11,r12
+80002cb0:	fe 7c 14 00 	mov	r12,-60416
+80002cb4:	f0 1f 00 02 	mcall	80002cbc <print_dbg+0x10>
+}
+80002cb8:	d8 02       	popm	pc
+80002cba:	00 00       	add	r0,r0
+80002cbc:	80 00       	ld.sh	r0,r0[0x0]
+80002cbe:	2c 00       	sub	r0,-64
+
+80002cc0 <init_dbg_rs232_ex>:
+  init_dbg_rs232_ex(DBG_USART_BAUDRATE, pba_hz);
+}
+
+
+void init_dbg_rs232_ex(unsigned long baudrate, long pba_hz)
+{
+80002cc0:	eb cd 40 80 	pushm	r7,lr
+80002cc4:	20 3d       	sub	sp,12
+80002cc6:	16 97       	mov	r7,r11
+    .baudrate = baudrate,
+    .charlength = 8,
+    .paritytype = USART_NO_PARITY,
+    .stopbits = USART_1_STOPBIT,
+    .channelmode = USART_NORMAL_CHMODE
+  };
+80002cc8:	50 0c       	stdsp	sp[0x0],r12
+80002cca:	30 88       	mov	r8,8
+80002ccc:	ba c8       	st.b	sp[0x4],r8
+80002cce:	30 48       	mov	r8,4
+80002cd0:	ba d8       	st.b	sp[0x5],r8
+80002cd2:	30 08       	mov	r8,0
+80002cd4:	ba 38       	st.h	sp[0x6],r8
+80002cd6:	fb 68 00 08 	st.b	sp[8],r8
+
+  // Setup GPIO for debug USART.
+  gpio_enable_module(DBG_USART_GPIO_MAP,
+80002cda:	30 2b       	mov	r11,2
+80002cdc:	48 6c       	lddpc	r12,80002cf4 <init_dbg_rs232_ex+0x34>
+80002cde:	f0 1f 00 07 	mcall	80002cf8 <init_dbg_rs232_ex+0x38>
+                     sizeof(DBG_USART_GPIO_MAP) / sizeof(DBG_USART_GPIO_MAP[0]));
+
+  // Initialize it in RS232 mode.
+  usart_init_rs232(DBG_USART, &dbg_usart_options, pba_hz);
+80002ce2:	0e 9a       	mov	r10,r7
+80002ce4:	1a 9b       	mov	r11,sp
+80002ce6:	fe 7c 14 00 	mov	r12,-60416
+80002cea:	f0 1f 00 05 	mcall	80002cfc <init_dbg_rs232_ex+0x3c>
+}
+80002cee:	2f dd       	sub	sp,-12
+80002cf0:	e3 cd 80 80 	ldm	sp++,r7,pc
+80002cf4:	80 00       	ld.sh	r0,r0[0x0]
+80002cf6:	38 00       	mov	r0,-128
+80002cf8:	80 00       	ld.sh	r0,r0[0x0]
+80002cfa:	30 84       	mov	r4,8
+80002cfc:	80 00       	ld.sh	r0,r0[0x0]
+80002cfe:	2b 34       	sub	r4,-77
+
+80002d00 <init_dbg_rs232>:
+//! ASCII representation of hexadecimal digits.
+static const char HEX_DIGITS[16] = "0123456789ABCDEF";
+
+
+void init_dbg_rs232(long pba_hz)
+{
+80002d00:	d4 01       	pushm	lr
+  init_dbg_rs232_ex(DBG_USART_BAUDRATE, pba_hz);
+80002d02:	18 9b       	mov	r11,r12
+80002d04:	e0 6c e1 00 	mov	r12,57600
+80002d08:	f0 1f 00 02 	mcall	80002d10 <init_dbg_rs232+0x10>
+}
+80002d0c:	d8 02       	popm	pc
+80002d0e:	00 00       	add	r0,r0
+80002d10:	80 00       	ld.sh	r0,r0[0x0]
+80002d12:	2c c0       	sub	r0,-52
+
+80002d14 <pdca_get_handler>:
+{
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel
+		= &AVR32_PDCA.channel[pdca_ch_number];
+
+	if (pdca_ch_number >= AVR32_PDCA_CHANNEL_LENGTH) {
+80002d14:	30 e8       	mov	r8,14
+80002d16:	f0 0c 18 00 	cp.b	r12,r8
+80002d1a:	e0 88 00 03 	brls	80002d20 <pdca_get_handler+0xc>
+80002d1e:	5e fe       	retal	-1
+
+volatile avr32_pdca_channel_t *pdca_get_handler(uint8_t pdca_ch_number)
+{
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel
+		= &AVR32_PDCA.channel[pdca_ch_number];
+80002d20:	a7 6c       	lsl	r12,0x6
+80002d22:	e0 3c 00 00 	sub	r12,65536
+	if (pdca_ch_number >= AVR32_PDCA_CHANNEL_LENGTH) {
+		return (volatile avr32_pdca_channel_t *)PDCA_INVALID_ARGUMENT;
+	}
+
+	return pdca_channel;
+}
+80002d26:	5e fc       	retal	r12
+
+80002d28 <pdca_disable>:
+
+	return (pdca_channel->sr & AVR32_PDCA_TEN_MASK) != 0;
+}
+
+void pdca_disable(uint8_t pdca_ch_number)
+{
+80002d28:	d4 01       	pushm	lr
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(
+80002d2a:	f0 1f 00 03 	mcall	80002d34 <pdca_disable+0xc>
+			pdca_ch_number);
+
+	/* Disable transfer */
+	pdca_channel->cr = AVR32_PDCA_TDIS_MASK;
+80002d2e:	30 28       	mov	r8,2
+80002d30:	99 58       	st.w	r12[0x14],r8
+}
+80002d32:	d8 02       	popm	pc
+80002d34:	80 00       	ld.sh	r0,r0[0x0]
+80002d36:	2d 14       	sub	r4,-47
+
+80002d38 <pdca_enable>:
+
+void pdca_enable(uint8_t pdca_ch_number)
+{
+80002d38:	d4 01       	pushm	lr
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(
+80002d3a:	f0 1f 00 03 	mcall	80002d44 <pdca_enable+0xc>
+			pdca_ch_number);
+
+	/* Enable transfer */
+	pdca_channel->cr = AVR32_PDCA_TEN_MASK;
+80002d3e:	30 18       	mov	r8,1
+80002d40:	99 58       	st.w	r12[0x14],r8
+}
+80002d42:	d8 02       	popm	pc
+80002d44:	80 00       	ld.sh	r0,r0[0x0]
+80002d46:	2d 14       	sub	r4,-47
+
+80002d48 <pdca_enable_interrupt_transfer_complete>:
+
+	cpu_irq_restore(flags);
+}
+
+void pdca_enable_interrupt_transfer_complete(uint8_t pdca_ch_number)
+{
+80002d48:	d4 01       	pushm	lr
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(
+80002d4a:	f0 1f 00 03 	mcall	80002d54 <pdca_enable_interrupt_transfer_complete+0xc>
+			pdca_ch_number);
+
+	pdca_channel->ier = AVR32_PDCA_TRC_MASK;
+80002d4e:	30 28       	mov	r8,2
+80002d50:	99 88       	st.w	r12[0x20],r8
+}
+80002d52:	d8 02       	popm	pc
+80002d54:	80 00       	ld.sh	r0,r0[0x0]
+80002d56:	2d 14       	sub	r4,-47
+
+80002d58 <pdca_disable_interrupt_reload_counter_zero>:
+
+void pdca_disable_interrupt_reload_counter_zero(uint8_t pdca_ch_number)
+{
+80002d58:	d4 01       	pushm	lr
+80002d5a:	20 1d       	sub	sp,4
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(
+80002d5c:	f0 1f 00 08 	mcall	80002d7c <pdca_disable_interrupt_reload_counter_zero+0x24>
+
+static inline irqflags_t cpu_irq_save(void)
+{
+	volatile irqflags_t flags;
+
+	flags = sysreg_read(AVR32_SR);
+80002d60:	e1 b8 00 00 	mfsr	r8,0x0
+80002d64:	50 08       	stdsp	sp[0x0],r8
+	cpu_irq_disable();
+80002d66:	d3 03       	ssrf	0x10
+
+	return flags;
+80002d68:	40 08       	lddsp	r8,sp[0x0]
+			pdca_ch_number);
+
+	irqflags_t flags = cpu_irq_save();
+
+	pdca_channel->idr = AVR32_PDCA_RCZ_MASK;
+80002d6a:	30 19       	mov	r9,1
+80002d6c:	99 99       	st.w	r12[0x24],r9
+	pdca_channel->isr;
+80002d6e:	78 b9       	ld.w	r9,r12[0x2c]
+static inline void cpu_irq_restore(irqflags_t flags)
+{
+	barrier();
+
+   /* Restore the global IRQ mask status flag if it was previously set */
+   if ( cpu_irq_is_enabled_flags(flags) ) {
+80002d70:	e6 18 00 01 	andh	r8,0x1,COH
+80002d74:	c0 21       	brne	80002d78 <pdca_disable_interrupt_reload_counter_zero+0x20>
+      cpu_irq_enable();
+80002d76:	d5 03       	csrf	0x10
+
+	cpu_irq_restore(flags);
+}
+80002d78:	2f fd       	sub	sp,-4
+80002d7a:	d8 02       	popm	pc
+80002d7c:	80 00       	ld.sh	r0,r0[0x0]
+80002d7e:	2d 14       	sub	r4,-47
+
+80002d80 <pdca_disable_interrupt_transfer_complete>:
+
+	pdca_channel->ier = AVR32_PDCA_TERR_MASK;
+}
+
+void pdca_disable_interrupt_transfer_complete(uint8_t pdca_ch_number)
+{
+80002d80:	d4 01       	pushm	lr
+80002d82:	20 1d       	sub	sp,4
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(
+80002d84:	f0 1f 00 08 	mcall	80002da4 <pdca_disable_interrupt_transfer_complete+0x24>
+
+static inline irqflags_t cpu_irq_save(void)
+{
+	volatile irqflags_t flags;
+
+	flags = sysreg_read(AVR32_SR);
+80002d88:	e1 b8 00 00 	mfsr	r8,0x0
+80002d8c:	50 08       	stdsp	sp[0x0],r8
+	cpu_irq_disable();
+80002d8e:	d3 03       	ssrf	0x10
+
+	return flags;
+80002d90:	40 08       	lddsp	r8,sp[0x0]
+			pdca_ch_number);
+
+	irqflags_t flags = cpu_irq_save();
+
+	pdca_channel->idr = AVR32_PDCA_TRC_MASK;
+80002d92:	30 29       	mov	r9,2
+80002d94:	99 99       	st.w	r12[0x24],r9
+	pdca_channel->isr;
+80002d96:	78 b9       	ld.w	r9,r12[0x2c]
+static inline void cpu_irq_restore(irqflags_t flags)
+{
+	barrier();
+
+   /* Restore the global IRQ mask status flag if it was previously set */
+   if ( cpu_irq_is_enabled_flags(flags) ) {
+80002d98:	e6 18 00 01 	andh	r8,0x1,COH
+80002d9c:	c0 21       	brne	80002da0 <pdca_disable_interrupt_transfer_complete+0x20>
+      cpu_irq_enable();
+80002d9e:	d5 03       	csrf	0x10
+
+	cpu_irq_restore(flags);
+}
+80002da0:	2f fd       	sub	sp,-4
+80002da2:	d8 02       	popm	pc
+80002da4:	80 00       	ld.sh	r0,r0[0x0]
+80002da6:	2d 14       	sub	r4,-47
+
+80002da8 <pdca_load_channel>:
+	return pdca_channel->tcr;
+}
+
+void pdca_load_channel(uint8_t pdca_ch_number, volatile void *addr,
+		uint32_t size)
+{
+80002da8:	eb cd 40 c0 	pushm	r6-r7,lr
+80002dac:	20 1d       	sub	sp,4
+80002dae:	16 96       	mov	r6,r11
+80002db0:	14 97       	mov	r7,r10
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(
+80002db2:	f0 1f 00 0b 	mcall	80002ddc <pdca_load_channel+0x34>
+
+static inline irqflags_t cpu_irq_save(void)
+{
+	volatile irqflags_t flags;
+
+	flags = sysreg_read(AVR32_SR);
+80002db6:	e1 b8 00 00 	mfsr	r8,0x0
+80002dba:	50 08       	stdsp	sp[0x0],r8
+	cpu_irq_disable();
+80002dbc:	d3 03       	ssrf	0x10
+
+	return flags;
+80002dbe:	40 08       	lddsp	r8,sp[0x0]
+			pdca_ch_number);
+
+	irqflags_t flags = cpu_irq_save();
+
+	pdca_channel->mar = (uint32_t)addr;
+80002dc0:	99 06       	st.w	r12[0x0],r6
+	pdca_channel->tcr = size;
+80002dc2:	99 27       	st.w	r12[0x8],r7
+	pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
+80002dc4:	e0 69 01 00 	mov	r9,256
+80002dc8:	99 59       	st.w	r12[0x14],r9
+	pdca_channel->isr;
+80002dca:	78 b9       	ld.w	r9,r12[0x2c]
+static inline void cpu_irq_restore(irqflags_t flags)
+{
+	barrier();
+
+   /* Restore the global IRQ mask status flag if it was previously set */
+   if ( cpu_irq_is_enabled_flags(flags) ) {
+80002dcc:	e6 18 00 01 	andh	r8,0x1,COH
+80002dd0:	c0 21       	brne	80002dd4 <pdca_load_channel+0x2c>
+      cpu_irq_enable();
+80002dd2:	d5 03       	csrf	0x10
+
+	cpu_irq_restore(flags);
+}
+80002dd4:	2f fd       	sub	sp,-4
+80002dd6:	e3 cd 80 c0 	ldm	sp++,r6-r7,pc
+80002dda:	00 00       	add	r0,r0
+80002ddc:	80 00       	ld.sh	r0,r0[0x0]
+80002dde:	2d 14       	sub	r4,-47
+
+80002de0 <pdca_init_channel>:
+	return pdca_channel;
+}
+
+uint32_t pdca_init_channel(uint8_t pdca_ch_number,
+		const pdca_channel_options_t *opt)
+{
+80002de0:	eb cd 40 e0 	pushm	r5-r7,lr
+80002de4:	20 1d       	sub	sp,4
+80002de6:	18 95       	mov	r5,r12
+80002de8:	16 96       	mov	r6,r11
+	/* get the correct channel pointer */
+	volatile avr32_pdca_channel_t *pdca_channel = pdca_get_handler(
+80002dea:	f0 1f 00 13 	mcall	80002e34 <pdca_init_channel+0x54>
+80002dee:	18 97       	mov	r7,r12
+			pdca_ch_number);
+
+	pdca_disable_interrupt_transfer_complete(pdca_ch_number); 
+80002df0:	0a 9c       	mov	r12,r5
+80002df2:	f0 1f 00 12 	mcall	80002e38 <pdca_init_channel+0x58>
+	pdca_disable_interrupt_reload_counter_zero(pdca_ch_number);
+80002df6:	0a 9c       	mov	r12,r5
+80002df8:	f0 1f 00 11 	mcall	80002e3c <pdca_init_channel+0x5c>
+
+static inline irqflags_t cpu_irq_save(void)
+{
+	volatile irqflags_t flags;
+
+	flags = sysreg_read(AVR32_SR);
+80002dfc:	e1 b8 00 00 	mfsr	r8,0x0
+80002e00:	50 08       	stdsp	sp[0x0],r8
+	cpu_irq_disable();
+80002e02:	d3 03       	ssrf	0x10
+
+	return flags;
+80002e04:	40 08       	lddsp	r8,sp[0x0]
+	
+	irqflags_t flags = cpu_irq_save();
+
+	pdca_channel->mar = (uint32_t)opt->addr;
+80002e06:	6c 09       	ld.w	r9,r6[0x0]
+80002e08:	8f 09       	st.w	r7[0x0],r9
+	pdca_channel->tcr = opt->size;
+80002e0a:	6c 19       	ld.w	r9,r6[0x4]
+80002e0c:	8f 29       	st.w	r7[0x8],r9
+	pdca_channel->psr = opt->pid;
+80002e0e:	6c 49       	ld.w	r9,r6[0x10]
+80002e10:	8f 19       	st.w	r7[0x4],r9
+	pdca_channel->marr = (uint32_t)opt->r_addr;
+80002e12:	6c 29       	ld.w	r9,r6[0x8]
+80002e14:	8f 39       	st.w	r7[0xc],r9
+	pdca_channel->tcrr = opt->r_size;
+80002e16:	6c 39       	ld.w	r9,r6[0xc]
+80002e18:	8f 49       	st.w	r7[0x10],r9
+	pdca_channel->mr =
+80002e1a:	6c 59       	ld.w	r9,r6[0x14]
+80002e1c:	8f 69       	st.w	r7[0x18],r9
+#if (AVR32_PDCA_H_VERSION >= 120)
+			opt->etrig << AVR32_PDCA_ETRIG_OFFSET |
+#endif
+			opt->transfer_size << AVR32_PDCA_SIZE_OFFSET;
+	pdca_channel->cr = AVR32_PDCA_ECLR_MASK;
+80002e1e:	e0 69 01 00 	mov	r9,256
+80002e22:	8f 59       	st.w	r7[0x14],r9
+	pdca_channel->isr;
+80002e24:	6e b9       	ld.w	r9,r7[0x2c]
+static inline void cpu_irq_restore(irqflags_t flags)
+{
+	barrier();
+
+   /* Restore the global IRQ mask status flag if it was previously set */
+   if ( cpu_irq_is_enabled_flags(flags) ) {
+80002e26:	e6 18 00 01 	andh	r8,0x1,COH
+80002e2a:	c0 21       	brne	80002e2e <pdca_init_channel+0x4e>
+      cpu_irq_enable();
+80002e2c:	d5 03       	csrf	0x10
+	
+	cpu_irq_restore(flags);
+
+	return PDCA_SUCCESS;
+}
+80002e2e:	2f fd       	sub	sp,-4
+80002e30:	e3 cf 80 e0 	ldm	sp++,r5-r7,pc,r12=0
+80002e34:	80 00       	ld.sh	r0,r0[0x0]
+80002e36:	2d 14       	sub	r4,-47
+80002e38:	80 00       	ld.sh	r0,r0[0x0]
+80002e3a:	2d 80       	sub	r0,-40
+80002e3c:	80 00       	ld.sh	r0,r0[0x0]
+80002e3e:	2d 58       	sub	r8,-43
+
+80002e40 <getBaudDiv>:
+xSemaphoreHandle xSPIMutex;
+#endif
+
+int16_t getBaudDiv(const uint32_t baudrate, uint32_t pb_hz)
+{
+	uint32_t baudDiv = div_ceil(pb_hz, baudrate);
+80002e40:	f8 c8 00 01 	sub	r8,r12,1
+80002e44:	f0 0b 00 0b 	add	r11,r8,r11
+80002e48:	f6 0c 0d 0a 	divu	r10,r11,r12
+80002e4c:	14 9c       	mov	r12,r10
+
+	if (baudDiv <= 0 || baudDiv > 255) {
+80002e4e:	f4 c8 00 01 	sub	r8,r10,1
+80002e52:	e0 48 00 fe 	cp.w	r8,254
+80002e56:	e0 88 00 03 	brls	80002e5c <getBaudDiv+0x1c>
+80002e5a:	5e fe       	retal	-1
+		return -1;
+	}
+
+	return baudDiv;
+80002e5c:	5c 8c       	casts.h	r12
+}
+80002e5e:	5e fc       	retal	r12
+
+80002e60 <spi_initMaster>:
+spi_status_t spi_initMaster(volatile avr32_spi_t *spi,
+		const spi_options_t *options)
+{
+	u_avr32_spi_mr_t u_avr32_spi_mr;
+
+	if (options->modfdis > 1) {
+80002e60:	f7 39 00 0d 	ld.ub	r9,r11[13]
+80002e64:	30 18       	mov	r8,1
+80002e66:	f0 09 18 00 	cp.b	r9,r8
+80002e6a:	e0 88 00 04 	brls	80002e72 <spi_initMaster+0x12>
+80002e6e:	30 2c       	mov	r12,2
+80002e70:	5e fc       	retal	r12
+		return SPI_ERROR_ARGUMENT;
+	}
+
+	/* Reset. */
+	spi->cr = AVR32_SPI_CR_SWRST_MASK;
+80002e72:	e0 68 00 80 	mov	r8,128
+80002e76:	99 08       	st.w	r12[0x0],r8
+
+	/* Master Mode. */
+	u_avr32_spi_mr.mr = spi->mr;
+80002e78:	78 18       	ld.w	r8,r12[0x4]
+	u_avr32_spi_mr.MR.mstr = 1;
+80002e7a:	30 19       	mov	r9,1
+80002e7c:	f1 d9 d0 01 	bfins	r8,r9,0x0,0x1
+	u_avr32_spi_mr.MR.modfdis = options->modfdis;
+80002e80:	f7 39 00 0d 	ld.ub	r9,r11[13]
+80002e84:	f1 d9 d0 81 	bfins	r8,r9,0x4,0x1
+	u_avr32_spi_mr.MR.llb = 0;
+80002e88:	30 09       	mov	r9,0
+80002e8a:	f1 d9 d0 e1 	bfins	r8,r9,0x7,0x1
+	u_avr32_spi_mr.MR.pcs = (1 << AVR32_SPI_MR_PCS_SIZE) - 1;
+80002e8e:	30 fa       	mov	r10,15
+80002e90:	f1 da d2 04 	bfins	r8,r10,0x10,0x4
+	spi->mr = u_avr32_spi_mr.mr;
+80002e94:	99 18       	st.w	r12[0x4],r8
+80002e96:	5e f9       	retal	r9
+
+80002e98 <spi_selectionMode>:
+
+spi_status_t spi_selectionMode(volatile avr32_spi_t *spi,
+		uint8_t variable_ps,
+		uint8_t pcs_decode,
+		uint8_t delay)
+{
+80002e98:	d4 01       	pushm	lr
+	u_avr32_spi_mr_t u_avr32_spi_mr;
+
+	if (variable_ps > 1 ||
+80002e9a:	30 18       	mov	r8,1
+80002e9c:	f0 0b 18 00 	cp.b	r11,r8
+80002ea0:	5f be       	srhi	lr
+80002ea2:	f0 0a 18 00 	cp.b	r10,r8
+80002ea6:	5f b8       	srhi	r8
+80002ea8:	fd e8 10 08 	or	r8,lr,r8
+80002eac:	c0 30       	breq	80002eb2 <spi_selectionMode+0x1a>
+80002eae:	30 2c       	mov	r12,2
+80002eb0:	d8 02       	popm	pc
+			pcs_decode > 1) {
+		return SPI_ERROR_ARGUMENT;
+	}
+
+	u_avr32_spi_mr.mr = spi->mr;
+80002eb2:	78 18       	ld.w	r8,r12[0x4]
+	u_avr32_spi_mr.MR.ps = variable_ps;
+80002eb4:	f1 db d0 21 	bfins	r8,r11,0x1,0x1
+	u_avr32_spi_mr.MR.pcsdec = pcs_decode;
+80002eb8:	f1 da d0 41 	bfins	r8,r10,0x2,0x1
+	u_avr32_spi_mr.MR.dlybcs = delay;
+80002ebc:	f1 d9 d3 08 	bfins	r8,r9,0x18,0x8
+	spi->mr = u_avr32_spi_mr.mr;
+80002ec0:	99 18       	st.w	r12[0x4],r8
+80002ec2:	d8 0a       	popm	pc,r12=0
+
+80002ec4 <spi_selectChip>:
+	while (pdFALSE == xSemaphoreTake(xSPIMutex, 20)) {
+	}
+#endif
+
+	/* Assert all lines; no peripheral is selected. */
+	spi->mr |= AVR32_SPI_MR_PCS_MASK;
+80002ec4:	78 18       	ld.w	r8,r12[0x4]
+80002ec6:	ea 18 00 0f 	orh	r8,0xf
+80002eca:	99 18       	st.w	r12[0x4],r8
+
+	if (spi->mr & AVR32_SPI_MR_PCSDEC_MASK) {
+80002ecc:	78 18       	ld.w	r8,r12[0x4]
+80002ece:	e2 18 00 04 	andl	r8,0x4,COH
+80002ed2:	c0 f0       	breq	80002ef0 <spi_selectChip+0x2c>
+		/* The signal is decoded; allow up to 15 chips. */
+		if (chip > 14) {
+80002ed4:	30 e8       	mov	r8,14
+80002ed6:	f0 0b 18 00 	cp.b	r11,r8
+80002eda:	e0 8b 00 19 	brhi	80002f0c <spi_selectChip+0x48>
+			return SPI_ERROR_ARGUMENT;
+		}
+
+		spi->mr &= ~AVR32_SPI_MR_PCS_MASK |
+80002ede:	78 18       	ld.w	r8,r12[0x4]
+80002ee0:	b1 6b       	lsl	r11,0x10
+80002ee2:	ea 1b ff f0 	orh	r11,0xfff0
+80002ee6:	e8 1b ff ff 	orl	r11,0xffff
+80002eea:	10 6b       	and	r11,r8
+80002eec:	99 1b       	st.w	r12[0x4],r11
+80002eee:	5e fd       	retal	0
+				(chip << AVR32_SPI_MR_PCS_OFFSET);
+	} else {
+		if (chip > 3) {
+80002ef0:	30 38       	mov	r8,3
+80002ef2:	f0 0b 18 00 	cp.b	r11,r8
+80002ef6:	e0 8b 00 0b 	brhi	80002f0c <spi_selectChip+0x48>
+			return SPI_ERROR_ARGUMENT;
+		}
+
+		spi->mr &= ~(1 << (AVR32_SPI_MR_PCS_OFFSET + chip));
+80002efa:	78 18       	ld.w	r8,r12[0x4]
+80002efc:	2f 0b       	sub	r11,-16
+80002efe:	30 19       	mov	r9,1
+80002f00:	f2 0b 09 4b 	lsl	r11,r9,r11
+80002f04:	5c db       	com	r11
+80002f06:	10 6b       	and	r11,r8
+80002f08:	99 1b       	st.w	r12[0x4],r11
+80002f0a:	5e fd       	retal	0
+80002f0c:	30 2c       	mov	r12,2
+	}
+
+	return SPI_OK;
+}
+80002f0e:	5e fc       	retal	r12
+
+80002f10 <spi_unselectChip>:
+
+spi_status_t spi_unselectChip(volatile avr32_spi_t *spi, uint8_t chip)
+{
+80002f10:	e0 68 3a 98 	mov	r8,15000
+	uint32_t timeout = SPI_TIMEOUT;
+
+	while (!(spi->sr & AVR32_SPI_SR_TXEMPTY_MASK)) {
+80002f14:	c0 58       	rjmp	80002f1e <spi_unselectChip+0xe>
+		if (!timeout--) {
+80002f16:	58 08       	cp.w	r8,0
+80002f18:	c0 21       	brne	80002f1c <spi_unselectChip+0xc>
+80002f1a:	5e ff       	retal	1
+80002f1c:	20 18       	sub	r8,1
+
+spi_status_t spi_unselectChip(volatile avr32_spi_t *spi, uint8_t chip)
+{
+	uint32_t timeout = SPI_TIMEOUT;
+
+	while (!(spi->sr & AVR32_SPI_SR_TXEMPTY_MASK)) {
+80002f1e:	78 49       	ld.w	r9,r12[0x10]
+80002f20:	e2 19 02 00 	andl	r9,0x200,COH
+80002f24:	cf 90       	breq	80002f16 <spi_unselectChip+0x6>
+			return SPI_ERROR_TIMEOUT;
+		}
+	}
+
+	/* Assert all lines; no peripheral is selected. */
+	spi->mr |= AVR32_SPI_MR_PCS_MASK;
+80002f26:	78 18       	ld.w	r8,r12[0x4]
+80002f28:	ea 18 00 0f 	orh	r8,0xf
+80002f2c:	99 18       	st.w	r12[0x4],r8
+
+	/* Last transfer, so de-assert the current NPCS if CSAAT is set. */
+	spi->cr = AVR32_SPI_CR_LASTXFER_MASK;
+80002f2e:	fc 18 01 00 	movh	r8,0x100
+80002f32:	99 08       	st.w	r12[0x0],r8
+80002f34:	5e fd       	retal	0
+80002f36:	d7 03       	nop
+
+80002f38 <spi_setupChipReg>:
+}
+
+spi_status_t spi_setupChipReg(volatile avr32_spi_t *spi,
+		const spi_options_t *options,
+		uint32_t pb_hz)
+{
+80002f38:	eb cd 40 f8 	pushm	r3-r7,lr
+80002f3c:	18 95       	mov	r5,r12
+80002f3e:	16 97       	mov	r7,r11
+	u_avr32_spi_csr_t u_avr32_spi_csr;
+
+	if (options->spi_mode > 3 ||
+80002f40:	f7 36 00 0c 	ld.ub	r6,r11[12]
+80002f44:	30 38       	mov	r8,3
+80002f46:	f0 06 18 00 	cp.b	r6,r8
+80002f4a:	e0 8b 00 4d 	brhi	80002fe4 <spi_setupChipReg+0xac>
+			options->stay_act > 1 ||
+80002f4e:	f7 34 00 0b 	ld.ub	r4,r11[11]
+		const spi_options_t *options,
+		uint32_t pb_hz)
+{
+	u_avr32_spi_csr_t u_avr32_spi_csr;
+
+	if (options->spi_mode > 3 ||
+80002f52:	30 18       	mov	r8,1
+80002f54:	f0 04 18 00 	cp.b	r4,r8
+80002f58:	e0 8b 00 46 	brhi	80002fe4 <spi_setupChipReg+0xac>
+			options->stay_act > 1 ||
+			options->bits < 8 || options->bits > 16) {
+80002f5c:	f7 33 00 08 	ld.ub	r3,r11[8]
+		const spi_options_t *options,
+		uint32_t pb_hz)
+{
+	u_avr32_spi_csr_t u_avr32_spi_csr;
+
+	if (options->spi_mode > 3 ||
+80002f60:	30 78       	mov	r8,7
+80002f62:	f0 03 18 00 	cp.b	r3,r8
+80002f66:	e0 88 00 3f 	brls	80002fe4 <spi_setupChipReg+0xac>
+80002f6a:	31 08       	mov	r8,16
+80002f6c:	f0 03 18 00 	cp.b	r3,r8
+80002f70:	e0 8b 00 3a 	brhi	80002fe4 <spi_setupChipReg+0xac>
+			options->stay_act > 1 ||
+			options->bits < 8 || options->bits > 16) {
+		return SPI_ERROR_ARGUMENT;
+	}
+
+	int baudDiv = getBaudDiv(options->baudrate, pb_hz);
+80002f74:	14 9b       	mov	r11,r10
+80002f76:	6e 1c       	ld.w	r12,r7[0x4]
+80002f78:	f0 1f 00 1d 	mcall	80002fec <spi_setupChipReg+0xb4>
+
+	if (baudDiv < 0) {
+80002f7c:	c3 45       	brlt	80002fe4 <spi_setupChipReg+0xac>
+		return SPI_ERROR_ARGUMENT;
+	}
+
+	/* Will use CSR0 offsets; these are the same for CSR0 to CSR3. */
+	u_avr32_spi_csr.csr = 0;
+80002f7e:	30 08       	mov	r8,0
+	u_avr32_spi_csr.CSR.cpol   = options->spi_mode >> 1;
+80002f80:	ec 09 16 01 	lsr	r9,r6,0x1
+80002f84:	f1 d9 d0 01 	bfins	r8,r9,0x0,0x1
+	u_avr32_spi_csr.CSR.ncpha  = (options->spi_mode & 0x1) ^ 0x1;
+80002f88:	ec 16 00 01 	eorl	r6,0x1
+80002f8c:	f1 d6 d0 21 	bfins	r8,r6,0x1,0x1
+	u_avr32_spi_csr.CSR.csaat  = options->stay_act;
+80002f90:	f1 d4 d0 61 	bfins	r8,r4,0x3,0x1
+	u_avr32_spi_csr.CSR.bits   = options->bits - 8;
+80002f94:	20 83       	sub	r3,8
+80002f96:	f1 d3 d0 84 	bfins	r8,r3,0x4,0x4
+	u_avr32_spi_csr.CSR.scbr   = baudDiv;
+80002f9a:	f1 dc d1 08 	bfins	r8,r12,0x8,0x8
+	u_avr32_spi_csr.CSR.dlybs  = options->spck_delay;
+80002f9e:	ef 39 00 09 	ld.ub	r9,r7[9]
+80002fa2:	f1 d9 d2 08 	bfins	r8,r9,0x10,0x8
+	u_avr32_spi_csr.CSR.dlybct = options->trans_delay;
+80002fa6:	ef 39 00 0a 	ld.ub	r9,r7[10]
+80002faa:	f1 d9 d3 08 	bfins	r8,r9,0x18,0x8
+
+	switch (options->reg) {
+80002fae:	0f 89       	ld.ub	r9,r7[0x0]
+80002fb0:	30 1a       	mov	r10,1
+80002fb2:	f4 09 18 00 	cp.b	r9,r10
+80002fb6:	c0 e0       	breq	80002fd2 <spi_setupChipReg+0x9a>
+80002fb8:	c0 a3       	brcs	80002fcc <spi_setupChipReg+0x94>
+80002fba:	30 2a       	mov	r10,2
+80002fbc:	f4 09 18 00 	cp.b	r9,r10
+80002fc0:	c0 c0       	breq	80002fd8 <spi_setupChipReg+0xa0>
+80002fc2:	30 3a       	mov	r10,3
+80002fc4:	f4 09 18 00 	cp.b	r9,r10
+80002fc8:	c0 e1       	brne	80002fe4 <spi_setupChipReg+0xac>
+80002fca:	c0 a8       	rjmp	80002fde <spi_setupChipReg+0xa6>
+	case 0:
+		spi->csr0 = u_avr32_spi_csr.csr;
+80002fcc:	8b c8       	st.w	r5[0x30],r8
+80002fce:	e3 cf 80 f8 	ldm	sp++,r3-r7,pc,r12=0
+		break;
+
+	case 1:
+		spi->csr1 = u_avr32_spi_csr.csr;
+80002fd2:	8b d8       	st.w	r5[0x34],r8
+80002fd4:	e3 cf 80 f8 	ldm	sp++,r3-r7,pc,r12=0
+		break;
+
+	case 2:
+		spi->csr2 = u_avr32_spi_csr.csr;
+80002fd8:	8b e8       	st.w	r5[0x38],r8
+80002fda:	e3 cf 80 f8 	ldm	sp++,r3-r7,pc,r12=0
+		break;
+
+	case 3:
+		spi->csr3 = u_avr32_spi_csr.csr;
+80002fde:	8b f8       	st.w	r5[0x3c],r8
+80002fe0:	e3 cf 80 f8 	ldm	sp++,r3-r7,pc,r12=0
+		break;
+80002fe4:	30 2c       	mov	r12,2
+		}
+	}
+#endif
+
+	return SPI_OK;
+}
+80002fe6:	e3 cd 80 f8 	ldm	sp++,r3-r7,pc
+80002fea:	00 00       	add	r0,r0
+80002fec:	80 00       	ld.sh	r0,r0[0x0]
+80002fee:	2e 40       	sub	r0,-28
+
+80002ff0 <spi_enable>:
+
+void spi_enable(volatile avr32_spi_t *spi)
+{
+	spi->cr = AVR32_SPI_CR_SPIEN_MASK;
+80002ff0:	30 18       	mov	r8,1
+80002ff2:	99 08       	st.w	r12[0x0],r8
+}
+80002ff4:	5e fc       	retal	r12
+
+80002ff6 <spi_write>:
+{
+	return ((spi->sr & AVR32_SPI_SR_TDRE_MASK) != 0);
+}
+
+spi_status_t spi_write(volatile avr32_spi_t *spi, uint16_t data)
+{
+80002ff6:	e0 68 3a 98 	mov	r8,15000
+	uint32_t timeout = SPI_TIMEOUT;
+
+	while (!(spi->sr & AVR32_SPI_SR_TDRE_MASK)) {
+80002ffa:	c0 58       	rjmp	80003004 <spi_write+0xe>
+		if (!timeout--) {
+80002ffc:	58 08       	cp.w	r8,0
+80002ffe:	c0 21       	brne	80003002 <spi_write+0xc>
+80003000:	5e ff       	retal	1
+80003002:	20 18       	sub	r8,1
+
+spi_status_t spi_write(volatile avr32_spi_t *spi, uint16_t data)
+{
+	uint32_t timeout = SPI_TIMEOUT;
+
+	while (!(spi->sr & AVR32_SPI_SR_TDRE_MASK)) {
+80003004:	78 49       	ld.w	r9,r12[0x10]
+80003006:	e2 19 00 02 	andl	r9,0x2,COH
+8000300a:	cf 90       	breq	80002ffc <spi_write+0x6>
+		if (!timeout--) {
+			return SPI_ERROR_TIMEOUT;
+		}
+	}
+
+	spi->tdr = data << AVR32_SPI_TDR_TD_OFFSET;
+8000300c:	5c 7b       	castu.h	r11
+8000300e:	99 3b       	st.w	r12[0xc],r11
+80003010:	5e fd       	retal	0
+
+80003012 <spi_read>:
+{
+	return ((spi->sr & AVR32_SPI_SR_RDRF_MASK) != 0);
+}
+
+spi_status_t spi_read(volatile avr32_spi_t *spi, uint16_t *data)
+{
+80003012:	e0 68 3a 98 	mov	r8,15000
+	unsigned int timeout = SPI_TIMEOUT;
+
+	while ((spi->sr &
+80003016:	c0 58       	rjmp	80003020 <spi_read+0xe>
+			(AVR32_SPI_SR_RDRF_MASK | AVR32_SPI_SR_TXEMPTY_MASK)) !=
+			(AVR32_SPI_SR_RDRF_MASK | AVR32_SPI_SR_TXEMPTY_MASK)) {
+		if (!timeout--) {
+80003018:	58 08       	cp.w	r8,0
+8000301a:	c0 21       	brne	8000301e <spi_read+0xc>
+8000301c:	5e ff       	retal	1
+8000301e:	20 18       	sub	r8,1
+
+spi_status_t spi_read(volatile avr32_spi_t *spi, uint16_t *data)
+{
+	unsigned int timeout = SPI_TIMEOUT;
+
+	while ((spi->sr &
+80003020:	78 49       	ld.w	r9,r12[0x10]
+80003022:	e2 19 02 01 	andl	r9,0x201,COH
+80003026:	e0 49 02 01 	cp.w	r9,513
+8000302a:	cf 71       	brne	80003018 <spi_read+0x6>
+		if (!timeout--) {
+			return SPI_ERROR_TIMEOUT;
+		}
+	}
+
+	*data = spi->rdr >> AVR32_SPI_RDR_RD_OFFSET;
+8000302c:	78 28       	ld.w	r8,r12[0x8]
+8000302e:	b6 08       	st.h	r11[0x0],r8
+80003030:	5e fd       	retal	0
+
+80003032 <gpio_enable_module_pin>:
+ *
+ * \return \ref GPIO_SUCCESS or \ref GPIO_INVALID_ARGUMENT.
+ */
+uint32_t gpio_enable_module_pin(uint32_t pin, uint32_t function)
+{
+	volatile avr32_gpio_port_t *gpio_port = &AVR32_GPIO.port[pin >> 5];
+80003032:	f8 08 16 05 	lsr	r8,r12,0x5
+80003036:	a9 68       	lsl	r8,0x8
+80003038:	e0 28 f0 00 	sub	r8,61440
+
+	/* Enable the correct function. */
+	switch (function) {
+8000303c:	58 1b       	cp.w	r11,1
+8000303e:	c0 d0       	breq	80003058 <gpio_enable_module_pin+0x26>
+80003040:	c0 63       	brcs	8000304c <gpio_enable_module_pin+0x1a>
+80003042:	58 2b       	cp.w	r11,2
+80003044:	c1 00       	breq	80003064 <gpio_enable_module_pin+0x32>
+80003046:	58 3b       	cp.w	r11,3
+80003048:	c1 40       	breq	80003070 <gpio_enable_module_pin+0x3e>
+8000304a:	5e ff       	retal	1
+	case 0: /* A function. */
+		gpio_port->pmr0c = 1 << (pin & 0x1F);
+8000304c:	30 19       	mov	r9,1
+8000304e:	f2 0c 09 49 	lsl	r9,r9,r12
+80003052:	91 69       	st.w	r8[0x18],r9
+		gpio_port->pmr1c = 1 << (pin & 0x1F);
+80003054:	91 a9       	st.w	r8[0x28],r9
+#if (AVR32_GPIO_H_VERSION >= 210)
+		gpio_port->pmr2c = 1 << (pin & 0x1F);
+#endif
+		break;
+80003056:	c1 28       	rjmp	8000307a <gpio_enable_module_pin+0x48>
+
+	case 1: /* B function. */
+		gpio_port->pmr0s = 1 << (pin & 0x1F);
+80003058:	30 19       	mov	r9,1
+8000305a:	f2 0c 09 49 	lsl	r9,r9,r12
+8000305e:	91 59       	st.w	r8[0x14],r9
+		gpio_port->pmr1c = 1 << (pin & 0x1F);
+80003060:	91 a9       	st.w	r8[0x28],r9
+#if (AVR32_GPIO_H_VERSION >= 210)
+		gpio_port->pmr2c = 1 << (pin & 0x1F);
+#endif
+		break;
+80003062:	c0 c8       	rjmp	8000307a <gpio_enable_module_pin+0x48>
+
+	case 2: /* C function. */
+		gpio_port->pmr0c = 1 << (pin & 0x1F);
+80003064:	30 19       	mov	r9,1
+80003066:	f2 0c 09 49 	lsl	r9,r9,r12
+8000306a:	91 69       	st.w	r8[0x18],r9
+		gpio_port->pmr1s = 1 << (pin & 0x1F);
+8000306c:	91 99       	st.w	r8[0x24],r9
+#if (AVR32_GPIO_H_VERSION >= 210)
+		gpio_port->pmr2c = 1 << (pin & 0x1F);
+#endif
+		break;
+8000306e:	c0 68       	rjmp	8000307a <gpio_enable_module_pin+0x48>
+
+	case 3: /* D function. */
+		gpio_port->pmr0s = 1 << (pin & 0x1F);
+80003070:	30 19       	mov	r9,1
+80003072:	f2 0c 09 49 	lsl	r9,r9,r12
+80003076:	91 59       	st.w	r8[0x14],r9
+		gpio_port->pmr1s = 1 << (pin & 0x1F);
+80003078:	91 99       	st.w	r8[0x24],r9
+	default:
+		return GPIO_INVALID_ARGUMENT;
+	}
+
+	/* Disable GPIO control. */
+	gpio_port->gperc = 1 << (pin & 0x1F);
+8000307a:	30 19       	mov	r9,1
+8000307c:	f2 0c 09 4c 	lsl	r12,r9,r12
+80003080:	91 2c       	st.w	r8[0x8],r12
+80003082:	5e fd       	retal	0
+
+80003084 <gpio_enable_module>:
+ * \param size The number of pins in \a gpiomap.
+ *
+ * \return \ref GPIO_SUCCESS or \ref GPIO_INVALID_ARGUMENT.
+ */
+uint32_t gpio_enable_module(const gpio_map_t gpiomap, uint32_t size)
+{
+80003084:	d4 21       	pushm	r4-r7,lr
+80003086:	18 97       	mov	r7,r12
+80003088:	16 94       	mov	r4,r11
+	uint32_t status = GPIO_SUCCESS;
+	uint32_t i;
+
+	for (i = 0; i < size; i++) {
+8000308a:	58 0b       	cp.w	r11,0
+8000308c:	c0 31       	brne	80003092 <gpio_enable_module+0xe>
+8000308e:	30 05       	mov	r5,0
+80003090:	c0 d8       	rjmp	800030aa <gpio_enable_module+0x26>
+80003092:	30 06       	mov	r6,0
+80003094:	0c 95       	mov	r5,r6
+		status |= gpio_enable_module_pin(gpiomap->pin, gpiomap->function);
+80003096:	6e 1b       	ld.w	r11,r7[0x4]
+80003098:	6e 0c       	ld.w	r12,r7[0x0]
+8000309a:	f0 1f 00 06 	mcall	800030b0 <gpio_enable_module+0x2c>
+8000309e:	18 45       	or	r5,r12
+		gpiomap++;
+800030a0:	2f 87       	sub	r7,-8
+uint32_t gpio_enable_module(const gpio_map_t gpiomap, uint32_t size)
+{
+	uint32_t status = GPIO_SUCCESS;
+	uint32_t i;
+
+	for (i = 0; i < size; i++) {
+800030a2:	2f f6       	sub	r6,-1
+800030a4:	0c 34       	cp.w	r4,r6
+800030a6:	fe 9b ff f8 	brhi	80003096 <gpio_enable_module+0x12>
+		status |= gpio_enable_module_pin(gpiomap->pin, gpiomap->function);
+		gpiomap++;
+	}
+
+	return status;
+}
+800030aa:	0a 9c       	mov	r12,r5
+800030ac:	d8 22       	popm	r4-r7,pc
+800030ae:	00 00       	add	r0,r0
+800030b0:	80 00       	ld.sh	r0,r0[0x0]
+800030b2:	30 32       	mov	r2,3
+
+800030b4 <_unhandled_interrupt>:
+__attribute__((__interrupt__))
+#elif (defined __ICCAVR32__)
+__interrupt
+#endif
+static void _unhandled_interrupt(void)
+{
+800030b4:	c0 08       	rjmp	800030b4 <_unhandled_interrupt>
+800030b6:	d7 03       	nop
+
+800030b8 <INTC_register_interrupt>:
+ */
+void INTC_register_interrupt(__int_handler handler, uint32_t irq,
+	uint32_t int_level)
+{
+	// Determine the group of the IRQ.
+	uint32_t int_grp = irq / AVR32_INTC_MAX_NUM_IRQS_PER_GRP;
+800030b8:	f6 08 16 05 	lsr	r8,r11,0x5
+
+	/* Store in _int_line_handler_table_x the pointer to the interrupt
+	handler, so that _get_interrupt_handler can retrieve it when the
+	interrupt is vectored. */
+	_int_handler_table[int_grp]
+		._int_line_handler_table[irq % AVR32_INTC_MAX_NUM_IRQS_PER_GRP]
+800030bc:	49 99       	lddpc	r9,80003120 <INTC_register_interrupt+0x68>
+800030be:	f2 08 00 39 	add	r9,r9,r8<<0x3
+800030c2:	f7 db c0 05 	bfextu	r11,r11,0x0,0x5
+800030c6:	72 19       	ld.w	r9,r9[0x4]
+	uint32_t int_grp = irq / AVR32_INTC_MAX_NUM_IRQS_PER_GRP;
+
+	/* Store in _int_line_handler_table_x the pointer to the interrupt
+	handler, so that _get_interrupt_handler can retrieve it when the
+	interrupt is vectored. */
+	_int_handler_table[int_grp]
+800030c8:	f2 0b 09 2c 	st.w	r9[r11<<0x2],r12
+	/* Program the corresponding IPRX register to set the interrupt priority
+	level and the interrupt vector offset that will be fetched by the core
+	interrupt system.
+	NOTE: The _intx functions are intermediate assembly functions between
+	the core interrupt system and the user interrupt handler. */
+	if (int_level == AVR32_INTC_INT0) {
+800030cc:	58 0a       	cp.w	r10,0
+800030ce:	c0 91       	brne	800030e0 <INTC_register_interrupt+0x28>
+		AVR32_INTC.ipr[int_grp] = IPR_INT0;
+800030d0:	49 59       	lddpc	r9,80003124 <INTC_register_interrupt+0x6c>
+800030d2:	49 6a       	lddpc	r10,80003128 <INTC_register_interrupt+0x70>
+800030d4:	12 1a       	sub	r10,r9
+800030d6:	fe 79 08 00 	mov	r9,-63488
+800030da:	f2 08 09 2a 	st.w	r9[r8<<0x2],r10
+800030de:	5e fc       	retal	r12
+	} else if (int_level == AVR32_INTC_INT1) {
+800030e0:	58 1a       	cp.w	r10,1
+800030e2:	c0 a1       	brne	800030f6 <INTC_register_interrupt+0x3e>
+		AVR32_INTC.ipr[int_grp] = IPR_INT1;
+800030e4:	49 09       	lddpc	r9,80003124 <INTC_register_interrupt+0x6c>
+800030e6:	49 2a       	lddpc	r10,8000312c <INTC_register_interrupt+0x74>
+800030e8:	12 1a       	sub	r10,r9
+800030ea:	bf aa       	sbr	r10,0x1e
+800030ec:	fe 79 08 00 	mov	r9,-63488
+800030f0:	f2 08 09 2a 	st.w	r9[r8<<0x2],r10
+800030f4:	5e fc       	retal	r12
+	} else if (int_level == AVR32_INTC_INT2) {
+800030f6:	58 2a       	cp.w	r10,2
+800030f8:	c0 a1       	brne	8000310c <INTC_register_interrupt+0x54>
+		AVR32_INTC.ipr[int_grp] = IPR_INT2;
+800030fa:	48 b9       	lddpc	r9,80003124 <INTC_register_interrupt+0x6c>
+800030fc:	48 da       	lddpc	r10,80003130 <INTC_register_interrupt+0x78>
+800030fe:	12 1a       	sub	r10,r9
+80003100:	bf ba       	sbr	r10,0x1f
+80003102:	fe 79 08 00 	mov	r9,-63488
+80003106:	f2 08 09 2a 	st.w	r9[r8<<0x2],r10
+8000310a:	5e fc       	retal	r12
+	} else {
+		AVR32_INTC.ipr[int_grp] = IPR_INT3;
+8000310c:	48 69       	lddpc	r9,80003124 <INTC_register_interrupt+0x6c>
+8000310e:	48 aa       	lddpc	r10,80003134 <INTC_register_interrupt+0x7c>
+80003110:	12 1a       	sub	r10,r9
+80003112:	ea 1a c0 00 	orh	r10,0xc000
+80003116:	fe 79 08 00 	mov	r9,-63488
+8000311a:	f2 08 09 2a 	st.w	r9[r8<<0x2],r10
+8000311e:	5e fc       	retal	r12
+80003120:	80 00       	ld.sh	r0,r0[0x0]
+80003122:	38 20       	mov	r0,-126
+80003124:	80 00       	ld.sh	r0,r0[0x0]
+80003126:	36 00       	mov	r0,96
+80003128:	80 00       	ld.sh	r0,r0[0x0]
+8000312a:	37 04       	mov	r4,112
+8000312c:	80 00       	ld.sh	r0,r0[0x0]
+8000312e:	37 12       	mov	r2,113
+80003130:	80 00       	ld.sh	r0,r0[0x0]
+80003132:	37 20       	mov	r0,114
+80003134:	80 00       	ld.sh	r0,r0[0x0]
+80003136:	37 2e       	mov	lr,114
+
+80003138 <INTC_init_interrupts>:
+/**
+ * \brief Initializes the hardware interrupt controller driver.
+ *
+ */
+void INTC_init_interrupts(void)
+{
+80003138:	d4 21       	pushm	r4-r7,lr
+ * \brief Init EVBA address. This operation may or may not have been done by the
+ * C startup process.
+ */
+static __inline__ void INTC_init_evba(void)
+{
+  Set_system_register(AVR32_EVBA, (int32_t)&_evba );
+8000313a:	49 18       	lddpc	r8,8000317c <INTC_init_interrupts+0x44>
+8000313c:	e3 b8 00 01 	mtsr	0x4,r8
+80003140:	49 0e       	lddpc	lr,80003180 <INTC_init_interrupts+0x48>
+80003142:	30 07       	mov	r7,0
+80003144:	0e 94       	mov	r4,r7
+			int_req < _int_handler_table[int_grp].num_irqs;
+			int_req++)
+		{
+			/* Assign _unhandled_interrupt as the default interrupt
+			handler. */
+			_int_handler_table[int_grp]
+80003146:	49 0c       	lddpc	r12,80003184 <INTC_init_interrupts+0x4c>
+
+		/* Set the interrupt group priority register to its default
+		value.
+		By default, all interrupt groups are linked to the interrupt
+		priority level 0 and to the interrupt vector _int0. */
+		AVR32_INTC.ipr[int_grp] = IPR_INT0;
+80003148:	49 05       	lddpc	r5,80003188 <INTC_init_interrupts+0x50>
+8000314a:	10 15       	sub	r5,r8
+8000314c:	fe 76 08 00 	mov	r6,-63488
+80003150:	c1 08       	rjmp	80003170 <INTC_init_interrupts+0x38>
+ * \brief Init EVBA address. This operation may or may not have been done by the
+ * C startup process.
+ */
+static __inline__ void INTC_init_evba(void)
+{
+  Set_system_register(AVR32_EVBA, (int32_t)&_evba );
+80003152:	08 98       	mov	r8,r4
+			int_req++)
+		{
+			/* Assign _unhandled_interrupt as the default interrupt
+			handler. */
+			_int_handler_table[int_grp]
+				._int_line_handler_table[int_req]
+80003154:	7c 1b       	ld.w	r11,lr[0x4]
+
+	// For all interrupt groups,
+	for (int_grp = 0; int_grp < AVR32_INTC_NUM_INT_GRPS; int_grp++)
+	{
+		// For all interrupt request lines of each group,
+		for (int_req = 0;
+80003156:	7c 0a       	ld.w	r10,lr[0x0]
+			int_req < _int_handler_table[int_grp].num_irqs;
+			int_req++)
+		{
+			/* Assign _unhandled_interrupt as the default interrupt
+			handler. */
+			_int_handler_table[int_grp]
+80003158:	f6 08 09 2c 	st.w	r11[r8<<0x2],r12
+	for (int_grp = 0; int_grp < AVR32_INTC_NUM_INT_GRPS; int_grp++)
+	{
+		// For all interrupt request lines of each group,
+		for (int_req = 0;
+			int_req < _int_handler_table[int_grp].num_irqs;
+			int_req++)
+8000315c:	2f f8       	sub	r8,-1
+
+	// For all interrupt groups,
+	for (int_grp = 0; int_grp < AVR32_INTC_NUM_INT_GRPS; int_grp++)
+	{
+		// For all interrupt request lines of each group,
+		for (int_req = 0;
+8000315e:	10 3a       	cp.w	r10,r8
+80003160:	fe 9b ff fc 	brhi	80003158 <INTC_init_interrupts+0x20>
+
+		/* Set the interrupt group priority register to its default
+		value.
+		By default, all interrupt groups are linked to the interrupt
+		priority level 0 and to the interrupt vector _int0. */
+		AVR32_INTC.ipr[int_grp] = IPR_INT0;
+80003164:	ec 07 09 25 	st.w	r6[r7<<0x2],r5
+	uint32_t int_grp, int_req;
+
+	INTC_init_evba();
+
+	// For all interrupt groups,
+	for (int_grp = 0; int_grp < AVR32_INTC_NUM_INT_GRPS; int_grp++)
+80003168:	2f f7       	sub	r7,-1
+8000316a:	2f 8e       	sub	lr,-8
+8000316c:	59 47       	cp.w	r7,20
+8000316e:	c0 50       	breq	80003178 <INTC_init_interrupts+0x40>
+	{
+		// For all interrupt request lines of each group,
+		for (int_req = 0;
+80003170:	7c 08       	ld.w	r8,lr[0x0]
+80003172:	58 08       	cp.w	r8,0
+80003174:	ce f1       	brne	80003152 <INTC_init_interrupts+0x1a>
+80003176:	cf 7b       	rjmp	80003164 <INTC_init_interrupts+0x2c>
+80003178:	d8 22       	popm	r4-r7,pc
+8000317a:	00 00       	add	r0,r0
+8000317c:	80 00       	ld.sh	r0,r0[0x0]
+8000317e:	36 00       	mov	r0,96
+80003180:	80 00       	ld.sh	r0,r0[0x0]
+80003182:	38 20       	mov	r0,-126
+80003184:	80 00       	ld.sh	r0,r0[0x0]
+80003186:	30 b4       	mov	r4,11
+80003188:	80 00       	ld.sh	r0,r0[0x0]
+8000318a:	37 04       	mov	r4,112
+
+8000318c <_get_interrupt_handler>:
+__int_handler _get_interrupt_handler(uint32_t int_level)
+{
+	/* ICR3 is mapped first, ICR0 last.
+	Code in exception.S puts int_level in R12 which is used by the compiler
+	to pass a single argument to a function. */
+	uint32_t int_grp = AVR32_INTC.icr[AVR32_INTC_INT3 - int_level];
+8000318c:	fe 78 08 00 	mov	r8,-63488
+80003190:	e0 69 00 83 	mov	r9,131
+80003194:	f2 0c 01 0c 	sub	r12,r9,r12
+80003198:	f0 0c 03 29 	ld.w	r9,r8[r12<<0x2]
+	uint32_t int_req = AVR32_INTC.irr[int_grp];
+8000319c:	f2 ca ff c0 	sub	r10,r9,-64
+800031a0:	f0 0a 03 28 	ld.w	r8,r8[r10<<0x2]
+	exception.S will provide the interrupt handler with a clean interrupt
+	stack frame, with nothing more pushed onto the stack. The interrupt
+	handler must manage the `rete' instruction, which can be done using
+	pure assembly, inline assembly or the `__attribute__((__interrupt__))'
+	C function attribute.*/
+	return (int_req)
+800031a4:	58 08       	cp.w	r8,0
+800031a6:	c0 21       	brne	800031aa <_get_interrupt_handler+0x1e>
+800031a8:	5e fd       	retal	0
+		? _int_handler_table[int_grp]._int_line_handler_table[32
+			- clz(int_req) - 1]
+800031aa:	f0 08 12 00 	clz	r8,r8
+	stack frame, with nothing more pushed onto the stack. The interrupt
+	handler must manage the `rete' instruction, which can be done using
+	pure assembly, inline assembly or the `__attribute__((__interrupt__))'
+	C function attribute.*/
+	return (int_req)
+		? _int_handler_table[int_grp]._int_line_handler_table[32
+800031ae:	48 5a       	lddpc	r10,800031c0 <_get_interrupt_handler+0x34>
+800031b0:	f4 09 00 39 	add	r9,r10,r9<<0x3
+800031b4:	f0 08 11 1f 	rsub	r8,r8,31
+800031b8:	72 19       	ld.w	r9,r9[0x4]
+	exception.S will provide the interrupt handler with a clean interrupt
+	stack frame, with nothing more pushed onto the stack. The interrupt
+	handler must manage the `rete' instruction, which can be done using
+	pure assembly, inline assembly or the `__attribute__((__interrupt__))'
+	C function attribute.*/
+	return (int_req)
+800031ba:	f2 08 03 2c 	ld.w	r12,r9[r8<<0x2]
+		? _int_handler_table[int_grp]._int_line_handler_table[32
+			- clz(int_req) - 1]
+		: NULL;
+}
+800031be:	5e fc       	retal	r12
+800031c0:	80 00       	ld.sh	r0,r0[0x0]
+800031c2:	38 20       	mov	r0,-126
+
+800031c4 <_stext>:
+
+  .global _stext
+  .type _stext, @function
+_stext:
+  // Set initial stack pointer.
+  lda.w   sp, _estack
+800031c4:	e0 7d 00 00 	mov	sp,65536
+
+  // Set up EVBA so interrupts can be enabled.
+  lda.w   r0, _evba
+  mtsr    AVR32_EVBA, r0
+800031c8:	fe c0 fb c8 	sub	r0,pc,-1080
+
+  // Enable the exception processing.
+  csrf    AVR32_SR_EM_OFFSET
+800031cc:	e3 b0 00 01 	mtsr	0x4,r0
+
+  // Load initialized data having a global lifetime from the data LMA.
+  lda.w   r0, _data
+  lda.w   r1, _edata
+800031d0:	d5 53       	csrf	0x15
+  cp      r0, r1
+800031d2:	30 80       	mov	r0,8
+  brhs    idata_load_loop_end
+800031d4:	30 81       	mov	r1,8
+  lda.w   r2, _data_lma
+800031d6:	02 30       	cp.w	r0,r1
+idata_load_loop:
+  ld.d    r4, r2++
+800031d8:	c0 72       	brcc	800031e6 <idata_load_loop_end>
+  st.d    r0++, r4
+800031da:	fe c2 f3 fa 	sub	r2,pc,-3078
+
+800031de <idata_load_loop>:
+  cp      r0, r1
+  brlo    idata_load_loop
+800031de:	a5 05       	ld.d	r4,r2++
+idata_load_loop_end:
+
+  // Clear uninitialized data having a global lifetime in the blank static storage section.
+  lda.w   r0, __bss_start
+800031e0:	a1 24       	st.d	r0++,r4
+  lda.w   r1, _end
+800031e2:	02 30       	cp.w	r0,r1
+  cp      r0, r1
+800031e4:	cf d3       	brcs	800031de <idata_load_loop>
+
+800031e6 <idata_load_loop_end>:
+  brhs    udata_clear_loop_end
+800031e6:	30 80       	mov	r0,8
+  mov     r2, 0
+800031e8:	e0 61 07 38 	mov	r1,1848
+  mov     r3, 0
+udata_clear_loop:
+  st.d    r0++, r2
+800031ec:	02 30       	cp.w	r0,r1
+  cp      r0, r1
+800031ee:	c0 62       	brcc	800031fa <udata_clear_loop_end>
+  brlo    udata_clear_loop
+800031f0:	30 02       	mov	r2,0
+  // Safety: Set the default "return" @ to the exit routine address.
+  lda.w   lr, exit
+#endif
+
+  // Start the show.
+  lda.w   pc, main
+800031f2:	30 03       	mov	r3,0
+
+800031f4 <udata_clear_loop>:
+800031f4:	a1 22       	st.d	r0++,r2
+800031f6:	02 30       	cp.w	r0,r1
+800031f8:	cf e3       	brcs	800031f4 <udata_clear_loop>
+
+800031fa <udata_clear_loop_end>:
+800031fa:	fe cf ff 62 	sub	pc,pc,-158
+800031fe:	d7 03       	nop
+
+80003200 <wait>:
+volatile bool end_of_transfer;
+
+// Local RAM buffer for the example to store data received from the SD/MMC card
+volatile char ram_buffer[1000];
+
+void wait(){
+80003200:	20 1d       	sub	sp,4
+	volatile int i;
+	for(i = 0 ; i < 5000; i++);
+80003202:	30 08       	mov	r8,0
+80003204:	50 08       	stdsp	sp[0x0],r8
+80003206:	40 08       	lddsp	r8,sp[0x0]
+80003208:	e0 48 13 87 	cp.w	r8,4999
+8000320c:	e0 89 00 0a 	brgt	80003220 <wait+0x20>
+80003210:	40 08       	lddsp	r8,sp[0x0]
+80003212:	2f f8       	sub	r8,-1
+80003214:	50 08       	stdsp	sp[0x0],r8
+80003216:	40 08       	lddsp	r8,sp[0x0]
+80003218:	e0 48 13 87 	cp.w	r8,4999
+8000321c:	fe 9a ff fa 	brle	80003210 <wait+0x10>
+}//Wait
+80003220:	2f fd       	sub	sp,-4
+80003222:	5e fc       	retal	r12
+
+80003224 <local_pdca_init>:
+	spi_enable(SD_MMC_SPI);
+	sd_mmc_spi_init(spiOptions, PBA_HZ);
+
+}//sd_mmc_resources_init
+
+void local_pdca_init(void){
+80003224:	eb cd 40 b0 	pushm	r4-r5,r7,lr
+80003228:	20 cd       	sub	sp,48
+		.size = 512,                              // transfer counter: here the size of the string
+		.r_addr = NULL,                           // next memory address after 1st transfer complete
+		.r_size = 0,                              // next transfer counter not used here
+		.pid = AVR32_PDCA_CHANNEL_USED_RX,        // select peripheral ID - data are on reception from SPI1 RX line
+		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
+	};//pdca_options_SPI_RX
+8000322a:	49 78       	lddpc	r8,80003284 <local_pdca_init+0x60>
+8000322c:	fa c7 ff e8 	sub	r7,sp,-24
+80003230:	f0 ea 00 00 	ld.d	r10,r8[0]
+80003234:	ee eb 00 00 	st.d	r7[0],r10
+80003238:	f0 ea 00 08 	ld.d	r10,r8[8]
+8000323c:	ee eb 00 08 	st.d	r7[8],r10
+80003240:	f0 e8 00 10 	ld.d	r8,r8[16]
+80003244:	ee e9 00 10 	st.d	r7[16],r8
+		.size = 512,                              // transfer counter: here the size of the string
+		.r_addr = NULL,                           // next memory address after 1st transfer complete
+		.r_size = 0,                              // next transfer counter not used here
+		.pid = AVR32_PDCA_CHANNEL_USED_TX,        // select peripheral ID - data are on reception from SPI1 RX line
+		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
+	};//pdca_options_SPI_TX
+80003248:	49 08       	lddpc	r8,80003288 <local_pdca_init+0x64>
+8000324a:	1a 9b       	mov	r11,sp
+8000324c:	f0 e4 00 00 	ld.d	r4,r8[0]
+80003250:	fa e5 00 00 	st.d	sp[0],r4
+80003254:	f0 e4 00 08 	ld.d	r4,r8[8]
+80003258:	fa e5 00 08 	st.d	sp[8],r4
+8000325c:	f0 e8 00 10 	ld.d	r8,r8[16]
+80003260:	fa e9 00 10 	st.d	sp[16],r8
+
+	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_TX, &pdca_options_SPI_TX);
+80003264:	30 1c       	mov	r12,1
+80003266:	f0 1f 00 0a 	mcall	8000328c <local_pdca_init+0x68>
+	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_RX, &pdca_options_SPI_RX);
+8000326a:	0e 9b       	mov	r11,r7
+8000326c:	30 0c       	mov	r12,0
+8000326e:	f0 1f 00 08 	mcall	8000328c <local_pdca_init+0x68>
+	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_0, AVR32_INTC_INT1);  // pdca_channel_spi1_RX = 0
+80003272:	30 1a       	mov	r10,1
+80003274:	36 0b       	mov	r11,96
+80003276:	48 7c       	lddpc	r12,80003290 <local_pdca_init+0x6c>
+80003278:	f0 1f 00 07 	mcall	80003294 <local_pdca_init+0x70>
+
+} //local_pdca_init
+8000327c:	2f 4d       	sub	sp,-48
+8000327e:	e3 cd 80 b0 	ldm	sp++,r4-r5,r7,pc
+80003282:	00 00       	add	r0,r0
+80003284:	80 00       	ld.sh	r0,r0[0x0]
+80003286:	3d b0       	mov	r0,-37
+80003288:	80 00       	ld.sh	r0,r0[0x0]
+8000328a:	3d c8       	mov	r8,-36
+8000328c:	80 00       	ld.sh	r0,r0[0x0]
+8000328e:	2d e0       	sub	r0,-34
+80003290:	80 00       	ld.sh	r0,r0[0x0]
+80003292:	34 70       	mov	r0,71
+80003294:	80 00       	ld.sh	r0,r0[0x0]
+80003296:	30 b8       	mov	r8,11
+
+80003298 <main>:
+
+int main(void){
+80003298:	d4 31       	pushm	r0-r7,lr
+8000329a:	20 4d       	sub	sp,16
+	
+	int i, j;
+	pm_switch_to_osc0(&AVR32_PM, PBA_HZ, 3);
+8000329c:	30 3a       	mov	r10,3
+8000329e:	e0 6b 1b 00 	mov	r11,6912
+800032a2:	ea 1b 00 b7 	orh	r11,0xb7
+800032a6:	fe 7c 0c 00 	mov	r12,-62464
+800032aa:	f0 1f 00 50 	mcall	800033e8 <main+0x150>
+	init_dbg_rs232(PBA_HZ);
+800032ae:	e0 6c 1b 00 	mov	r12,6912
+800032b2:	ea 1c 00 b7 	orh	r12,0xb7
+800032b6:	f0 1f 00 4e 	mcall	800033ec <main+0x154>
+	print_dbg("\r\nInit SD/MMC Driver");
+800032ba:	4c ec       	lddpc	r12,800033f0 <main+0x158>
+800032bc:	f0 1f 00 4e 	mcall	800033f4 <main+0x15c>
+	print_dbg("\r\nInsert SD/MMC...");
+800032c0:	4c ec       	lddpc	r12,800033f8 <main+0x160>
+800032c2:	f0 1f 00 4d 	mcall	800033f4 <main+0x15c>
+	INTC_init_interrupts();
+800032c6:	f0 1f 00 4e 	mcall	800033fc <main+0x164>
+		.spck_delay   = 0,
+		.trans_delay  = 0,
+		.stay_act     = 1,
+		.spi_mode     = 0,
+		.modfdis      = 1
+	};//SPI Options
+800032ca:	4c e8       	lddpc	r8,80003400 <main+0x168>
+800032cc:	1a 97       	mov	r7,sp
+800032ce:	f0 ea 00 00 	ld.d	r10,r8[0]
+800032d2:	fa eb 00 00 	st.d	sp[0],r10
+800032d6:	f0 e8 00 08 	ld.d	r8,r8[8]
+800032da:	fa e9 00 08 	st.d	sp[8],r8
+
+	gpio_enable_module(SD_MMC_SPI_GPIO_MAP,
+800032de:	30 4b       	mov	r11,4
+800032e0:	4c 9c       	lddpc	r12,80003404 <main+0x16c>
+800032e2:	f0 1f 00 4a 	mcall	80003408 <main+0x170>
+	sizeof(SD_MMC_SPI_GPIO_MAP) / sizeof(SD_MMC_SPI_GPIO_MAP[0]));
+	spi_initMaster(SD_MMC_SPI, &spiOptions);
+800032e6:	1a 9b       	mov	r11,sp
+800032e8:	fe 7c 24 00 	mov	r12,-56320
+800032ec:	f0 1f 00 48 	mcall	8000340c <main+0x174>
+	spi_selectionMode(SD_MMC_SPI, 0, 0, 0);
+800032f0:	30 09       	mov	r9,0
+800032f2:	12 9a       	mov	r10,r9
+800032f4:	12 9b       	mov	r11,r9
+800032f6:	fe 7c 24 00 	mov	r12,-56320
+800032fa:	f0 1f 00 46 	mcall	80003410 <main+0x178>
+	spi_enable(SD_MMC_SPI);
+800032fe:	fe 7c 24 00 	mov	r12,-56320
+80003302:	f0 1f 00 45 	mcall	80003414 <main+0x17c>
+	sd_mmc_spi_init(spiOptions, PBA_HZ);
+80003306:	20 4d       	sub	sp,16
+80003308:	ee e8 00 00 	ld.d	r8,r7[0]
+8000330c:	fa e9 00 00 	st.d	sp[0],r8
+80003310:	ee e8 00 08 	ld.d	r8,r7[8]
+80003314:	fa e9 00 08 	st.d	sp[8],r8
+80003318:	e0 6c 1b 00 	mov	r12,6912
+8000331c:	ea 1c 00 b7 	orh	r12,0xb7
+80003320:	f0 1f 00 3e 	mcall	80003418 <main+0x180>
+80003324:	2f cd       	sub	sp,-16
+	print_dbg("\r\nInit SD/MMC Driver");
+	print_dbg("\r\nInsert SD/MMC...");
+	INTC_init_interrupts();
+	sd_mmc_resources_init();
+
+	while (!sd_mmc_spi_mem_check());
+80003326:	f0 1f 00 3e 	mcall	8000341c <main+0x184>
+8000332a:	cf e0       	breq	80003326 <main+0x8e>
+	print_dbg("\r\nCard detected!");
+8000332c:	4b dc       	lddpc	r12,80003420 <main+0x188>
+8000332e:	f0 1f 00 32 	mcall	800033f4 <main+0x15c>
+
+	sd_mmc_spi_get_capacity();
+80003332:	f0 1f 00 3d 	mcall	80003424 <main+0x18c>
+	print_dbg("Capacity = ");
+80003336:	4b dc       	lddpc	r12,80003428 <main+0x190>
+80003338:	f0 1f 00 2f 	mcall	800033f4 <main+0x15c>
+	print_dbg_ulong(capacity >> 20);
+8000333c:	4b c8       	lddpc	r8,8000342c <main+0x194>
+8000333e:	f0 e8 00 00 	ld.d	r8,r8[0]
+80003342:	f0 0c 16 14 	lsr	r12,r8,0x14
+80003346:	f9 e9 10 cc 	or	r12,r12,r9<<0xc
+8000334a:	f0 1f 00 3a 	mcall	80003430 <main+0x198>
+	print_dbg(" MBytes");
+8000334e:	4b ac       	lddpc	r12,80003434 <main+0x19c>
+80003350:	f0 1f 00 29 	mcall	800033f4 <main+0x15c>
+
+	Enable_global_interrupt();
+80003354:	d5 03       	csrf	0x10
+
+	local_pdca_init();
+80003356:	f0 1f 00 39 	mcall	80003438 <main+0x1a0>
+8000335a:	30 16       	mov	r6,1
+
+	for(j = 1; j <= 3; j++){ //3 Sectores
+
+		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
+8000335c:	4b 85       	lddpc	r5,8000343c <main+0x1a4>
+8000335e:	e0 63 02 00 	mov	r3,512
+80003362:	30 04       	mov	r4,0
+		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
+80003364:	0c 92       	mov	r2,r6
+		end_of_transfer = false;
+80003366:	4b 71       	lddpc	r1,80003440 <main+0x1a8>
+80003368:	30 00       	mov	r0,0
+
+	local_pdca_init();
+
+	for(j = 1; j <= 3; j++){ //3 Sectores
+
+		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
+8000336a:	06 9a       	mov	r10,r3
+8000336c:	0a 9b       	mov	r11,r5
+8000336e:	08 9c       	mov	r12,r4
+80003370:	f0 1f 00 35 	mcall	80003444 <main+0x1ac>
+		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
+80003374:	06 9a       	mov	r10,r3
+80003376:	4b 5b       	lddpc	r11,80003448 <main+0x1b0>
+80003378:	04 9c       	mov	r12,r2
+8000337a:	f0 1f 00 33 	mcall	80003444 <main+0x1ac>
+		end_of_transfer = false;
+8000337e:	a2 80       	st.b	r1[0x0],r0
+
+		if(sd_mmc_spi_read_open_PDCA (j)){
+80003380:	0c 9c       	mov	r12,r6
+80003382:	f0 1f 00 33 	mcall	8000344c <main+0x1b4>
+80003386:	c2 60       	breq	800033d2 <main+0x13a>
+			
+			print_dbg("\r\nFirst 512 Bytes of Transfer number ");
+80003388:	4b 2c       	lddpc	r12,80003450 <main+0x1b8>
+8000338a:	f0 1f 00 1b 	mcall	800033f4 <main+0x15c>
+			print_dbg_ulong(j);
+8000338e:	0c 9c       	mov	r12,r6
+80003390:	f0 1f 00 28 	mcall	80003430 <main+0x198>
+			print_dbg(" :\r\n");
+80003394:	4b 0c       	lddpc	r12,80003454 <main+0x1bc>
+80003396:	f0 1f 00 18 	mcall	800033f4 <main+0x15c>
+
+			spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
+8000339a:	e0 6b 00 ff 	mov	r11,255
+8000339e:	fe 7c 24 00 	mov	r12,-56320
+800033a2:	f0 1f 00 2e 	mcall	80003458 <main+0x1c0>
+			pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+800033a6:	08 9c       	mov	r12,r4
+800033a8:	f0 1f 00 2d 	mcall	8000345c <main+0x1c4>
+			pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+800033ac:	08 9c       	mov	r12,r4
+800033ae:	f0 1f 00 2d 	mcall	80003460 <main+0x1c8>
+			pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+800033b2:	04 9c       	mov	r12,r2
+800033b4:	f0 1f 00 2b 	mcall	80003460 <main+0x1c8>
+			pdca_channelrx =(volatile avr32_pdca_channel_t*) pdca_get_handler(AVR32_PDCA_CHANNEL_SPI_RX); // get the correct PDCA channel pointer
+			pdca_channeltx =(volatile avr32_pdca_channel_t*) pdca_get_handler(AVR32_PDCA_CHANNEL_SPI_TX); // get the correct PDCA channel pointer
+			pdca_channelrx->cr = AVR32_PDCA_TEN_MASK; // Enable RX PDCA transfer first
+			pdca_channeltx->cr = AVR32_PDCA_TEN_MASK; // and TX PDCA transfer
+			*/
+			while(!end_of_transfer);
+800033b8:	03 88       	ld.ub	r8,r1[0x0]
+800033ba:	58 08       	cp.w	r8,0
+800033bc:	cf e0       	breq	800033b8 <main+0x120>
+800033be:	08 97       	mov	r7,r4
+800033c0:	ee 05 00 08 	add	r8,r7,r5
+
+			for( i = 0; i < 20; i++){ //20 primeros bytes
+				print_dbg_char_hex( (U8)(*(ram_buffer + i)));
+800033c4:	11 8c       	ld.ub	r12,r8[0x0]
+800033c6:	f0 1f 00 28 	mcall	80003464 <main+0x1cc>
+			pdca_channelrx->cr = AVR32_PDCA_TEN_MASK; // Enable RX PDCA transfer first
+			pdca_channeltx->cr = AVR32_PDCA_TEN_MASK; // and TX PDCA transfer
+			*/
+			while(!end_of_transfer);
+
+			for( i = 0; i < 20; i++){ //20 primeros bytes
+800033ca:	2f f7       	sub	r7,-1
+800033cc:	59 47       	cp.w	r7,20
+800033ce:	cf 91       	brne	800033c0 <main+0x128>
+800033d0:	c0 48       	rjmp	800033d8 <main+0x140>
+				print_dbg_char_hex( (U8)(*(ram_buffer + i)));
+			}//For
+		}else{
+			print_dbg("\r\n! Unable to open memory \r\n");
+800033d2:	4a 6c       	lddpc	r12,80003468 <main+0x1d0>
+800033d4:	f0 1f 00 08 	mcall	800033f4 <main+0x15c>
+
+	Enable_global_interrupt();
+
+	local_pdca_init();
+
+	for(j = 1; j <= 3; j++){ //3 Sectores
+800033d8:	2f f6       	sub	r6,-1
+800033da:	58 46       	cp.w	r6,4
+800033dc:	cc 71       	brne	8000336a <main+0xd2>
+		}else{
+			print_dbg("\r\n! Unable to open memory \r\n");
+		}//IF
+	}//For
+	
+	print_dbg("\r\nEnd of the example.\r\n");
+800033de:	4a 4c       	lddpc	r12,8000346c <main+0x1d4>
+800033e0:	f0 1f 00 05 	mcall	800033f4 <main+0x15c>
+800033e4:	c0 08       	rjmp	800033e4 <main+0x14c>
+800033e6:	00 00       	add	r0,r0
+800033e8:	80 00       	ld.sh	r0,r0[0x0]
+800033ea:	2a 1c       	sub	r12,-95
+800033ec:	80 00       	ld.sh	r0,r0[0x0]
+800033ee:	2d 00       	sub	r0,-48
+800033f0:	80 00       	ld.sh	r0,r0[0x0]
+800033f2:	3c f4       	mov	r4,-49
+800033f4:	80 00       	ld.sh	r0,r0[0x0]
+800033f6:	2c ac       	sub	r12,-54
+800033f8:	80 00       	ld.sh	r0,r0[0x0]
+800033fa:	3d 0c       	mov	r12,-48
+800033fc:	80 00       	ld.sh	r0,r0[0x0]
+800033fe:	31 38       	mov	r8,19
+80003400:	80 00       	ld.sh	r0,r0[0x0]
+80003402:	3c c4       	mov	r4,-52
+80003404:	80 00       	ld.sh	r0,r0[0x0]
+80003406:	3c d4       	mov	r4,-51
+80003408:	80 00       	ld.sh	r0,r0[0x0]
+8000340a:	30 84       	mov	r4,8
+8000340c:	80 00       	ld.sh	r0,r0[0x0]
+8000340e:	2e 60       	sub	r0,-26
+80003410:	80 00       	ld.sh	r0,r0[0x0]
+80003412:	2e 98       	sub	r8,-23
+80003414:	80 00       	ld.sh	r0,r0[0x0]
+80003416:	2f f0       	sub	r0,-1
+80003418:	80 00       	ld.sh	r0,r0[0x0]
+8000341a:	29 5c       	sub	r12,-107
+8000341c:	80 00       	ld.sh	r0,r0[0x0]
+8000341e:	29 34       	sub	r4,-109
+80003420:	80 00       	ld.sh	r0,r0[0x0]
+80003422:	3d 20       	mov	r0,-46
+80003424:	80 00       	ld.sh	r0,r0[0x0]
+80003426:	20 08       	sub	r8,0
+80003428:	80 00       	ld.sh	r0,r0[0x0]
+8000342a:	3d 34       	mov	r4,-45
+8000342c:	00 00       	add	r0,r0
+8000342e:	03 18       	ld.sh	r8,r1++
+80003430:	80 00       	ld.sh	r0,r0[0x0]
+80003432:	2c 98       	sub	r8,-55
+80003434:	80 00       	ld.sh	r0,r0[0x0]
+80003436:	3d 40       	mov	r0,-44
+80003438:	80 00       	ld.sh	r0,r0[0x0]
+8000343a:	32 24       	mov	r4,34
+8000343c:	00 00       	add	r0,r0
+8000343e:	03 4c       	ld.w	r12,--r1
+80003440:	00 00       	add	r0,r0
+80003442:	03 40       	ld.w	r0,--r1
+80003444:	80 00       	ld.sh	r0,r0[0x0]
+80003446:	2d a8       	sub	r8,-38
+80003448:	80 00       	ld.sh	r0,r0[0x0]
+8000344a:	38 c0       	mov	r0,-116
+8000344c:	80 00       	ld.sh	r0,r0[0x0]
+8000344e:	23 7c       	sub	r12,55
+80003450:	80 00       	ld.sh	r0,r0[0x0]
+80003452:	3d 48       	mov	r8,-44
+80003454:	80 00       	ld.sh	r0,r0[0x0]
+80003456:	3d 70       	mov	r0,-41
+80003458:	80 00       	ld.sh	r0,r0[0x0]
+8000345a:	2f f6       	sub	r6,-1
+8000345c:	80 00       	ld.sh	r0,r0[0x0]
+8000345e:	2d 48       	sub	r8,-44
+80003460:	80 00       	ld.sh	r0,r0[0x0]
+80003462:	2d 38       	sub	r8,-45
+80003464:	80 00       	ld.sh	r0,r0[0x0]
+80003466:	2c 3c       	sub	r12,-61
+80003468:	80 00       	ld.sh	r0,r0[0x0]
+8000346a:	3d 78       	mov	r8,-41
+8000346c:	80 00       	ld.sh	r0,r0[0x0]
+8000346e:	3d 98       	mov	r8,-39
+
+80003470 <pdca_int_handler>:
+__attribute__((__interrupt__))
+#elif defined (__ICCAVR32__)
+__interrupt
+#endif
+
+static void pdca_int_handler(void){
+80003470:	d4 01       	pushm	lr
+	Disable_global_interrupt();
+80003472:	d3 03       	ssrf	0x10
+	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+80003474:	30 0c       	mov	r12,0
+80003476:	f0 1f 00 0a 	mcall	8000349c <pdca_int_handler+0x2c>
+	sd_mmc_spi_read_close_PDCA();
+8000347a:	f0 1f 00 0a 	mcall	800034a0 <pdca_int_handler+0x30>
+	wait();
+8000347e:	f0 1f 00 0a 	mcall	800034a4 <pdca_int_handler+0x34>
+	pdca_disable(AVR32_PDCA_CHANNEL_SPI_TX);
+80003482:	30 1c       	mov	r12,1
+80003484:	f0 1f 00 09 	mcall	800034a8 <pdca_int_handler+0x38>
+	pdca_disable(AVR32_PDCA_CHANNEL_SPI_RX);
+80003488:	30 0c       	mov	r12,0
+8000348a:	f0 1f 00 08 	mcall	800034a8 <pdca_int_handler+0x38>
+	Enable_global_interrupt();
+8000348e:	d5 03       	csrf	0x10
+	end_of_transfer = true;
+80003490:	30 19       	mov	r9,1
+80003492:	48 78       	lddpc	r8,800034ac <pdca_int_handler+0x3c>
+80003494:	b0 89       	st.b	r8[0x0],r9
+}//pdca_int_handler
+80003496:	d4 02       	popm	lr
+80003498:	d6 03       	rete
+8000349a:	00 00       	add	r0,r0
+8000349c:	80 00       	ld.sh	r0,r0[0x0]
+8000349e:	2d 80       	sub	r0,-40
+800034a0:	80 00       	ld.sh	r0,r0[0x0]
+800034a2:	21 24       	sub	r4,18
+800034a4:	80 00       	ld.sh	r0,r0[0x0]
+800034a6:	32 00       	mov	r0,32
+800034a8:	80 00       	ld.sh	r0,r0[0x0]
+800034aa:	2d 28       	sub	r8,-46
+800034ac:	00 00       	add	r0,r0
+800034ae:	03 40       	ld.w	r0,--r1
+
+Disassembly of section .exception:
+
+80003600 <_evba>:
+_evba:
+
+	.org  0x000
+	// Unrecoverable Exception.
+_handle_Unrecoverable_Exception:
+	rjmp $
+80003600:	c0 08       	rjmp	80003600 <_evba>
+	...
+
+80003604 <_handle_TLB_Multiple_Hit>:
+
+	.org  0x004
+	// TLB Multiple Hit.
+_handle_TLB_Multiple_Hit:
+	rjmp $
+80003604:	c0 08       	rjmp	80003604 <_handle_TLB_Multiple_Hit>
+	...
+
+80003608 <_handle_Bus_Error_Data_Fetch>:
+
+	.org  0x008
+	// Bus Error Data Fetch.
+_handle_Bus_Error_Data_Fetch:
+	rjmp $
+80003608:	c0 08       	rjmp	80003608 <_handle_Bus_Error_Data_Fetch>
+	...
+
+8000360c <_handle_Bus_Error_Instruction_Fetch>:
+
+	.org  0x00C
+	// Bus Error Instruction Fetch.
+_handle_Bus_Error_Instruction_Fetch:
+	rjmp $
+8000360c:	c0 08       	rjmp	8000360c <_handle_Bus_Error_Instruction_Fetch>
+	...
+
+80003610 <_handle_NMI>:
+
+	.org  0x010
+	// NMI.
+_handle_NMI:
+	rjmp $
+80003610:	c0 08       	rjmp	80003610 <_handle_NMI>
+	...
+
+80003614 <_handle_Instruction_Address>:
+
+	.org  0x014
+	// Instruction Address.
+_handle_Instruction_Address:
+	rjmp $
+80003614:	c0 08       	rjmp	80003614 <_handle_Instruction_Address>
+	...
+
+80003618 <_handle_ITLB_Protection>:
+
+	.org  0x018
+	// ITLB Protection.
+_handle_ITLB_Protection:
+	rjmp $
+80003618:	c0 08       	rjmp	80003618 <_handle_ITLB_Protection>
+	...
+
+8000361c <_handle_Breakpoint>:
+
+	.org  0x01C
+	// Breakpoint.
+_handle_Breakpoint:
+	rjmp $
+8000361c:	c0 08       	rjmp	8000361c <_handle_Breakpoint>
+	...
+
+80003620 <_handle_Illegal_Opcode>:
+
+	.org  0x020
+	// Illegal Opcode.
+_handle_Illegal_Opcode:
+	rjmp $
+80003620:	c0 08       	rjmp	80003620 <_handle_Illegal_Opcode>
+	...
+
+80003624 <_handle_Unimplemented_Instruction>:
+
+	.org  0x024
+	// Unimplemented Instruction.
+_handle_Unimplemented_Instruction:
+	rjmp $
+80003624:	c0 08       	rjmp	80003624 <_handle_Unimplemented_Instruction>
+	...
+
+80003628 <_handle_Privilege_Violation>:
+
+	.org  0x028
+	// Privilege Violation.
+_handle_Privilege_Violation:
+	rjmp $
+80003628:	c0 08       	rjmp	80003628 <_handle_Privilege_Violation>
+	...
+
+8000362c <_handle_Floating_Point>:
+
+	.org  0x02C
+	// Floating-Point: UNUSED IN AVR32UC and AVR32AP.
+_handle_Floating_Point:
+	rjmp $
+8000362c:	c0 08       	rjmp	8000362c <_handle_Floating_Point>
+	...
+
+80003630 <_handle_Coprocessor_Absent>:
+
+	.org  0x030
+	// Coprocessor Absent: UNUSED IN AVR32UC.
+_handle_Coprocessor_Absent:
+	rjmp $
+80003630:	c0 08       	rjmp	80003630 <_handle_Coprocessor_Absent>
+	...
+
+80003634 <_handle_Data_Address_Read>:
+
+	.org  0x034
+	// Data Address (Read).
+_handle_Data_Address_Read:
+	rjmp $
+80003634:	c0 08       	rjmp	80003634 <_handle_Data_Address_Read>
+	...
+
+80003638 <_handle_Data_Address_Write>:
+
+	.org  0x038
+	// Data Address (Write).
+_handle_Data_Address_Write:
+	rjmp $
+80003638:	c0 08       	rjmp	80003638 <_handle_Data_Address_Write>
+	...
+
+8000363c <_handle_DTLB_Protection_Read>:
+
+	.org  0x03C
+	// DTLB Protection (Read).
+_handle_DTLB_Protection_Read:
+	rjmp $
+8000363c:	c0 08       	rjmp	8000363c <_handle_DTLB_Protection_Read>
+	...
+
+80003640 <_handle_DTLB_Protection_Write>:
+
+	.org  0x040
+	// DTLB Protection (Write).
+_handle_DTLB_Protection_Write:
+	rjmp $
+80003640:	c0 08       	rjmp	80003640 <_handle_DTLB_Protection_Write>
+	...
+
+80003644 <_handle_DTLB_Modified>:
+
+	.org  0x044
+	// DTLB Modified: UNUSED IN AVR32UC.
+_handle_DTLB_Modified:
+	rjmp $
+80003644:	c0 08       	rjmp	80003644 <_handle_DTLB_Modified>
+	...
+
+80003650 <_handle_ITLB_Miss>:
+
+	.org  0x050
+	// ITLB Miss.
+_handle_ITLB_Miss:
+	rjmp $
+80003650:	c0 08       	rjmp	80003650 <_handle_ITLB_Miss>
+	...
+
+80003660 <_handle_DTLB_Miss_Read>:
+
+	.org  0x060
+	// DTLB Miss (Read).
+_handle_DTLB_Miss_Read:
+	rjmp $
+80003660:	c0 08       	rjmp	80003660 <_handle_DTLB_Miss_Read>
+	...
+
+80003670 <_handle_DTLB_Miss_Write>:
+
+	.org  0x070
+	// DTLB Miss (Write).
+_handle_DTLB_Miss_Write:
+	rjmp $
+80003670:	c0 08       	rjmp	80003670 <_handle_DTLB_Miss_Write>
+	...
+
+80003700 <_handle_Supervisor_Call>:
+
+	.org  0x100
+	// Supervisor Call.
+_handle_Supervisor_Call:
+	rjmp $
+80003700:	c0 08       	rjmp	80003700 <_handle_Supervisor_Call>
+80003702:	d7 03       	nop
+
+80003704 <_int0>:
+	 * RSR_INTx by the CPU upon interrupt entry. No other register is saved
+	 * by hardware.
+	 */
+	pushm   r8-r12, lr
+#endif
+	// Pass the int_level parameter to the _get_interrupt_handler function.
+80003704:	30 0c       	mov	r12,0
+80003706:	fe b0 fd 43 	rcall	8000318c <_get_interrupt_handler>
+8000370a:	58 0c       	cp.w	r12,0
+8000370c:	f8 0f 17 10 	movne	pc,r12
+	popm    r8-r12, lr
+#endif
+	/*
+	 * If this was a spurious interrupt (R12 == NULL), return from event
+	 * handler.
+	 */
+80003710:	d6 03       	rete
+
+80003712 <_int1>:
+	 * RSR_INTx by the CPU upon interrupt entry. No other register is saved
+	 * by hardware.
+	 */
+	pushm   r8-r12, lr
+#endif
+	// Pass the int_level parameter to the _get_interrupt_handler function.
+80003712:	30 1c       	mov	r12,1
+80003714:	fe b0 fd 3c 	rcall	8000318c <_get_interrupt_handler>
+80003718:	58 0c       	cp.w	r12,0
+8000371a:	f8 0f 17 10 	movne	pc,r12
+	popm    r8-r12, lr
+#endif
+	/*
+	 * If this was a spurious interrupt (R12 == NULL), return from event
+	 * handler.
+	 */
+8000371e:	d6 03       	rete
+
+80003720 <_int2>:
+	 * RSR_INTx by the CPU upon interrupt entry. No other register is saved
+	 * by hardware.
+	 */
+	pushm   r8-r12, lr
+#endif
+	// Pass the int_level parameter to the _get_interrupt_handler function.
+80003720:	30 2c       	mov	r12,2
+80003722:	fe b0 fd 35 	rcall	8000318c <_get_interrupt_handler>
+80003726:	58 0c       	cp.w	r12,0
+80003728:	f8 0f 17 10 	movne	pc,r12
+	popm    r8-r12, lr
+#endif
+	/*
+	 * If this was a spurious interrupt (R12 == NULL), return from event
+	 * handler.
+	 */
+8000372c:	d6 03       	rete
+
+8000372e <_int3>:
+	 * RSR_INTx by the CPU upon interrupt entry. No other register is saved
+	 * by hardware.
+	 */
+	pushm   r8-r12, lr
+#endif
+	// Pass the int_level parameter to the _get_interrupt_handler function.
+8000372e:	30 3c       	mov	r12,3
+80003730:	fe b0 fd 2e 	rcall	8000318c <_get_interrupt_handler>
+80003734:	58 0c       	cp.w	r12,0
+80003736:	f8 0f 17 10 	movne	pc,r12
+	popm    r8-r12, lr
+#endif
+	/*
+	 * If this was a spurious interrupt (R12 == NULL), return from event
+	 * handler.
+	 */
+8000373a:	d6 03       	rete
+8000373c:	d7 03       	nop
+8000373e:	d7 03       	nop
+80003740:	d7 03       	nop
+80003742:	d7 03       	nop
+80003744:	d7 03       	nop
+80003746:	d7 03       	nop
+80003748:	d7 03       	nop
+8000374a:	d7 03       	nop
+8000374c:	d7 03       	nop
+8000374e:	d7 03       	nop
+80003750:	d7 03       	nop
+80003752:	d7 03       	nop
+80003754:	d7 03       	nop
+80003756:	d7 03       	nop
+80003758:	d7 03       	nop
+8000375a:	d7 03       	nop
+8000375c:	d7 03       	nop
+8000375e:	d7 03       	nop
+80003760:	d7 03       	nop
+80003762:	d7 03       	nop
+80003764:	d7 03       	nop
+80003766:	d7 03       	nop
+80003768:	d7 03       	nop
+8000376a:	d7 03       	nop
+8000376c:	d7 03       	nop
+8000376e:	d7 03       	nop
+80003770:	d7 03       	nop
+80003772:	d7 03       	nop
+80003774:	d7 03       	nop
+80003776:	d7 03       	nop
+80003778:	d7 03       	nop
+8000377a:	d7 03       	nop
+8000377c:	d7 03       	nop
+8000377e:	d7 03       	nop
+80003780:	d7 03       	nop
+80003782:	d7 03       	nop
+80003784:	d7 03       	nop
+80003786:	d7 03       	nop
+80003788:	d7 03       	nop
+8000378a:	d7 03       	nop
+8000378c:	d7 03       	nop
+8000378e:	d7 03       	nop
+80003790:	d7 03       	nop
+80003792:	d7 03       	nop
+80003794:	d7 03       	nop
+80003796:	d7 03       	nop
+80003798:	d7 03       	nop
+8000379a:	d7 03       	nop
+8000379c:	d7 03       	nop
+8000379e:	d7 03       	nop
+800037a0:	d7 03       	nop
+800037a2:	d7 03       	nop
+800037a4:	d7 03       	nop
+800037a6:	d7 03       	nop
+800037a8:	d7 03       	nop
+800037aa:	d7 03       	nop
+800037ac:	d7 03       	nop
+800037ae:	d7 03       	nop
+800037b0:	d7 03       	nop
+800037b2:	d7 03       	nop
+800037b4:	d7 03       	nop
+800037b6:	d7 03       	nop
+800037b8:	d7 03       	nop
+800037ba:	d7 03       	nop
+800037bc:	d7 03       	nop
+800037be:	d7 03       	nop
+800037c0:	d7 03       	nop
+800037c2:	d7 03       	nop
+800037c4:	d7 03       	nop
+800037c6:	d7 03       	nop
+800037c8:	d7 03       	nop
+800037ca:	d7 03       	nop
+800037cc:	d7 03       	nop
+800037ce:	d7 03       	nop
+800037d0:	d7 03       	nop
+800037d2:	d7 03       	nop
+800037d4:	d7 03       	nop
+800037d6:	d7 03       	nop
+800037d8:	d7 03       	nop
+800037da:	d7 03       	nop
+800037dc:	d7 03       	nop
+800037de:	d7 03       	nop
+800037e0:	d7 03       	nop
+800037e2:	d7 03       	nop
+800037e4:	d7 03       	nop
+800037e6:	d7 03       	nop
+800037e8:	d7 03       	nop
+800037ea:	d7 03       	nop
+800037ec:	d7 03       	nop
+800037ee:	d7 03       	nop
+800037f0:	d7 03       	nop
+800037f2:	d7 03       	nop
+800037f4:	d7 03       	nop
+800037f6:	d7 03       	nop
+800037f8:	d7 03       	nop
+800037fa:	d7 03       	nop
+800037fc:	d7 03       	nop
+800037fe:	d7 03       	nop
