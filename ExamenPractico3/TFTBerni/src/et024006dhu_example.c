@@ -1,4 +1,4 @@
-
+#define dbg 0
 #include <avr32/io.h>
 #include "compiler.h"
 #include "board.h"
@@ -14,6 +14,7 @@
 #include "delay.h"
 #include "pwm.h"
 #include "avr32_logo.h"
+#include "print_funcs.h"
 
 //SPI SDCARD
 const char dummy_data[] =
@@ -36,12 +37,12 @@ const char dummy_data[] =
 #define BUFFERSIZE            64    //Number of bytes in the receive buffer in slave
 #define AVR32_PDCA_CHANNEL_USED_RX AVR32_PDCA_PID_SPI0_RX
 #define AVR32_PDCA_CHANNEL_USED_TX AVR32_PDCA_PID_SPI0_TX
-#define AVR32_PDCA_CHANNEL_SPI_RX 0 // In the example we will use the pdca channel 0.
-#define AVR32_PDCA_CHANNEL_SPI_TX 1 // In the example we will use the pdca channel 1.
+#define AVR32_PDCA_CHANNEL_SPI_RX 1 // In the example we will use the pdca channel 0.
+#define AVR32_PDCA_CHANNEL_SPI_TX 2 // In the example we will use the pdca channel 1.
 
 //USART POR DMA
 #define AVR32_PDCA_CHANNEL_USED_RX_USART  AVR32_PDCA_PID_USART0_RX
-#define AVR32_PDCA_CHANNEL_USART_RX 2 // In the example we will use the pdca channel 2 for USART0 in RX.
+#define AVR32_PDCA_CHANNEL_USART_RX 0 // In the example we will use the pdca channel 2 for USART0 in RX.
 
 //State machine logic
 enum btn{NONE, UP, DOWN, LEFT, RIGHT, CENTER};
@@ -79,6 +80,7 @@ int main(void){
 
 	//PM
 	pm_switch_to_osc0(&AVR32_PM, PBA_HZ, 3);
+	if(dbg) init_dbg_rs232(PBA_HZ);
 
 	//Key interrupts
 	init_button_interrupt();
@@ -94,7 +96,7 @@ int main(void){
 	//DMA for USART
 	//First Configuring USART0
 	static const gpio_map_t USART_GPIO_MAP ={
-	  {AVR32_USART1_RXD_0_0_PIN, AVR32_USART1_RXD_0_0_FUNCTION}
+	  {AVR32_USART0_RXD_0_0_PIN, AVR32_USART0_RXD_0_0_FUNCTION}
 	};// USART GPIOs
 	static const usart_options_t USART_OPTIONS ={
 	  .baudrate     = 9600,
@@ -103,13 +105,15 @@ int main(void){
 	  .stopbits     = USART_1_STOPBIT,
 	  .channelmode  = USART_NORMAL_CHMODE
 	};// USART options
-	gpio_enable_module(USART_GPIO_MAP,sizeof(USART_GPIO_MAP) / sizeof(USART_GPIO_MAP[0]));
-	usart_init_rs232(&AVR32_USART1, &USART_OPTIONS, 12000000);
+
+	if(!dbg) gpio_enable_module(USART_GPIO_MAP,sizeof(USART_GPIO_MAP) / sizeof(USART_GPIO_MAP[0]));
+	if(!dbg) usart_init_rs232(&AVR32_USART0, &USART_OPTIONS, 12000000);
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
 	tft_bl_init();
 	CLR_disp();
+
 	while(pwm_channel6.cdty < pwm_channel6.cprd){
 		pwm_channel6.cdty++;
 		pwm_channel6.cupd = pwm_channel6.cdty;
@@ -125,21 +129,32 @@ int main(void){
 
 			case 0://Do nothing
 				//---
+				if(usart_message_rx_complete) leds(8);
+
+				if(dbg){
+					print_dbg("STATE 0 \r\n");
+					CLR_disp();
+					et024006_PrintString("STATE 0",(const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+				}
+
 			break;
 
 			case 1:
+				if(dbg) print_dbg("STATE TECLA UP \r\n");
 				CLR_disp();
 				et024006_PrintString("Getting Message ... ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				state = 0;
 				usart_message_rx_complete=0;
 				pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_USART_RX); //Enable DMA and its RX intertupt
 				pdca_enable(AVR32_PDCA_CHANNEL_USART_RX);
+				state = 0;
 				//In its handler, turn LED0 on
 				//The message gets stored in usart_message
 			break;
 
 			case 2://Show the received message
+				if(dbg) print_dbg("STATE TECLA DOWN \r\n");
 				CLR_disp();
 				et024006_PrintString("Received Message:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
@@ -148,6 +163,7 @@ int main(void){
 			break;
 
 			case 3://Store message in SD
+				if(dbg) print_dbg("STATE TECLA RIGHT \r\n");
 				CLR_disp();
 				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				if(sd_mmc_spi_mem_check()){
@@ -181,6 +197,8 @@ int main(void){
 			break;
 
 			case 4://Swhow last stored value and its sector
+				if(dbg) print_dbg("STATE TECLA LEFT \r\n");
+
 				CLR_disp();
 				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				et024006_PrintString("Last written sector:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
@@ -216,6 +234,7 @@ int main(void){
 			break;
 
 			case 5://Show stored messages
+				print_dbg("STATE TECLA CENTER \r\n");
 			  CLR_disp();
 				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
@@ -274,6 +293,7 @@ void CLR_disp(void){
 	et024006_PutPixmap(avr32_logo, 320, 0, 0, 0, 0, 320, 240);
 }//CLR_disp
 
+
 static void pdca_int_handler(void){
 	Disable_global_interrupt();
 	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
@@ -287,15 +307,16 @@ static void pdca_int_handler(void){
 }//pdca_int_handler
 
 static void pdca_int_handler_usart(void){
-	et024006_PrintString("INTERRUPT", (const unsigned char *)&FONT8x8, 100, 100, WHITE, -1);
+
+	//et024006_PrintString("INTERRUPT", (const unsigned char *)&FONT8x8, 100, 100, WHITE, -1);
 	Disable_global_interrupt();
 	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_USART_RX);
 	//sd_mmc_spi_read_close_PDCA();
-	delay_us(10);
+	//delay_us(10);
 	pdca_disable(AVR32_PDCA_CHANNEL_USART_RX);
 	Enable_global_interrupt();
 	usart_message_rx_complete=1;
-	leds(8); //Turn LED0 on
+	//leds(8); //Turn LED0 on
 }//pdca_int_handler_usart
 
 static void sd_mmc_resources_init(void) {
@@ -306,6 +327,7 @@ static void sd_mmc_resources_init(void) {
 		{SD_MMC_SPI_MOSI_PIN, SD_MMC_SPI_MOSI_FUNCTION},  // MOSI.
 		{SD_MMC_SPI_NPCS_PIN, SD_MMC_SPI_NPCS_FUNCTION}   // Chip Select NPCS.
 	};//SPI Map
+
 
 	spi_options_t spiOptions = {
 		.reg          = SD_MMC_SPI_NPCS,
@@ -339,7 +361,7 @@ void local_pdca_init(void){
 	};//pdca_options_SPI_RX
 
 	pdca_channel_options_t pdca_options_SPI_TX ={ //TX
-		.addr = (void *)&dummy_data,              // memory address.
+		.addr = (void *) &dummy_data,              // memory address.
 		.size = 512,                              // transfer counter: here the size of the string
 		.r_addr = NULL,                           // next memory address after 1st transfer complete
 		.r_size = 0,                              // next transfer counter not used here
@@ -348,8 +370,8 @@ void local_pdca_init(void){
 	};//pdca_options_SPI_TX
 
 	pdca_channel_options_t pdca_options_USART_RX ={ //RX
-		.addr = usart_message,            // memory address.
-		.size = 51,                              // transfer counter: here the size of the string
+		.addr = &usart_message[0],            // memory address.
+		.size = 5,                              // transfer counter: here the size of the string
 		.r_addr = NULL,                           // next memory address after 1st transfer complete
 		.r_size = 0,                              // next transfer counter not used here
 		.pid = AVR32_PDCA_CHANNEL_USED_RX_USART,        // select peripheral ID - data are on reception from USART0
@@ -359,8 +381,8 @@ void local_pdca_init(void){
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_TX, &pdca_options_SPI_TX);
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_RX, &pdca_options_SPI_RX);
 	pdca_init_channel(AVR32_PDCA_CHANNEL_USART_RX, &pdca_options_USART_RX);
-	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_0, AVR32_INTC_INT1);  // pdca_channel_spi1_RX = 0
-	INTC_register_interrupt(&pdca_int_handler_usart, AVR32_PDCA_IRQ_2, AVR32_INTC_INT1);  // pdca_channel_usart_RX = 0
+	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_1, AVR32_INTC_INT1);  // pdca_channel_spi1_RX = 0
+	INTC_register_interrupt(&pdca_int_handler_usart, AVR32_PDCA_IRQ_0, AVR32_INTC_INT1);  // pdca_channel_usart_RX = 0
 
 } //local_pdca_init
 
@@ -408,9 +430,9 @@ void btn_interrupt_routine (void){
 		gpio_clear_pin_interrupt_flag(BTN_LEFT);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
-		gpio_clear_pin_interrupt_flag(BTN_CENTER);
 		btn_pressed=CENTER;
 		state=5;
+		gpio_clear_pin_interrupt_flag(BTN_CENTER);
 	}
 	gpio_get_pin_interrupt_flag(BTN_CENTER);
 } //Fin Botones

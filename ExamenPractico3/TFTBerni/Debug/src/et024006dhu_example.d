@@ -75,7 +75,8 @@ src/et024006dhu_example.d src/et024006dhu_example.o \
  ../src/ASF/common/services/clock/genclk.h \
  ../src/ASF/common/services/clock/uc3a0_a1/genclk.h \
  ../src/ASF/avr32/drivers/cpu/cycle_counter/cycle_counter.h \
- ../src/ASF/avr32/drivers/pwm/pwm.h ../src/avr32_logo.h ../src/dummy.h
+ ../src/ASF/avr32/drivers/pwm/pwm.h ../src/avr32_logo.h \
+ ../src/ASF/avr32/utils/debug/print_funcs.h ../src/dummy.h
 
 C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\UC3A_DFP\1.0.53\include\AT32UC3A0512/avr32/io.h:
 
@@ -242,5 +243,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bi
 ../src/ASF/avr32/drivers/pwm/pwm.h:
 
 ../src/avr32_logo.h:
+
+../src/ASF/avr32/utils/debug/print_funcs.h:
 
 ../src/dummy.h:
