@@ -51,7 +51,7 @@ volatile avr32_pdca_channel_t* pdca_channeltx ;
 volatile bool end_of_transfer; //DMA SD flag
 volatile char ram_buffer[1000]; //DMA SD buffer
 volatile char usart_message [51] = {"InitialMessage\0"}; //Read from USART (UP Key)
-volatile uint8_t Sector_Counter = 1; //Curren sector
+volatile uint8_t Sector_Counter = 0; //Curren sector
 char sector_counter_print[1]; //Converts current sector to string
 char usart_message_print[51]; //Converts message to string
 
@@ -98,8 +98,8 @@ int main(void){
 		delay_ms(1);
 	}//PWM
 	CLR_disp();
-	et024006_PrintString("Waiting", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-	et024006_PrintString("State 0", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+	et024006_PrintString("Welcome", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+	et024006_PrintString("No keys pressed yet", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 
 	while (1){
 		switch (state){
@@ -132,11 +132,16 @@ int main(void){
 				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				if(sd_mmc_spi_mem_check()){
 					if(usart_message){
+						Sector_Counter=(Sector_Counter % 5)+1;//Increase current sector
 						sd_mmc_spi_write_open (Sector_Counter); //Write in a Sector
 						sd_mmc_spi_write_sector_from_ram(&usart_message);
 						sd_mmc_spi_write_close ();
-						Sector_Counter=(Sector_Counter % 5)+1;//Increase current sector
 						et024006_PrintString("Message successfully stored", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+						sector_counter_print[0] = Sector_Counter+'0'; //-1 by post increment in case 3
+						et024006_PrintString("Sector:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+						et024006_PrintString(sector_counter_print, (const unsigned char *)&FONT8x8, 100, 50, WHITE, -1);
+						et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+						et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
 					} else {
 						CLR_disp();
 						et024006_PrintString("Message is empty", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
@@ -149,11 +154,11 @@ int main(void){
 				state=0;
 			break;
 
-			case 4://Leer ultimo mensaje guardado de la SD y su sector y mostrarlo
+			case 4://Swhow last stored value and its sector
 				CLR_disp();
 				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				et024006_PrintString("Last written sector:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-				sector_counter_print[0] = Sector_Counter+'0';
+				sector_counter_print[0] = Sector_Counter+'0'; //-1 by post increment in case 3
 				et024006_PrintString(sector_counter_print, (const unsigned char *)&FONT8x8, 200, 30, WHITE, -1);
 				et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
 
@@ -161,10 +166,7 @@ int main(void){
 				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
 				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
 				end_of_transfer = false;
-				if(sd_mmc_spi_read_open_PDCA (Sector_Counter)){
-					print_dbg("\r\nSector ");
-					print_dbg_ulong(Sector_Counter);
-					print_dbg(" :\r\n");
+				if(sd_mmc_spi_read_open_PDCA (Sector_Counter)){ //-1 by post increment in case 3
 					spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
 					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
 					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
