@@ -7,60 +7,58 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   1 .rela.got     00000000  80002008  80002008  00002408  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  2 .text         00002948  80002008  80002008  00002408  2**2
+  2 .text         00002a38  80002008  80002008  00002408  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  3 .exception    00000200  80004a00  80004a00  00004e00  2**9
+  3 .exception    00000200  80004c00  80004c00  00005000  2**9
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  4 .rodata       00000a6e  80004c00  80004c00  00005000  2**2
+  4 .rodata       00000a58  80004e00  80004e00  00005200  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .lalign       00000002  8000566e  8000566e  00005a6e  2**0
+  5 .dalign       00000004  00000004  00000004  00000000  2**0
                   ALLOC
-  6 .dalign       00000004  00000004  00000004  00000000  2**0
-                  ALLOC
-  7 .data         00000055  00000008  80005670  00005c08  2**2
+  6 .data         00000055  00000008  80005858  00006008  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .balign       00000003  0000005d  800056c5  00005c5d  2**0
+  7 .balign       00000003  0000005d  800058ad  0000605d  2**0
                   ALLOC
-  9 .bss          00000748  00000060  00000060  00000000  2**2
+  8 .bss          00000780  00000060  00000060  00000000  2**2
                   ALLOC
- 10 .heap         0000e858  000007a8  000007a8  00000000  2**0
+  9 .heap         0000e820  000007e0  000007e0  00000000  2**0
                   ALLOC
- 11 .comment      00000030  00000000  00000000  00005c5d  2**0
+ 10 .comment      00000030  00000000  00000000  0000605d  2**0
                   CONTENTS, READONLY
- 12 .debug_aranges 000008d8  00000000  00000000  00005c90  2**3
+ 11 .debug_aranges 000008d8  00000000  00000000  00006090  2**3
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_pubnames 00001754  00000000  00000000  00006568  2**0
+ 12 .debug_pubnames 00001785  00000000  00000000  00006968  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_info   0000eb37  00000000  00000000  00007cbc  2**0
+ 13 .debug_info   0000eb4f  00000000  00000000  000080ed  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_abbrev 00001fa0  00000000  00000000  000167f3  2**0
+ 14 .debug_abbrev 00001fcd  00000000  00000000  00016c3c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_line   0000700d  00000000  00000000  00018793  2**0
+ 15 .debug_line   0000703e  00000000  00000000  00018c09  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_frame  00001724  00000000  00000000  0001f7a0  2**2
+ 16 .debug_frame  00001774  00000000  00000000  0001fc48  2**2
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    000030c0  00000000  00000000  00020ec4  2**0
+ 17 .debug_str    000030e3  00000000  00000000  000213bc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_loc    00004be6  00000000  00000000  00023f84  2**0
+ 18 .debug_loc    00004c59  00000000  00000000  0002449f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 20 .debug_macinfo 00b31096  00000000  00000000  00028b6a  2**0
+ 19 .debug_macinfo 00b31096  00000000  00000000  000290f8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 21 .stack        00001000  0000f000  0000f000  00000000  2**0
+ 20 .stack        00001000  0000f000  0000f000  00000000  2**0
                   ALLOC
- 22 .debug_ranges 00000ab0  00000000  00000000  00b59c00  2**3
+ 21 .debug_ranges 00000ab0  00000000  00000000  00b5a190  2**3
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .reset:
 
 80000000 <_start>:
-80000000:	fe cf c1 a4 	sub	pc,pc,-15964
+80000000:	fe cf c1 e8 	sub	pc,pc,-15896
 
 80000004 <_trampoline>:
 80000004:	e0 8f 10 00 	bral	80002004 <program_start>
 	...
 
 80002004 <program_start>:
-80002004:	fe cf e1 a8 	sub	pc,pc,-7768
+80002004:	fe cf e1 ec 	sub	pc,pc,-7700
 
 Disassembly of section .text:
 
@@ -914,7 +912,7 @@ Disassembly of section .text:
 8000286c:	80 00       	ld.sh	r0,r0[0x0]
 8000286e:	35 6a       	mov	r10,86
 80002870:	80 00       	ld.sh	r0,r0[0x0]
-80002872:	45 a4       	lddsp	r4,sp[0x168]
+80002872:	46 94       	lddsp	r4,sp[0x1a4]
 80002874:	80 00       	ld.sh	r0,r0[0x0]
 80002876:	23 64       	sub	r4,54
 
@@ -2073,7 +2071,7 @@ Disassembly of section .text:
 80003490:	00 00       	add	r0,r0
 80003492:	00 88       	andn	r8,r0
 80003494:	80 00       	ld.sh	r0,r0[0x0]
-80003496:	4f 08       	lddpc	r8,80003654 <INTC_register_interrupt+0x58>
+80003496:	51 08       	stdsp	sp[0x40],r8
 80003498:	80 00       	ld.sh	r0,r0[0x0]
 8000349a:	34 f0       	mov	r0,79
 
@@ -2267,17 +2265,17 @@ Disassembly of section .text:
 8000365e:	f2 08 09 2a 	st.w	r9[r8<<0x2],r10
 80003662:	5e fc       	retal	r12
 80003664:	80 00       	ld.sh	r0,r0[0x0]
-80003666:	4f a8       	lddpc	r8,8000384c <pm_enable_osc0_crystal+0xc>
+80003666:	51 a8       	stdsp	sp[0x68],r8
 80003668:	80 00       	ld.sh	r0,r0[0x0]
-8000366a:	4a 00       	lddpc	r0,800036e8 <_get_interrupt_handler+0x18>
+8000366a:	4c 00       	lddpc	r0,80003768 <pdca_disable_interrupt_reload_counter_zero+0x1c>
 8000366c:	80 00       	ld.sh	r0,r0[0x0]
-8000366e:	4b 04       	lddpc	r4,8000372c <pdca_enable>
+8000366e:	4d 04       	lddpc	r4,800037ac <pdca_load_channel+0x10>
 80003670:	80 00       	ld.sh	r0,r0[0x0]
-80003672:	4b 12       	lddpc	r2,80003734 <pdca_enable+0x8>
+80003672:	4d 12       	lddpc	r2,800037b4 <pdca_load_channel+0x18>
 80003674:	80 00       	ld.sh	r0,r0[0x0]
-80003676:	4b 20       	lddpc	r0,8000373c <pdca_enable_interrupt_transfer_complete>
+80003676:	4d 20       	lddpc	r0,800037bc <pdca_load_channel+0x20>
 80003678:	80 00       	ld.sh	r0,r0[0x0]
-8000367a:	4b 2e       	lddpc	lr,80003740 <pdca_enable_interrupt_transfer_complete+0x4>
+8000367a:	4d 2e       	lddpc	lr,800037c0 <pdca_load_channel+0x24>
 
 8000367c <INTC_init_interrupts>:
 8000367c:	d4 21       	pushm	r4-r7,lr
@@ -2310,13 +2308,13 @@ Disassembly of section .text:
 800036bc:	d8 22       	popm	r4-r7,pc
 800036be:	00 00       	add	r0,r0
 800036c0:	80 00       	ld.sh	r0,r0[0x0]
-800036c2:	4a 00       	lddpc	r0,80003740 <pdca_enable_interrupt_transfer_complete+0x4>
+800036c2:	4c 00       	lddpc	r0,800037c0 <pdca_load_channel+0x24>
 800036c4:	80 00       	ld.sh	r0,r0[0x0]
-800036c6:	4f a8       	lddpc	r8,800038ac <pm_enable_clk0+0x14>
+800036c6:	51 a8       	stdsp	sp[0x68],r8
 800036c8:	80 00       	ld.sh	r0,r0[0x0]
 800036ca:	35 fa       	mov	r10,95
 800036cc:	80 00       	ld.sh	r0,r0[0x0]
-800036ce:	4b 04       	lddpc	r4,8000378c <pdca_disable_interrupt_transfer_complete+0x18>
+800036ce:	4d 04       	lddpc	r4,8000380c <pdca_init_channel+0x38>
 
 800036d0 <_get_interrupt_handler>:
 800036d0:	fe 78 08 00 	mov	r8,-63488
@@ -2336,7 +2334,7 @@ Disassembly of section .text:
 800036fe:	f2 08 03 2c 	ld.w	r12,r9[r8<<0x2]
 80003702:	5e fc       	retal	r12
 80003704:	80 00       	ld.sh	r0,r0[0x0]
-80003706:	4f a8       	lddpc	r8,800038ec <pwm_channel_init>
+80003706:	51 a8       	stdsp	sp[0x68],r8
 
 80003708 <pdca_get_handler>:
 80003708:	30 e8       	mov	r8,14
@@ -3016,1786 +3014,1915 @@ Disassembly of section .text:
 80003d50:	80 00       	ld.sh	r0,r0[0x0]
 80003d52:	3c 2c       	mov	r12,-62
 
-80003d54 <print_char_hex>:
-80003d54:	d4 01       	pushm	lr
-80003d56:	20 1d       	sub	sp,4
-80003d58:	30 08       	mov	r8,0
-80003d5a:	ba a8       	st.b	sp[0x2],r8
-80003d5c:	48 88       	lddpc	r8,80003d7c <print_char_hex+0x28>
-80003d5e:	f3 db c0 04 	bfextu	r9,r11,0x0,0x4
-80003d62:	f0 09 07 09 	ld.ub	r9,r8[r9]
-80003d66:	ba 99       	st.b	sp[0x1],r9
-80003d68:	f7 db c0 84 	bfextu	r11,r11,0x4,0x4
-80003d6c:	f0 0b 07 08 	ld.ub	r8,r8[r11]
-80003d70:	ba 88       	st.b	sp[0x0],r8
-80003d72:	1a 9b       	mov	r11,sp
-80003d74:	f0 1f 00 03 	mcall	80003d80 <print_char_hex+0x2c>
-80003d78:	2f fd       	sub	sp,-4
-80003d7a:	d8 02       	popm	pc
-80003d7c:	80 00       	ld.sh	r0,r0[0x0]
-80003d7e:	50 58       	stdsp	sp[0x14],r8
-80003d80:	80 00       	ld.sh	r0,r0[0x0]
-80003d82:	3d 48       	mov	r8,-44
+80003d54 <print_ulong>:
+80003d54:	eb cd 40 e0 	pushm	r5-r7,lr
+80003d58:	20 3d       	sub	sp,12
+80003d5a:	30 08       	mov	r8,0
+80003d5c:	fb 68 00 0a 	st.b	sp[10],r8
+80003d60:	30 a9       	mov	r9,10
+80003d62:	1a 95       	mov	r5,sp
+80003d64:	e0 6e cc cd 	mov	lr,52429
+80003d68:	ea 1e cc cc 	orh	lr,0xcccc
+80003d6c:	20 19       	sub	r9,1
+80003d6e:	f6 0e 06 46 	mulu.d	r6,r11,lr
+80003d72:	0e 98       	mov	r8,r7
+80003d74:	a3 98       	lsr	r8,0x3
+80003d76:	f0 08 00 2a 	add	r10,r8,r8<<0x2
+80003d7a:	f6 0a 01 1b 	sub	r11,r11,r10<<0x1
+80003d7e:	2d 0b       	sub	r11,-48
+80003d80:	ea 09 0b 0b 	st.b	r5[r9],r11
+80003d84:	10 9b       	mov	r11,r8
+80003d86:	58 08       	cp.w	r8,0
+80003d88:	cf 21       	brne	80003d6c <print_ulong+0x18>
+80003d8a:	1a 9b       	mov	r11,sp
+80003d8c:	12 0b       	add	r11,r9
+80003d8e:	f0 1f 00 03 	mcall	80003d98 <print_ulong+0x44>
+80003d92:	2f dd       	sub	sp,-12
+80003d94:	e3 cd 80 e0 	ldm	sp++,r5-r7,pc
+80003d98:	80 00       	ld.sh	r0,r0[0x0]
+80003d9a:	3d 48       	mov	r8,-44
 
-80003d84 <print_dbg_char_hex>:
-80003d84:	d4 01       	pushm	lr
-80003d86:	18 9b       	mov	r11,r12
-80003d88:	fe 7c 14 00 	mov	r12,-60416
-80003d8c:	f0 1f 00 02 	mcall	80003d94 <print_dbg_char_hex+0x10>
-80003d90:	d8 02       	popm	pc
-80003d92:	00 00       	add	r0,r0
-80003d94:	80 00       	ld.sh	r0,r0[0x0]
-80003d96:	3d 54       	mov	r4,-43
+80003d9c <print_dbg_ulong>:
+80003d9c:	d4 01       	pushm	lr
+80003d9e:	18 9b       	mov	r11,r12
+80003da0:	fe 7c 14 00 	mov	r12,-60416
+80003da4:	f0 1f 00 02 	mcall	80003dac <print_dbg_ulong+0x10>
+80003da8:	d8 02       	popm	pc
+80003daa:	00 00       	add	r0,r0
+80003dac:	80 00       	ld.sh	r0,r0[0x0]
+80003dae:	3d 54       	mov	r4,-43
 
-80003d98 <print_ulong>:
-80003d98:	eb cd 40 e0 	pushm	r5-r7,lr
-80003d9c:	20 3d       	sub	sp,12
-80003d9e:	30 08       	mov	r8,0
-80003da0:	fb 68 00 0a 	st.b	sp[10],r8
-80003da4:	30 a9       	mov	r9,10
-80003da6:	1a 95       	mov	r5,sp
-80003da8:	e0 6e cc cd 	mov	lr,52429
-80003dac:	ea 1e cc cc 	orh	lr,0xcccc
-80003db0:	20 19       	sub	r9,1
-80003db2:	f6 0e 06 46 	mulu.d	r6,r11,lr
-80003db6:	0e 98       	mov	r8,r7
-80003db8:	a3 98       	lsr	r8,0x3
-80003dba:	f0 08 00 2a 	add	r10,r8,r8<<0x2
-80003dbe:	f6 0a 01 1b 	sub	r11,r11,r10<<0x1
-80003dc2:	2d 0b       	sub	r11,-48
-80003dc4:	ea 09 0b 0b 	st.b	r5[r9],r11
-80003dc8:	10 9b       	mov	r11,r8
-80003dca:	58 08       	cp.w	r8,0
-80003dcc:	cf 21       	brne	80003db0 <print_ulong+0x18>
-80003dce:	1a 9b       	mov	r11,sp
-80003dd0:	12 0b       	add	r11,r9
-80003dd2:	f0 1f 00 03 	mcall	80003ddc <print_ulong+0x44>
-80003dd6:	2f dd       	sub	sp,-12
-80003dd8:	e3 cd 80 e0 	ldm	sp++,r5-r7,pc
-80003ddc:	80 00       	ld.sh	r0,r0[0x0]
-80003dde:	3d 48       	mov	r8,-44
+80003db0 <print_dbg>:
+80003db0:	d4 01       	pushm	lr
+80003db2:	18 9b       	mov	r11,r12
+80003db4:	fe 7c 14 00 	mov	r12,-60416
+80003db8:	f0 1f 00 02 	mcall	80003dc0 <print_dbg+0x10>
+80003dbc:	d8 02       	popm	pc
+80003dbe:	00 00       	add	r0,r0
+80003dc0:	80 00       	ld.sh	r0,r0[0x0]
+80003dc2:	3d 48       	mov	r8,-44
 
-80003de0 <print_dbg_ulong>:
-80003de0:	d4 01       	pushm	lr
-80003de2:	18 9b       	mov	r11,r12
-80003de4:	fe 7c 14 00 	mov	r12,-60416
-80003de8:	f0 1f 00 02 	mcall	80003df0 <print_dbg_ulong+0x10>
-80003dec:	d8 02       	popm	pc
-80003dee:	00 00       	add	r0,r0
-80003df0:	80 00       	ld.sh	r0,r0[0x0]
-80003df2:	3d 98       	mov	r8,-39
+80003dc4 <init_dbg_rs232_ex>:
+80003dc4:	eb cd 40 80 	pushm	r7,lr
+80003dc8:	20 3d       	sub	sp,12
+80003dca:	16 97       	mov	r7,r11
+80003dcc:	50 0c       	stdsp	sp[0x0],r12
+80003dce:	30 88       	mov	r8,8
+80003dd0:	ba c8       	st.b	sp[0x4],r8
+80003dd2:	30 48       	mov	r8,4
+80003dd4:	ba d8       	st.b	sp[0x5],r8
+80003dd6:	30 08       	mov	r8,0
+80003dd8:	ba 38       	st.h	sp[0x6],r8
+80003dda:	fb 68 00 08 	st.b	sp[8],r8
+80003dde:	30 2b       	mov	r11,2
+80003de0:	48 6c       	lddpc	r12,80003df8 <init_dbg_rs232_ex+0x34>
+80003de2:	f0 1f 00 07 	mcall	80003dfc <init_dbg_rs232_ex+0x38>
+80003de6:	0e 9a       	mov	r10,r7
+80003de8:	1a 9b       	mov	r11,sp
+80003dea:	fe 7c 14 00 	mov	r12,-60416
+80003dee:	f0 1f 00 05 	mcall	80003e00 <init_dbg_rs232_ex+0x3c>
+80003df2:	2f dd       	sub	sp,-12
+80003df4:	e3 cd 80 80 	ldm	sp++,r7,pc
+80003df8:	80 00       	ld.sh	r0,r0[0x0]
+80003dfa:	52 48       	stdsp	sp[0x90],r8
+80003dfc:	80 00       	ld.sh	r0,r0[0x0]
+80003dfe:	34 f0       	mov	r0,79
+80003e00:	80 00       	ld.sh	r0,r0[0x0]
+80003e02:	3c 7c       	mov	r12,-57
 
-80003df4 <print_dbg>:
-80003df4:	d4 01       	pushm	lr
-80003df6:	18 9b       	mov	r11,r12
-80003df8:	fe 7c 14 00 	mov	r12,-60416
-80003dfc:	f0 1f 00 02 	mcall	80003e04 <print_dbg+0x10>
-80003e00:	d8 02       	popm	pc
-80003e02:	00 00       	add	r0,r0
-80003e04:	80 00       	ld.sh	r0,r0[0x0]
-80003e06:	3d 48       	mov	r8,-44
+80003e04 <init_dbg_rs232>:
+80003e04:	d4 01       	pushm	lr
+80003e06:	18 9b       	mov	r11,r12
+80003e08:	e0 6c e1 00 	mov	r12,57600
+80003e0c:	f0 1f 00 02 	mcall	80003e14 <init_dbg_rs232+0x10>
+80003e10:	d8 02       	popm	pc
+80003e12:	00 00       	add	r0,r0
+80003e14:	80 00       	ld.sh	r0,r0[0x0]
+80003e16:	3d c4       	mov	r4,-36
 
-80003e08 <init_dbg_rs232_ex>:
-80003e08:	eb cd 40 80 	pushm	r7,lr
-80003e0c:	20 3d       	sub	sp,12
-80003e0e:	16 97       	mov	r7,r11
-80003e10:	50 0c       	stdsp	sp[0x0],r12
-80003e12:	30 88       	mov	r8,8
-80003e14:	ba c8       	st.b	sp[0x4],r8
-80003e16:	30 48       	mov	r8,4
-80003e18:	ba d8       	st.b	sp[0x5],r8
-80003e1a:	30 08       	mov	r8,0
-80003e1c:	ba 38       	st.h	sp[0x6],r8
-80003e1e:	fb 68 00 08 	st.b	sp[8],r8
-80003e22:	30 2b       	mov	r11,2
-80003e24:	48 6c       	lddpc	r12,80003e3c <init_dbg_rs232_ex+0x34>
-80003e26:	f0 1f 00 07 	mcall	80003e40 <init_dbg_rs232_ex+0x38>
-80003e2a:	0e 9a       	mov	r10,r7
-80003e2c:	1a 9b       	mov	r11,sp
-80003e2e:	fe 7c 14 00 	mov	r12,-60416
-80003e32:	f0 1f 00 05 	mcall	80003e44 <init_dbg_rs232_ex+0x3c>
-80003e36:	2f dd       	sub	sp,-12
-80003e38:	e3 cd 80 80 	ldm	sp++,r7,pc
-80003e3c:	80 00       	ld.sh	r0,r0[0x0]
-80003e3e:	50 48       	stdsp	sp[0x10],r8
-80003e40:	80 00       	ld.sh	r0,r0[0x0]
-80003e42:	34 f0       	mov	r0,79
-80003e44:	80 00       	ld.sh	r0,r0[0x0]
-80003e46:	3c 7c       	mov	r12,-57
+80003e18 <_stext>:
+80003e18:	e0 7d 00 00 	mov	sp,65536
+80003e1c:	fe c0 f2 1c 	sub	r0,pc,-3556
+80003e20:	e3 b0 00 01 	mtsr	0x4,r0
+80003e24:	d5 53       	csrf	0x15
+80003e26:	30 80       	mov	r0,8
+80003e28:	36 01       	mov	r1,96
+80003e2a:	02 30       	cp.w	r0,r1
+80003e2c:	c0 72       	brcc	80003e3a <idata_load_loop_end>
+80003e2e:	fe c2 e5 d6 	sub	r2,pc,-6698
 
-80003e48 <init_dbg_rs232>:
-80003e48:	d4 01       	pushm	lr
-80003e4a:	18 9b       	mov	r11,r12
-80003e4c:	e0 6c e1 00 	mov	r12,57600
-80003e50:	f0 1f 00 02 	mcall	80003e58 <init_dbg_rs232+0x10>
-80003e54:	d8 02       	popm	pc
-80003e56:	00 00       	add	r0,r0
-80003e58:	80 00       	ld.sh	r0,r0[0x0]
-80003e5a:	3e 08       	mov	r8,-32
+80003e32 <idata_load_loop>:
+80003e32:	a5 05       	ld.d	r4,r2++
+80003e34:	a1 24       	st.d	r0++,r4
+80003e36:	02 30       	cp.w	r0,r1
+80003e38:	cf d3       	brcs	80003e32 <idata_load_loop>
 
-80003e5c <_stext>:
-80003e5c:	e0 7d 00 00 	mov	sp,65536
-80003e60:	fe c0 f4 60 	sub	r0,pc,-2976
-80003e64:	e3 b0 00 01 	mtsr	0x4,r0
-80003e68:	d5 53       	csrf	0x15
-80003e6a:	30 80       	mov	r0,8
-80003e6c:	36 01       	mov	r1,96
-80003e6e:	02 30       	cp.w	r0,r1
-80003e70:	c0 72       	brcc	80003e7e <idata_load_loop_end>
-80003e72:	fe c2 e8 02 	sub	r2,pc,-6142
+80003e3a <idata_load_loop_end>:
+80003e3a:	36 00       	mov	r0,96
+80003e3c:	e0 61 07 e0 	mov	r1,2016
+80003e40:	02 30       	cp.w	r0,r1
+80003e42:	c0 62       	brcc	80003e4e <udata_clear_loop_end>
+80003e44:	30 02       	mov	r2,0
+80003e46:	30 03       	mov	r3,0
 
-80003e76 <idata_load_loop>:
-80003e76:	a5 05       	ld.d	r4,r2++
-80003e78:	a1 24       	st.d	r0++,r4
-80003e7a:	02 30       	cp.w	r0,r1
-80003e7c:	cf d3       	brcs	80003e76 <idata_load_loop>
+80003e48 <udata_clear_loop>:
+80003e48:	a1 22       	st.d	r0++,r2
+80003e4a:	02 30       	cp.w	r0,r1
+80003e4c:	cf e3       	brcs	80003e48 <udata_clear_loop>
 
-80003e7e <idata_load_loop_end>:
-80003e7e:	36 00       	mov	r0,96
-80003e80:	e0 61 07 a8 	mov	r1,1960
-80003e84:	02 30       	cp.w	r0,r1
-80003e86:	c0 62       	brcc	80003e92 <udata_clear_loop_end>
-80003e88:	30 02       	mov	r2,0
-80003e8a:	30 03       	mov	r3,0
+80003e4e <udata_clear_loop_end>:
+80003e4e:	fe cf fd f2 	sub	pc,pc,-526
+80003e52:	d7 03       	nop
 
-80003e8c <udata_clear_loop>:
-80003e8c:	a1 22       	st.d	r0++,r2
-80003e8e:	02 30       	cp.w	r0,r1
-80003e90:	cf e3       	brcs	80003e8c <udata_clear_loop>
-
-80003e92 <udata_clear_loop_end>:
-80003e92:	fe cf fd f2 	sub	pc,pc,-526
-80003e96:	d7 03       	nop
-
-80003e98 <wait>:
+80003e54 <wait>:
 
 void CLR_disp(void){
 	et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
 }//CLR_disp
 
 void wait(){
-80003e98:	20 1d       	sub	sp,4
+80003e54:	20 1d       	sub	sp,4
 	volatile int i;
 	for(i = 0 ; i < 5000; i++);
-80003e9a:	30 08       	mov	r8,0
-80003e9c:	50 08       	stdsp	sp[0x0],r8
-80003e9e:	40 08       	lddsp	r8,sp[0x0]
-80003ea0:	e0 48 13 87 	cp.w	r8,4999
-80003ea4:	e0 89 00 0a 	brgt	80003eb8 <wait+0x20>
-80003ea8:	40 08       	lddsp	r8,sp[0x0]
-80003eaa:	2f f8       	sub	r8,-1
-80003eac:	50 08       	stdsp	sp[0x0],r8
-80003eae:	40 08       	lddsp	r8,sp[0x0]
-80003eb0:	e0 48 13 87 	cp.w	r8,4999
-80003eb4:	fe 9a ff fa 	brle	80003ea8 <wait+0x10>
+80003e56:	30 08       	mov	r8,0
+80003e58:	50 08       	stdsp	sp[0x0],r8
+80003e5a:	40 08       	lddsp	r8,sp[0x0]
+80003e5c:	e0 48 13 87 	cp.w	r8,4999
+80003e60:	e0 89 00 0a 	brgt	80003e74 <wait+0x20>
+80003e64:	40 08       	lddsp	r8,sp[0x0]
+80003e66:	2f f8       	sub	r8,-1
+80003e68:	50 08       	stdsp	sp[0x0],r8
+80003e6a:	40 08       	lddsp	r8,sp[0x0]
+80003e6c:	e0 48 13 87 	cp.w	r8,4999
+80003e70:	fe 9a ff fa 	brle	80003e64 <wait+0x10>
 }//Wait
-80003eb8:	2f fd       	sub	sp,-4
-80003eba:	5e fc       	retal	r12
+80003e74:	2f fd       	sub	sp,-4
+80003e76:	5e fc       	retal	r12
 
-80003ebc <init_button_interrupt>:
+80003e78 <init_button_interrupt>:
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_RX, &pdca_options_SPI_RX);
 	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_0, AVR32_INTC_INT1);  // pdca_channel_spi1_RX = 0
 
 } //local_pdca_init
 
 void init_button_interrupt(void){//inicializar interrupciones de botones
-80003ebc:	d4 21       	pushm	r4-r7,lr
-80003ebe:	20 3d       	sub	sp,12
+80003e78:	d4 21       	pushm	r4-r7,lr
+80003e7a:	20 3d       	sub	sp,12
 	Disable_global_interrupt();
-80003ec0:	d3 03       	ssrf	0x10
+80003e7c:	d3 03       	ssrf	0x10
 	INTC_init_interrupts();
-80003ec2:	f0 1f 00 14 	mcall	80003f10 <init_button_interrupt+0x54>
+80003e7e:	f0 1f 00 14 	mcall	80003ecc <init_button_interrupt+0x54>
 	INTC_register_interrupt(&btn_interrupt_routine, 70, 3);
-80003ec6:	49 47       	lddpc	r7,80003f14 <init_button_interrupt+0x58>
-80003ec8:	30 3a       	mov	r10,3
-80003eca:	34 6b       	mov	r11,70
-80003ecc:	0e 9c       	mov	r12,r7
-80003ece:	f0 1f 00 13 	mcall	80003f18 <init_button_interrupt+0x5c>
+80003e82:	49 47       	lddpc	r7,80003ed0 <init_button_interrupt+0x58>
+80003e84:	30 3a       	mov	r10,3
+80003e86:	34 6b       	mov	r11,70
+80003e88:	0e 9c       	mov	r12,r7
+80003e8a:	f0 1f 00 13 	mcall	80003ed4 <init_button_interrupt+0x5c>
 	INTC_register_interrupt(&btn_interrupt_routine, 71, 3);
-80003ed2:	30 3a       	mov	r10,3
-80003ed4:	34 7b       	mov	r11,71
-80003ed6:	0e 9c       	mov	r12,r7
-80003ed8:	f0 1f 00 10 	mcall	80003f18 <init_button_interrupt+0x5c>
+80003e8e:	30 3a       	mov	r10,3
+80003e90:	34 7b       	mov	r11,71
+80003e92:	0e 9c       	mov	r12,r7
+80003e94:	f0 1f 00 10 	mcall	80003ed4 <init_button_interrupt+0x5c>
 	uint16_t button_ref [] = {BTN_UP,BTN_DOWN,BTN_RIGHT,BTN_LEFT,BTN_CENTER};
-80003edc:	fa c6 ff fe 	sub	r6,sp,-2
-80003ee0:	30 aa       	mov	r10,10
-80003ee2:	48 fb       	lddpc	r11,80003f1c <init_button_interrupt+0x60>
-80003ee4:	0c 9c       	mov	r12,r6
-80003ee6:	f0 1f 00 0f 	mcall	80003f20 <init_button_interrupt+0x64>
+80003e98:	fa c6 ff fe 	sub	r6,sp,-2
+80003e9c:	30 aa       	mov	r10,10
+80003e9e:	48 fb       	lddpc	r11,80003ed8 <init_button_interrupt+0x60>
+80003ea0:	0c 9c       	mov	r12,r6
+80003ea2:	f0 1f 00 0f 	mcall	80003edc <init_button_interrupt+0x64>
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_RX, &pdca_options_SPI_RX);
 	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_0, AVR32_INTC_INT1);  // pdca_channel_spi1_RX = 0
 
 } //local_pdca_init
 
 void init_button_interrupt(void){//inicializar interrupciones de botones
-80003eea:	fa c5 ff f4 	sub	r5,sp,-12
+80003ea6:	fa c5 ff f4 	sub	r5,sp,-12
 	INTC_register_interrupt(&btn_interrupt_routine, 71, 3);
 	uint16_t button_ref [] = {BTN_UP,BTN_DOWN,BTN_RIGHT,BTN_LEFT,BTN_CENTER};
 	for(uint8_t i=0; i<5; i++){
 		gpio_enable_gpio_pin(button_ref[i]);
 		gpio_enable_pin_pull_up(button_ref[i]);
 		gpio_enable_pin_interrupt(button_ref[i],GPIO_FALLING_EDGE);
-80003eee:	30 24       	mov	r4,2
+80003eaa:	30 24       	mov	r4,2
 	INTC_init_interrupts();
 	INTC_register_interrupt(&btn_interrupt_routine, 70, 3);
 	INTC_register_interrupt(&btn_interrupt_routine, 71, 3);
 	uint16_t button_ref [] = {BTN_UP,BTN_DOWN,BTN_RIGHT,BTN_LEFT,BTN_CENTER};
 	for(uint8_t i=0; i<5; i++){
 		gpio_enable_gpio_pin(button_ref[i]);
-80003ef0:	0d 27       	ld.uh	r7,r6++
-80003ef2:	0e 9c       	mov	r12,r7
-80003ef4:	f0 1f 00 0c 	mcall	80003f24 <init_button_interrupt+0x68>
+80003eac:	0d 27       	ld.uh	r7,r6++
+80003eae:	0e 9c       	mov	r12,r7
+80003eb0:	f0 1f 00 0c 	mcall	80003ee0 <init_button_interrupt+0x68>
 		gpio_enable_pin_pull_up(button_ref[i]);
-80003ef8:	0e 9c       	mov	r12,r7
-80003efa:	f0 1f 00 0c 	mcall	80003f28 <init_button_interrupt+0x6c>
+80003eb4:	0e 9c       	mov	r12,r7
+80003eb6:	f0 1f 00 0c 	mcall	80003ee4 <init_button_interrupt+0x6c>
 		gpio_enable_pin_interrupt(button_ref[i],GPIO_FALLING_EDGE);
-80003efe:	08 9b       	mov	r11,r4
-80003f00:	0e 9c       	mov	r12,r7
-80003f02:	f0 1f 00 0b 	mcall	80003f2c <init_button_interrupt+0x70>
+80003eba:	08 9b       	mov	r11,r4
+80003ebc:	0e 9c       	mov	r12,r7
+80003ebe:	f0 1f 00 0b 	mcall	80003ee8 <init_button_interrupt+0x70>
 	Disable_global_interrupt();
 	INTC_init_interrupts();
 	INTC_register_interrupt(&btn_interrupt_routine, 70, 3);
 	INTC_register_interrupt(&btn_interrupt_routine, 71, 3);
 	uint16_t button_ref [] = {BTN_UP,BTN_DOWN,BTN_RIGHT,BTN_LEFT,BTN_CENTER};
 	for(uint8_t i=0; i<5; i++){
-80003f06:	0a 36       	cp.w	r6,r5
-80003f08:	cf 41       	brne	80003ef0 <init_button_interrupt+0x34>
+80003ec2:	0a 36       	cp.w	r6,r5
+80003ec4:	cf 41       	brne	80003eac <init_button_interrupt+0x34>
 		gpio_enable_gpio_pin(button_ref[i]);
 		gpio_enable_pin_pull_up(button_ref[i]);
 		gpio_enable_pin_interrupt(button_ref[i],GPIO_FALLING_EDGE);
 	}//For
 	Enable_global_interrupt();
-80003f0a:	d5 03       	csrf	0x10
+80003ec6:	d5 03       	csrf	0x10
 }//init_button_interrupt
-80003f0c:	2f dd       	sub	sp,-12
-80003f0e:	d8 22       	popm	r4-r7,pc
-80003f10:	80 00       	ld.sh	r0,r0[0x0]
-80003f12:	36 7c       	mov	r12,103
-80003f14:	80 00       	ld.sh	r0,r0[0x0]
-80003f16:	40 00       	lddsp	r0,sp[0x0]
-80003f18:	80 00       	ld.sh	r0,r0[0x0]
-80003f1a:	35 fc       	mov	r12,95
-80003f1c:	80 00       	ld.sh	r0,r0[0x0]
-80003f1e:	56 64       	stdsp	sp[0x198],r4
-80003f20:	80 00       	ld.sh	r0,r0[0x0]
-80003f22:	48 08       	lddpc	r8,80003f20 <init_button_interrupt+0x64>
-80003f24:	80 00       	ld.sh	r0,r0[0x0]
-80003f26:	35 20       	mov	r0,82
-80003f28:	80 00       	ld.sh	r0,r0[0x0]
-80003f2a:	35 38       	mov	r8,83
-80003f2c:	80 00       	ld.sh	r0,r0[0x0]
-80003f2e:	35 86       	mov	r6,88
+80003ec8:	2f dd       	sub	sp,-12
+80003eca:	d8 22       	popm	r4-r7,pc
+80003ecc:	80 00       	ld.sh	r0,r0[0x0]
+80003ece:	36 7c       	mov	r12,103
+80003ed0:	80 00       	ld.sh	r0,r0[0x0]
+80003ed2:	3f bc       	mov	r12,-5
+80003ed4:	80 00       	ld.sh	r0,r0[0x0]
+80003ed6:	35 fc       	mov	r12,95
+80003ed8:	80 00       	ld.sh	r0,r0[0x0]
+80003eda:	56 5c       	stdsp	sp[0x194],r12
+80003edc:	80 00       	ld.sh	r0,r0[0x0]
+80003ede:	48 f8       	lddpc	r8,80003f18 <local_pdca_init+0x2c>
+80003ee0:	80 00       	ld.sh	r0,r0[0x0]
+80003ee2:	35 20       	mov	r0,82
+80003ee4:	80 00       	ld.sh	r0,r0[0x0]
+80003ee6:	35 38       	mov	r8,83
+80003ee8:	80 00       	ld.sh	r0,r0[0x0]
+80003eea:	35 86       	mov	r6,88
 
-80003f30 <local_pdca_init>:
+80003eec <local_pdca_init>:
 	spi_enable(SD_MMC_SPI);
 	sd_mmc_spi_init(spiOptions, PBA_HZ);
 
 }//sd_mmc_resources_init
 
 void local_pdca_init(void){
-80003f30:	eb cd 40 b0 	pushm	r4-r5,r7,lr
-80003f34:	20 cd       	sub	sp,48
+80003eec:	eb cd 40 b0 	pushm	r4-r5,r7,lr
+80003ef0:	20 cd       	sub	sp,48
 		.size = 512,                              // transfer counter: here the size of the string
 		.r_addr = NULL,                           // next memory address after 1st transfer complete
 		.r_size = 0,                              // next transfer counter not used here
 		.pid = AVR32_PDCA_CHANNEL_USED_RX,        // select peripheral ID - data are on reception from SPI1 RX line
 		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
 	};//pdca_options_SPI_RX
-80003f36:	49 78       	lddpc	r8,80003f90 <local_pdca_init+0x60>
-80003f38:	fa c7 ff e8 	sub	r7,sp,-24
-80003f3c:	f0 ea 00 00 	ld.d	r10,r8[0]
-80003f40:	ee eb 00 00 	st.d	r7[0],r10
-80003f44:	f0 ea 00 08 	ld.d	r10,r8[8]
-80003f48:	ee eb 00 08 	st.d	r7[8],r10
-80003f4c:	f0 e8 00 10 	ld.d	r8,r8[16]
-80003f50:	ee e9 00 10 	st.d	r7[16],r8
+80003ef2:	49 78       	lddpc	r8,80003f4c <local_pdca_init+0x60>
+80003ef4:	fa c7 ff e8 	sub	r7,sp,-24
+80003ef8:	f0 ea 00 00 	ld.d	r10,r8[0]
+80003efc:	ee eb 00 00 	st.d	r7[0],r10
+80003f00:	f0 ea 00 08 	ld.d	r10,r8[8]
+80003f04:	ee eb 00 08 	st.d	r7[8],r10
+80003f08:	f0 e8 00 10 	ld.d	r8,r8[16]
+80003f0c:	ee e9 00 10 	st.d	r7[16],r8
 		.size = 512,                              // transfer counter: here the size of the string
 		.r_addr = NULL,                           // next memory address after 1st transfer complete
 		.r_size = 0,                              // next transfer counter not used here
 		.pid = AVR32_PDCA_CHANNEL_USED_TX,        // select peripheral ID - data are on reception from SPI1 RX line
 		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
 	};//pdca_options_SPI_TX
-80003f54:	49 08       	lddpc	r8,80003f94 <local_pdca_init+0x64>
-80003f56:	1a 9b       	mov	r11,sp
-80003f58:	f0 e4 00 00 	ld.d	r4,r8[0]
-80003f5c:	fa e5 00 00 	st.d	sp[0],r4
-80003f60:	f0 e4 00 08 	ld.d	r4,r8[8]
-80003f64:	fa e5 00 08 	st.d	sp[8],r4
-80003f68:	f0 e8 00 10 	ld.d	r8,r8[16]
-80003f6c:	fa e9 00 10 	st.d	sp[16],r8
+80003f10:	49 08       	lddpc	r8,80003f50 <local_pdca_init+0x64>
+80003f12:	1a 9b       	mov	r11,sp
+80003f14:	f0 e4 00 00 	ld.d	r4,r8[0]
+80003f18:	fa e5 00 00 	st.d	sp[0],r4
+80003f1c:	f0 e4 00 08 	ld.d	r4,r8[8]
+80003f20:	fa e5 00 08 	st.d	sp[8],r4
+80003f24:	f0 e8 00 10 	ld.d	r8,r8[16]
+80003f28:	fa e9 00 10 	st.d	sp[16],r8
 
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_TX, &pdca_options_SPI_TX);
-80003f70:	30 1c       	mov	r12,1
-80003f72:	f0 1f 00 0a 	mcall	80003f98 <local_pdca_init+0x68>
+80003f2c:	30 1c       	mov	r12,1
+80003f2e:	f0 1f 00 0a 	mcall	80003f54 <local_pdca_init+0x68>
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_RX, &pdca_options_SPI_RX);
-80003f76:	0e 9b       	mov	r11,r7
-80003f78:	30 0c       	mov	r12,0
-80003f7a:	f0 1f 00 08 	mcall	80003f98 <local_pdca_init+0x68>
+80003f32:	0e 9b       	mov	r11,r7
+80003f34:	30 0c       	mov	r12,0
+80003f36:	f0 1f 00 08 	mcall	80003f54 <local_pdca_init+0x68>
 	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_0, AVR32_INTC_INT1);  // pdca_channel_spi1_RX = 0
-80003f7e:	30 1a       	mov	r10,1
-80003f80:	36 0b       	mov	r11,96
-80003f82:	48 7c       	lddpc	r12,80003f9c <local_pdca_init+0x6c>
-80003f84:	f0 1f 00 07 	mcall	80003fa0 <local_pdca_init+0x70>
+80003f3a:	30 1a       	mov	r10,1
+80003f3c:	36 0b       	mov	r11,96
+80003f3e:	48 7c       	lddpc	r12,80003f58 <local_pdca_init+0x6c>
+80003f40:	f0 1f 00 07 	mcall	80003f5c <local_pdca_init+0x70>
 
 } //local_pdca_init
-80003f88:	2f 4d       	sub	sp,-48
-80003f8a:	e3 cd 80 b0 	ldm	sp++,r4-r5,r7,pc
-80003f8e:	00 00       	add	r0,r0
-80003f90:	80 00       	ld.sh	r0,r0[0x0]
-80003f92:	54 6c       	stdsp	sp[0x118],r12
-80003f94:	80 00       	ld.sh	r0,r0[0x0]
-80003f96:	54 84       	stdsp	sp[0x120],r4
-80003f98:	80 00       	ld.sh	r0,r0[0x0]
-80003f9a:	37 d4       	mov	r4,125
-80003f9c:	80 00       	ld.sh	r0,r0[0x0]
-80003f9e:	3f a4       	mov	r4,-6
-80003fa0:	80 00       	ld.sh	r0,r0[0x0]
-80003fa2:	35 fc       	mov	r12,95
+80003f44:	2f 4d       	sub	sp,-48
+80003f46:	e3 cd 80 b0 	ldm	sp++,r4-r5,r7,pc
+80003f4a:	00 00       	add	r0,r0
+80003f4c:	80 00       	ld.sh	r0,r0[0x0]
+80003f4e:	56 68       	stdsp	sp[0x198],r8
+80003f50:	80 00       	ld.sh	r0,r0[0x0]
+80003f52:	58 30       	cp.w	r0,3
+80003f54:	80 00       	ld.sh	r0,r0[0x0]
+80003f56:	37 d4       	mov	r4,125
+80003f58:	80 00       	ld.sh	r0,r0[0x0]
+80003f5a:	3f 60       	mov	r0,-10
+80003f5c:	80 00       	ld.sh	r0,r0[0x0]
+80003f5e:	35 fc       	mov	r12,95
 
-80003fa4 <pdca_int_handler>:
+80003f60 <pdca_int_handler>:
 void wait(){
 	volatile int i;
 	for(i = 0 ; i < 5000; i++);
 }//Wait
 
 static void pdca_int_handler(void){
-80003fa4:	d4 01       	pushm	lr
+80003f60:	d4 01       	pushm	lr
 	Disable_global_interrupt();
-80003fa6:	d3 03       	ssrf	0x10
+80003f62:	d3 03       	ssrf	0x10
 	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
-80003fa8:	30 0c       	mov	r12,0
-80003faa:	f0 1f 00 0a 	mcall	80003fd0 <pdca_int_handler+0x2c>
+80003f64:	30 0c       	mov	r12,0
+80003f66:	f0 1f 00 0a 	mcall	80003f8c <pdca_int_handler+0x2c>
 	sd_mmc_spi_read_close_PDCA();
-80003fae:	f0 1f 00 0a 	mcall	80003fd4 <pdca_int_handler+0x30>
+80003f6a:	f0 1f 00 0a 	mcall	80003f90 <pdca_int_handler+0x30>
 	wait();
-80003fb2:	f0 1f 00 0a 	mcall	80003fd8 <pdca_int_handler+0x34>
+80003f6e:	f0 1f 00 0a 	mcall	80003f94 <pdca_int_handler+0x34>
 	pdca_disable(AVR32_PDCA_CHANNEL_SPI_TX);
-80003fb6:	30 1c       	mov	r12,1
-80003fb8:	f0 1f 00 09 	mcall	80003fdc <pdca_int_handler+0x38>
+80003f72:	30 1c       	mov	r12,1
+80003f74:	f0 1f 00 09 	mcall	80003f98 <pdca_int_handler+0x38>
 	pdca_disable(AVR32_PDCA_CHANNEL_SPI_RX);
-80003fbc:	30 0c       	mov	r12,0
-80003fbe:	f0 1f 00 08 	mcall	80003fdc <pdca_int_handler+0x38>
+80003f78:	30 0c       	mov	r12,0
+80003f7a:	f0 1f 00 08 	mcall	80003f98 <pdca_int_handler+0x38>
 	Enable_global_interrupt();
-80003fc2:	d5 03       	csrf	0x10
+80003f7e:	d5 03       	csrf	0x10
 	end_of_transfer = true;
-80003fc4:	30 19       	mov	r9,1
-80003fc6:	48 78       	lddpc	r8,80003fe0 <pdca_int_handler+0x3c>
-80003fc8:	b0 89       	st.b	r8[0x0],r9
+80003f80:	30 19       	mov	r9,1
+80003f82:	48 78       	lddpc	r8,80003f9c <pdca_int_handler+0x3c>
+80003f84:	b0 89       	st.b	r8[0x0],r9
 }//pdca_int_handler
-80003fca:	d4 02       	popm	lr
-80003fcc:	d6 03       	rete
-80003fce:	00 00       	add	r0,r0
-80003fd0:	80 00       	ld.sh	r0,r0[0x0]
-80003fd2:	37 74       	mov	r4,119
-80003fd4:	80 00       	ld.sh	r0,r0[0x0]
-80003fd6:	29 98       	sub	r8,-103
-80003fd8:	80 00       	ld.sh	r0,r0[0x0]
-80003fda:	3e 98       	mov	r8,-23
-80003fdc:	80 00       	ld.sh	r0,r0[0x0]
-80003fde:	37 1c       	mov	r12,113
-80003fe0:	00 00       	add	r0,r0
-80003fe2:	03 b0       	ld.ub	r0,r1[0x3]
+80003f86:	d4 02       	popm	lr
+80003f88:	d6 03       	rete
+80003f8a:	00 00       	add	r0,r0
+80003f8c:	80 00       	ld.sh	r0,r0[0x0]
+80003f8e:	37 74       	mov	r4,119
+80003f90:	80 00       	ld.sh	r0,r0[0x0]
+80003f92:	29 98       	sub	r8,-103
+80003f94:	80 00       	ld.sh	r0,r0[0x0]
+80003f96:	3e 54       	mov	r4,-27
+80003f98:	80 00       	ld.sh	r0,r0[0x0]
+80003f9a:	37 1c       	mov	r12,113
+80003f9c:	00 00       	add	r0,r0
+80003f9e:	03 b0       	ld.ub	r0,r1[0x3]
 
-80003fe4 <CLR_disp>:
+80003fa0 <CLR_disp>:
   pwm_channel6.CMR.cpre = AVR32_PWM_CMR_CPRE_MCK_DIV_2;
   pwm_channel_init(6, &pwm_channel6);
   pwm_start_channels(AVR32_PWM_ENA_CHID6_MASK);
 }//tft_bl_init
 
 void CLR_disp(void){
-80003fe4:	d4 01       	pushm	lr
+80003fa0:	d4 01       	pushm	lr
 	et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
-80003fe6:	30 08       	mov	r8,0
-80003fe8:	e0 69 00 f0 	mov	r9,240
-80003fec:	e0 6a 01 40 	mov	r10,320
-80003ff0:	10 9b       	mov	r11,r8
-80003ff2:	10 9c       	mov	r12,r8
-80003ff4:	f0 1f 00 02 	mcall	80003ffc <CLR_disp+0x18>
+80003fa2:	30 08       	mov	r8,0
+80003fa4:	e0 69 00 f0 	mov	r9,240
+80003fa8:	e0 6a 01 40 	mov	r10,320
+80003fac:	10 9b       	mov	r11,r8
+80003fae:	10 9c       	mov	r12,r8
+80003fb0:	f0 1f 00 02 	mcall	80003fb8 <CLR_disp+0x18>
 }//CLR_disp
-80003ff8:	d8 02       	popm	pc
-80003ffa:	00 00       	add	r0,r0
-80003ffc:	80 00       	ld.sh	r0,r0[0x0]
-80003ffe:	23 24       	sub	r4,50
+80003fb4:	d8 02       	popm	pc
+80003fb6:	00 00       	add	r0,r0
+80003fb8:	80 00       	ld.sh	r0,r0[0x0]
+80003fba:	23 24       	sub	r4,50
 
-80004000 <btn_interrupt_routine>:
+80003fbc <btn_interrupt_routine>:
 	if ((value & 0b0100)>>2)gpio_clr_gpio_pin(LED1); else gpio_set_gpio_pin(LED1);
 	if ((value & 0b0010)>>1)gpio_clr_gpio_pin(LED2); else gpio_set_gpio_pin(LED2);
 	if (value & 0b0001)gpio_clr_gpio_pin(LED3); else gpio_set_gpio_pin(LED3);
 }//Fin Fn
 
 void btn_interrupt_routine (void){
-80004000:	d4 01       	pushm	lr
+80003fbc:	d4 01       	pushm	lr
 	CLR_disp();
-80004002:	f0 1f 00 23 	mcall	8000408c <btn_interrupt_routine+0x8c>
+80003fbe:	f0 1f 00 23 	mcall	80004048 <btn_interrupt_routine+0x8c>
 	if (gpio_get_pin_interrupt_flag(BTN_UP)) {
-80004006:	33 6c       	mov	r12,54
-80004008:	f0 1f 00 22 	mcall	80004090 <btn_interrupt_routine+0x90>
-8000400c:	c0 90       	breq	8000401e <btn_interrupt_routine+0x1e>
+80003fc2:	33 6c       	mov	r12,54
+80003fc4:	f0 1f 00 22 	mcall	8000404c <btn_interrupt_routine+0x90>
+80003fc8:	c0 90       	breq	80003fda <btn_interrupt_routine+0x1e>
 		btn_pressed=UP;
-8000400e:	30 18       	mov	r8,1
-80004010:	4a 19       	lddpc	r9,80004094 <btn_interrupt_routine+0x94>
-80004012:	93 08       	st.w	r9[0x0],r8
+80003fca:	30 18       	mov	r8,1
+80003fcc:	4a 19       	lddpc	r9,80004050 <btn_interrupt_routine+0x94>
+80003fce:	93 08       	st.w	r9[0x0],r8
 		state = 1;
-80004014:	4a 19       	lddpc	r9,80004098 <btn_interrupt_routine+0x98>
-80004016:	93 08       	st.w	r9[0x0],r8
+80003fd0:	4a 19       	lddpc	r9,80004054 <btn_interrupt_routine+0x98>
+80003fd2:	93 08       	st.w	r9[0x0],r8
 		gpio_clear_pin_interrupt_flag(BTN_UP);
-80004018:	33 6c       	mov	r12,54
-8000401a:	f0 1f 00 21 	mcall	8000409c <btn_interrupt_routine+0x9c>
+80003fd4:	33 6c       	mov	r12,54
+80003fd6:	f0 1f 00 21 	mcall	80004058 <btn_interrupt_routine+0x9c>
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_DOWN)){
-8000401e:	33 7c       	mov	r12,55
-80004020:	f0 1f 00 1c 	mcall	80004090 <btn_interrupt_routine+0x90>
-80004024:	c0 90       	breq	80004036 <btn_interrupt_routine+0x36>
+80003fda:	33 7c       	mov	r12,55
+80003fdc:	f0 1f 00 1c 	mcall	8000404c <btn_interrupt_routine+0x90>
+80003fe0:	c0 90       	breq	80003ff2 <btn_interrupt_routine+0x36>
 		btn_pressed=DOWN;
-80004026:	30 28       	mov	r8,2
-80004028:	49 b9       	lddpc	r9,80004094 <btn_interrupt_routine+0x94>
-8000402a:	93 08       	st.w	r9[0x0],r8
+80003fe2:	30 28       	mov	r8,2
+80003fe4:	49 b9       	lddpc	r9,80004050 <btn_interrupt_routine+0x94>
+80003fe6:	93 08       	st.w	r9[0x0],r8
 		state=2;
-8000402c:	49 b9       	lddpc	r9,80004098 <btn_interrupt_routine+0x98>
-8000402e:	93 08       	st.w	r9[0x0],r8
+80003fe8:	49 b9       	lddpc	r9,80004054 <btn_interrupt_routine+0x98>
+80003fea:	93 08       	st.w	r9[0x0],r8
 		gpio_clear_pin_interrupt_flag(BTN_DOWN);
-80004030:	33 7c       	mov	r12,55
-80004032:	f0 1f 00 1b 	mcall	8000409c <btn_interrupt_routine+0x9c>
+80003fec:	33 7c       	mov	r12,55
+80003fee:	f0 1f 00 1b 	mcall	80004058 <btn_interrupt_routine+0x9c>
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_RIGHT)){
-80004036:	33 8c       	mov	r12,56
-80004038:	f0 1f 00 16 	mcall	80004090 <btn_interrupt_routine+0x90>
-8000403c:	c0 a0       	breq	80004050 <btn_interrupt_routine+0x50>
+80003ff2:	33 8c       	mov	r12,56
+80003ff4:	f0 1f 00 16 	mcall	8000404c <btn_interrupt_routine+0x90>
+80003ff8:	c0 a0       	breq	8000400c <btn_interrupt_routine+0x50>
 		btn_pressed=RIGHT;
-8000403e:	30 49       	mov	r9,4
-80004040:	49 58       	lddpc	r8,80004094 <btn_interrupt_routine+0x94>
-80004042:	91 09       	st.w	r8[0x0],r9
+80003ffa:	30 49       	mov	r9,4
+80003ffc:	49 58       	lddpc	r8,80004050 <btn_interrupt_routine+0x94>
+80003ffe:	91 09       	st.w	r8[0x0],r9
 		state=3;
-80004044:	30 39       	mov	r9,3
-80004046:	49 58       	lddpc	r8,80004098 <btn_interrupt_routine+0x98>
-80004048:	91 09       	st.w	r8[0x0],r9
+80004000:	30 39       	mov	r9,3
+80004002:	49 58       	lddpc	r8,80004054 <btn_interrupt_routine+0x98>
+80004004:	91 09       	st.w	r8[0x0],r9
 		gpio_clear_pin_interrupt_flag(BTN_RIGHT);
-8000404a:	33 8c       	mov	r12,56
-8000404c:	f0 1f 00 14 	mcall	8000409c <btn_interrupt_routine+0x9c>
+80004006:	33 8c       	mov	r12,56
+80004008:	f0 1f 00 14 	mcall	80004058 <btn_interrupt_routine+0x9c>
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_LEFT)){
-80004050:	33 9c       	mov	r12,57
-80004052:	f0 1f 00 10 	mcall	80004090 <btn_interrupt_routine+0x90>
-80004056:	c0 a0       	breq	8000406a <btn_interrupt_routine+0x6a>
+8000400c:	33 9c       	mov	r12,57
+8000400e:	f0 1f 00 10 	mcall	8000404c <btn_interrupt_routine+0x90>
+80004012:	c0 a0       	breq	80004026 <btn_interrupt_routine+0x6a>
 		btn_pressed=LEFT;
-80004058:	30 39       	mov	r9,3
-8000405a:	48 f8       	lddpc	r8,80004094 <btn_interrupt_routine+0x94>
-8000405c:	91 09       	st.w	r8[0x0],r9
+80004014:	30 39       	mov	r9,3
+80004016:	48 f8       	lddpc	r8,80004050 <btn_interrupt_routine+0x94>
+80004018:	91 09       	st.w	r8[0x0],r9
 		state=4;
-8000405e:	30 49       	mov	r9,4
-80004060:	48 e8       	lddpc	r8,80004098 <btn_interrupt_routine+0x98>
-80004062:	91 09       	st.w	r8[0x0],r9
+8000401a:	30 49       	mov	r9,4
+8000401c:	48 e8       	lddpc	r8,80004054 <btn_interrupt_routine+0x98>
+8000401e:	91 09       	st.w	r8[0x0],r9
 		gpio_clear_pin_interrupt_flag(BTN_LEFT);
-80004064:	33 9c       	mov	r12,57
-80004066:	f0 1f 00 0e 	mcall	8000409c <btn_interrupt_routine+0x9c>
+80004020:	33 9c       	mov	r12,57
+80004022:	f0 1f 00 0e 	mcall	80004058 <btn_interrupt_routine+0x9c>
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
-8000406a:	33 ac       	mov	r12,58
-8000406c:	f0 1f 00 09 	mcall	80004090 <btn_interrupt_routine+0x90>
-80004070:	c0 90       	breq	80004082 <btn_interrupt_routine+0x82>
+80004026:	33 ac       	mov	r12,58
+80004028:	f0 1f 00 09 	mcall	8000404c <btn_interrupt_routine+0x90>
+8000402c:	c0 90       	breq	8000403e <btn_interrupt_routine+0x82>
 		gpio_clear_pin_interrupt_flag(BTN_CENTER);
-80004072:	33 ac       	mov	r12,58
-80004074:	f0 1f 00 0a 	mcall	8000409c <btn_interrupt_routine+0x9c>
+8000402e:	33 ac       	mov	r12,58
+80004030:	f0 1f 00 0a 	mcall	80004058 <btn_interrupt_routine+0x9c>
 		btn_pressed=CENTER;
-80004078:	30 58       	mov	r8,5
-8000407a:	48 79       	lddpc	r9,80004094 <btn_interrupt_routine+0x94>
-8000407c:	93 08       	st.w	r9[0x0],r8
+80004034:	30 58       	mov	r8,5
+80004036:	48 79       	lddpc	r9,80004050 <btn_interrupt_routine+0x94>
+80004038:	93 08       	st.w	r9[0x0],r8
 		state=5;
-8000407e:	48 79       	lddpc	r9,80004098 <btn_interrupt_routine+0x98>
-80004080:	93 08       	st.w	r9[0x0],r8
+8000403a:	48 79       	lddpc	r9,80004054 <btn_interrupt_routine+0x98>
+8000403c:	93 08       	st.w	r9[0x0],r8
 	}
 	gpio_get_pin_interrupt_flag(BTN_CENTER);
-80004082:	33 ac       	mov	r12,58
-80004084:	f0 1f 00 03 	mcall	80004090 <btn_interrupt_routine+0x90>
+8000403e:	33 ac       	mov	r12,58
+80004040:	f0 1f 00 03 	mcall	8000404c <btn_interrupt_routine+0x90>
 } //Fin Botones
-80004088:	d4 02       	popm	lr
-8000408a:	d6 03       	rete
-8000408c:	80 00       	ld.sh	r0,r0[0x0]
-8000408e:	3f e4       	mov	r4,-2
-80004090:	80 00       	ld.sh	r0,r0[0x0]
-80004092:	35 cc       	mov	r12,92
-80004094:	00 00       	add	r0,r0
-80004096:	01 7c       	ld.ub	r12,--r0
-80004098:	00 00       	add	r0,r0
-8000409a:	01 80       	ld.ub	r0,r0[0x0]
-8000409c:	80 00       	ld.sh	r0,r0[0x0]
-8000409e:	35 e4       	mov	r4,94
+80004044:	d4 02       	popm	lr
+80004046:	d6 03       	rete
+80004048:	80 00       	ld.sh	r0,r0[0x0]
+8000404a:	3f a0       	mov	r0,-6
+8000404c:	80 00       	ld.sh	r0,r0[0x0]
+8000404e:	35 cc       	mov	r12,92
+80004050:	00 00       	add	r0,r0
+80004052:	01 7c       	ld.ub	r12,--r0
+80004054:	00 00       	add	r0,r0
+80004056:	01 80       	ld.ub	r0,r0[0x0]
+80004058:	80 00       	ld.sh	r0,r0[0x0]
+8000405a:	35 e4       	mov	r4,94
 
-800040a0 <main>:
+8000405c <main>:
 void init_button_interrupt(void);
 void usart_read(void);
 
 /**************************************************************************/
 
 int main(void){
-800040a0:	d4 31       	pushm	r0-r7,lr
-800040a2:	20 5d       	sub	sp,20
+8000405c:	d4 31       	pushm	r0-r7,lr
+8000405e:	20 7d       	sub	sp,28
 
 	int i, j; //j for sectors, i for bytes
 
 	//PM
 	pm_switch_to_osc0(&AVR32_PM, PBA_HZ, 3);
-800040a4:	30 3a       	mov	r10,3
-800040a6:	e0 6b 1b 00 	mov	r11,6912
-800040aa:	ea 1b 00 b7 	orh	r11,0xb7
-800040ae:	fe 7c 0c 00 	mov	r12,-62464
-800040b2:	f0 1f 01 00 	mcall	800044b0 <main+0x410>
+80004060:	30 3a       	mov	r10,3
+80004062:	e0 6b 1b 00 	mov	r11,6912
+80004066:	ea 1b 00 b7 	orh	r11,0xb7
+8000406a:	fe 7c 0c 00 	mov	r12,-62464
+8000406e:	f0 1f 01 4d 	mcall	800045a0 <main+0x544>
 
 	//Key interrupts
 	init_button_interrupt();
-800040b6:	f0 1f 01 00 	mcall	800044b4 <main+0x414>
+80004072:	f0 1f 01 4d 	mcall	800045a4 <main+0x548>
 
 	//SDCARD
 	init_dbg_rs232(PBA_HZ);
-800040ba:	e0 6c 1b 00 	mov	r12,6912
-800040be:	ea 1c 00 b7 	orh	r12,0xb7
-800040c2:	f0 1f 00 fe 	mcall	800044b8 <main+0x418>
-	print_dbg("\r\nInit SD/MMC Driver");
-800040c6:	fe fc 03 f6 	ld.w	r12,pc[1014]
-800040ca:	f0 1f 00 fe 	mcall	800044c0 <main+0x420>
-	print_dbg("\r\nInsert SD/MMC...");
-800040ce:	fe fc 03 f6 	ld.w	r12,pc[1014]
-800040d2:	f0 1f 00 fc 	mcall	800044c0 <main+0x420>
+80004076:	e0 6c 1b 00 	mov	r12,6912
+8000407a:	ea 1c 00 b7 	orh	r12,0xb7
+8000407e:	f0 1f 01 4b 	mcall	800045a8 <main+0x54c>
 		.spck_delay   = 0,
 		.trans_delay  = 0,
 		.stay_act     = 1,
 		.spi_mode     = 0,
 		.modfdis      = 1
 	};//SPI Options
-800040d6:	fe f8 03 f2 	ld.w	r8,pc[1010]
-800040da:	fa c7 ff fc 	sub	r7,sp,-4
-800040de:	f0 ea 00 00 	ld.d	r10,r8[0]
-800040e2:	ee eb 00 00 	st.d	r7[0],r10
-800040e6:	f0 e8 00 08 	ld.d	r8,r8[8]
-800040ea:	ee e9 00 08 	st.d	r7[8],r8
+80004082:	fe f8 05 2a 	ld.w	r8,pc[1322]
+80004086:	fa c7 ff f4 	sub	r7,sp,-12
+8000408a:	f0 ea 00 00 	ld.d	r10,r8[0]
+8000408e:	ee eb 00 00 	st.d	r7[0],r10
+80004092:	f0 e8 00 08 	ld.d	r8,r8[8]
+80004096:	ee e9 00 08 	st.d	r7[8],r8
 
 	gpio_enable_module(SD_MMC_SPI_GPIO_MAP,
-800040ee:	30 4b       	mov	r11,4
-800040f0:	fe fc 03 dc 	ld.w	r12,pc[988]
-800040f4:	f0 1f 00 f7 	mcall	800044d0 <main+0x430>
+8000409a:	30 4b       	mov	r11,4
+8000409c:	fe fc 05 14 	ld.w	r12,pc[1300]
+800040a0:	f0 1f 01 45 	mcall	800045b4 <main+0x558>
 	sizeof(SD_MMC_SPI_GPIO_MAP) / sizeof(SD_MMC_SPI_GPIO_MAP[0]));
 	spi_initMaster(SD_MMC_SPI, &spiOptions);
-800040f8:	0e 9b       	mov	r11,r7
-800040fa:	fe 7c 24 00 	mov	r12,-56320
-800040fe:	f0 1f 00 f6 	mcall	800044d4 <main+0x434>
+800040a4:	0e 9b       	mov	r11,r7
+800040a6:	fe 7c 24 00 	mov	r12,-56320
+800040aa:	f0 1f 01 44 	mcall	800045b8 <main+0x55c>
 	spi_selectionMode(SD_MMC_SPI, 0, 0, 0);
-80004102:	30 09       	mov	r9,0
-80004104:	12 9a       	mov	r10,r9
-80004106:	12 9b       	mov	r11,r9
-80004108:	fe 7c 24 00 	mov	r12,-56320
-8000410c:	f0 1f 00 f3 	mcall	800044d8 <main+0x438>
+800040ae:	30 09       	mov	r9,0
+800040b0:	12 9a       	mov	r10,r9
+800040b2:	12 9b       	mov	r11,r9
+800040b4:	fe 7c 24 00 	mov	r12,-56320
+800040b8:	f0 1f 01 41 	mcall	800045bc <main+0x560>
 	spi_enable(SD_MMC_SPI);
-80004110:	fe 7c 24 00 	mov	r12,-56320
-80004114:	f0 1f 00 f2 	mcall	800044dc <main+0x43c>
+800040bc:	fe 7c 24 00 	mov	r12,-56320
+800040c0:	f0 1f 01 40 	mcall	800045c0 <main+0x564>
 	sd_mmc_spi_init(spiOptions, PBA_HZ);
-80004118:	20 4d       	sub	sp,16
-8000411a:	ee e8 00 00 	ld.d	r8,r7[0]
-8000411e:	fa e9 00 00 	st.d	sp[0],r8
-80004122:	ee e8 00 08 	ld.d	r8,r7[8]
-80004126:	fa e9 00 08 	st.d	sp[8],r8
-8000412a:	e0 6c 1b 00 	mov	r12,6912
-8000412e:	ea 1c 00 b7 	orh	r12,0xb7
-80004132:	f0 1f 00 ec 	mcall	800044e0 <main+0x440>
-80004136:	2f cd       	sub	sp,-16
+800040c4:	20 4d       	sub	sp,16
+800040c6:	ee e8 00 00 	ld.d	r8,r7[0]
+800040ca:	fa e9 00 00 	st.d	sp[0],r8
+800040ce:	ee e8 00 08 	ld.d	r8,r7[8]
+800040d2:	fa e9 00 08 	st.d	sp[8],r8
+800040d6:	e0 6c 1b 00 	mov	r12,6912
+800040da:	ea 1c 00 b7 	orh	r12,0xb7
+800040de:	f0 1f 01 3a 	mcall	800045c4 <main+0x568>
+800040e2:	2f cd       	sub	sp,-16
+	init_button_interrupt();
+
 	//SDCARD
 	init_dbg_rs232(PBA_HZ);
-	print_dbg("\r\nInit SD/MMC Driver");
-	print_dbg("\r\nInsert SD/MMC...");
 	sd_mmc_resources_init();
 	while (!sd_mmc_spi_mem_check());
-80004138:	f0 1f 00 eb 	mcall	800044e4 <main+0x444>
-8000413c:	cf e0       	breq	80004138 <main+0x98>
-	print_dbg("\r\nCard detected!");
-8000413e:	fe fc 03 aa 	ld.w	r12,pc[938]
-80004142:	f0 1f 00 e0 	mcall	800044c0 <main+0x420>
-	sd_mmc_spi_get_capacity();
-80004146:	f0 1f 00 ea 	mcall	800044ec <main+0x44c>
-	print_dbg("Capacity = ");
-8000414a:	fe fc 03 a6 	ld.w	r12,pc[934]
-8000414e:	f0 1f 00 dd 	mcall	800044c0 <main+0x420>
-	print_dbg_ulong(capacity >> 20);
-80004152:	fe f8 03 a2 	ld.w	r8,pc[930]
-80004156:	f0 e8 00 00 	ld.d	r8,r8[0]
-8000415a:	f0 0c 16 14 	lsr	r12,r8,0x14
-8000415e:	f9 e9 10 cc 	or	r12,r12,r9<<0xc
-80004162:	f0 1f 00 e6 	mcall	800044f8 <main+0x458>
-	print_dbg(" MBytes");
-80004166:	fe fc 03 96 	ld.w	r12,pc[918]
-8000416a:	f0 1f 00 d6 	mcall	800044c0 <main+0x420>
+800040e4:	f0 1f 01 39 	mcall	800045c8 <main+0x56c>
+800040e8:	cf e0       	breq	800040e4 <main+0x88>
+	print_dbg("\r\nCard ready");
+800040ea:	fe fc 04 e2 	ld.w	r12,pc[1250]
+800040ee:	f0 1f 01 39 	mcall	800045d0 <main+0x574>
 
 	Enable_global_interrupt();
-8000416e:	d5 03       	csrf	0x10
+800040f2:	d5 03       	csrf	0x10
 	local_pdca_init(); //DMA initialization
-80004170:	f0 1f 00 e4 	mcall	80004500 <main+0x460>
+800040f4:	f0 1f 01 38 	mcall	800045d4 <main+0x578>
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
-80004174:	e0 6b 1b 00 	mov	r11,6912
-80004178:	ea 1b 00 b7 	orh	r11,0xb7
-8000417c:	16 9c       	mov	r12,r11
-8000417e:	f0 1f 00 e2 	mcall	80004504 <main+0x464>
+800040f8:	e0 6b 1b 00 	mov	r11,6912
+800040fc:	ea 1b 00 b7 	orh	r11,0xb7
+80004100:	16 9c       	mov	r12,r11
+80004102:	f0 1f 01 36 	mcall	800045d8 <main+0x57c>
 		}//Switch
 	}//While
 }//Main
 
 static void tft_bl_init(void){
   pwm_opt_t opt = {.diva = 0,.divb = 0,.prea = 0,.preb = 0};
-80004182:	30 08       	mov	r8,0
-80004184:	50 18       	stdsp	sp[0x4],r8
-80004186:	50 28       	stdsp	sp[0x8],r8
-80004188:	50 38       	stdsp	sp[0xc],r8
-8000418a:	50 48       	stdsp	sp[0x10],r8
+80004106:	30 08       	mov	r8,0
+80004108:	50 38       	stdsp	sp[0xc],r8
+8000410a:	50 48       	stdsp	sp[0x10],r8
+8000410c:	50 58       	stdsp	sp[0x14],r8
+8000410e:	50 68       	stdsp	sp[0x18],r8
   pwm_init(&opt);
-8000418c:	fa cc ff fc 	sub	r12,sp,-4
-80004190:	f0 1f 00 de 	mcall	80004508 <main+0x468>
+80004110:	fa cc ff f4 	sub	r12,sp,-12
+80004114:	f0 1f 01 32 	mcall	800045dc <main+0x580>
   pwm_channel6.CMR.calg = PWM_MODE_LEFT_ALIGNED;
-80004194:	fe fb 03 78 	ld.w	r11,pc[888]
-80004198:	76 08       	ld.w	r8,r11[0x0]
+80004118:	fe fb 04 c8 	ld.w	r11,pc[1224]
+8000411c:	76 08       	ld.w	r8,r11[0x0]
   pwm_channel6.CMR.cpol = PWM_POLARITY_HIGH; //PWM_POLARITY_LOW;//PWM_POLARITY_HIGH;
   pwm_channel6.CMR.cpd = PWM_UPDATE_DUTY;
-8000419a:	e0 18 f8 ff 	andl	r8,0xf8ff
+8000411e:	e0 18 f8 ff 	andl	r8,0xf8ff
   pwm_channel6.CMR.cpre = AVR32_PWM_CMR_CPRE_MCK_DIV_2;
-8000419e:	a9 b8       	sbr	r8,0x9
-800041a0:	30 19       	mov	r9,1
-800041a2:	f1 d9 d0 04 	bfins	r8,r9,0x0,0x4
-800041a6:	97 08       	st.w	r11[0x0],r8
+80004122:	a9 b8       	sbr	r8,0x9
+80004124:	30 19       	mov	r9,1
+80004126:	f1 d9 d0 04 	bfins	r8,r9,0x0,0x4
+8000412a:	97 08       	st.w	r11[0x0],r8
   pwm_channel_init(6, &pwm_channel6);
-800041a8:	30 6c       	mov	r12,6
-800041aa:	f0 1f 00 da 	mcall	80004510 <main+0x470>
+8000412c:	30 6c       	mov	r12,6
+8000412e:	f0 1f 01 2e 	mcall	800045e4 <main+0x588>
   pwm_start_channels(AVR32_PWM_ENA_CHID6_MASK);
-800041ae:	34 0c       	mov	r12,64
-800041b0:	f0 1f 00 d9 	mcall	80004514 <main+0x474>
+80004132:	34 0c       	mov	r12,64
+80004134:	f0 1f 01 2d 	mcall	800045e8 <main+0x58c>
 	local_pdca_init(); //DMA initialization
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
 	tft_bl_init();
 	CLR_disp();
-800041b4:	f0 1f 00 d9 	mcall	80004518 <main+0x478>
+80004138:	f0 1f 01 2d 	mcall	800045ec <main+0x590>
 	while(pwm_channel6.cdty < pwm_channel6.cprd){
-800041b8:	fe f7 03 54 	ld.w	r7,pc[852]
+8000413c:	fe f7 04 a4 	ld.w	r7,pc[1188]
 		pwm_channel6.cdty++;
 		pwm_channel6.cupd = pwm_channel6.cdty;
 		pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
-800041bc:	30 66       	mov	r6,6
+80004140:	30 66       	mov	r6,6
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
 	tft_bl_init();
 	CLR_disp();
 	while(pwm_channel6.cdty < pwm_channel6.cprd){
-800041be:	c1 c8       	rjmp	800041f6 <main+0x156>
+80004142:	c1 c8       	rjmp	8000417a <main+0x11e>
 		pwm_channel6.cdty++;
-800041c0:	2f f8       	sub	r8,-1
-800041c2:	8f 18       	st.w	r7[0x4],r8
+80004144:	2f f8       	sub	r8,-1
+80004146:	8f 18       	st.w	r7[0x4],r8
 		pwm_channel6.cupd = pwm_channel6.cdty;
-800041c4:	8f 48       	st.w	r7[0x10],r8
+80004148:	8f 48       	st.w	r7[0x10],r8
 		pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
-800041c6:	0e 9b       	mov	r11,r7
-800041c8:	0c 9c       	mov	r12,r6
-800041ca:	f0 1f 00 d5 	mcall	8000451c <main+0x47c>
+8000414a:	0e 9b       	mov	r11,r7
+8000414c:	0c 9c       	mov	r12,r6
+8000414e:	f0 1f 01 29 	mcall	800045f0 <main+0x594>
  * \param  delay:   (input) delay in CPU cycles before timeout.
  * \param  cpu_time: (output) internal information used by the timer API.
  */
 __always_inline static void cpu_set_timeout(unsigned long delay, t_cpu_time *cpu_time)
 {
   cpu_time->delay_start_cycle = Get_system_register(AVR32_COUNT);
-800041ce:	e1 b8 00 42 	mfsr	r8,0x108
+80004152:	e1 b8 00 42 	mfsr	r8,0x108
   cpu_time->delay_end_cycle   = cpu_time->delay_start_cycle + delay;
-800041d2:	f0 ca d1 20 	sub	r10,r8,-12000
+80004156:	f0 ca d1 20 	sub	r10,r8,-12000
  *
  * \return true if timeout occurred, otherwise false.
  */
 __always_inline static unsigned long cpu_is_timeout(t_cpu_time *cpu_time)
 {
   unsigned long current_cycle_count = Get_system_register(AVR32_COUNT);
-800041d6:	e1 b9 00 42 	mfsr	r9,0x108
+8000415a:	e1 b9 00 42 	mfsr	r9,0x108
   // Test if the timeout as already occurred.
   else if (cpu_time->timer_state == CPU_TIMER_STATE_REACHED)
     return true;
 
   // If the ending cycle count of this timeout is wrapped, ...
   else if (cpu_time->delay_start_cycle > cpu_time->delay_end_cycle)
-800041da:	14 38       	cp.w	r8,r10
-800041dc:	e0 88 00 08 	brls	800041ec <main+0x14c>
+8000415e:	14 38       	cp.w	r8,r10
+80004160:	e0 88 00 08 	brls	80004170 <main+0x114>
   {
     if (current_cycle_count < cpu_time->delay_start_cycle && current_cycle_count > cpu_time->delay_end_cycle)
-800041e0:	12 38       	cp.w	r8,r9
-800041e2:	fe 98 ff fa 	brls	800041d6 <main+0x136>
-800041e6:	12 3a       	cp.w	r10,r9
-800041e8:	c0 73       	brcs	800041f6 <main+0x156>
-800041ea:	cf 6b       	rjmp	800041d6 <main+0x136>
+80004164:	12 38       	cp.w	r8,r9
+80004166:	fe 98 ff fa 	brls	8000415a <main+0xfe>
+8000416a:	12 3a       	cp.w	r10,r9
+8000416c:	c0 73       	brcs	8000417a <main+0x11e>
+8000416e:	cf 6b       	rjmp	8000415a <main+0xfe>
     }
     return false;
   }
   else
   {
     if (current_cycle_count < cpu_time->delay_start_cycle || current_cycle_count > cpu_time->delay_end_cycle)
-800041ec:	12 38       	cp.w	r8,r9
-800041ee:	e0 8b 00 04 	brhi	800041f6 <main+0x156>
-800041f2:	12 3a       	cp.w	r10,r9
-800041f4:	cf 12       	brcc	800041d6 <main+0x136>
+80004170:	12 38       	cp.w	r8,r9
+80004172:	e0 8b 00 04 	brhi	8000417a <main+0x11e>
+80004176:	12 3a       	cp.w	r10,r9
+80004178:	cf 12       	brcc	8000415a <main+0xfe>
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
 	tft_bl_init();
 	CLR_disp();
 	while(pwm_channel6.cdty < pwm_channel6.cprd){
-800041f6:	6e 18       	ld.w	r8,r7[0x4]
-800041f8:	6e 29       	ld.w	r9,r7[0x8]
-800041fa:	12 38       	cp.w	r8,r9
-800041fc:	ce 23       	brcs	800041c0 <main+0x120>
+8000417a:	6e 18       	ld.w	r8,r7[0x4]
+8000417c:	6e 29       	ld.w	r9,r7[0x8]
+8000417e:	12 38       	cp.w	r8,r9
+80004180:	ce 23       	brcs	80004144 <main+0xe8>
 		pwm_channel6.cdty++;
 		pwm_channel6.cupd = pwm_channel6.cdty;
 		pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
 		delay_ms(1);
 	}//PWM
 	CLR_disp();
-800041fe:	f0 1f 00 c7 	mcall	80004518 <main+0x478>
+80004182:	f0 1f 01 1b 	mcall	800045ec <main+0x590>
 	et024006_PrintString("Waiting", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-80004202:	fe f3 03 1e 	ld.w	r3,pc[798]
-80004206:	3f f7       	mov	r7,-1
-80004208:	1a d7       	st.w	--sp,r7
-8000420a:	e0 68 ff ff 	mov	r8,65535
-8000420e:	31 e9       	mov	r9,30
-80004210:	12 9a       	mov	r10,r9
-80004212:	06 9b       	mov	r11,r3
-80004214:	fe fc 03 10 	ld.w	r12,pc[784]
-80004218:	f0 1f 00 c4 	mcall	80004528 <main+0x488>
+80004186:	fe f4 04 6e 	ld.w	r4,pc[1134]
+8000418a:	3f f7       	mov	r7,-1
+8000418c:	1a d7       	st.w	--sp,r7
+8000418e:	e0 68 ff ff 	mov	r8,65535
+80004192:	31 e9       	mov	r9,30
+80004194:	12 9a       	mov	r10,r9
+80004196:	08 9b       	mov	r11,r4
+80004198:	fe fc 04 60 	ld.w	r12,pc[1120]
+8000419c:	f0 1f 01 18 	mcall	800045fc <main+0x5a0>
 	et024006_PrintString("State 0", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-8000421c:	1a d7       	st.w	--sp,r7
-8000421e:	e0 68 ff ff 	mov	r8,65535
-80004222:	e0 69 00 c8 	mov	r9,200
-80004226:	31 ea       	mov	r10,30
-80004228:	06 9b       	mov	r11,r3
-8000422a:	fe fc 03 02 	ld.w	r12,pc[770]
-8000422e:	f0 1f 00 bf 	mcall	80004528 <main+0x488>
-80004232:	2f ed       	sub	sp,-8
-				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+800041a0:	1a d7       	st.w	--sp,r7
+800041a2:	e0 68 ff ff 	mov	r8,65535
+800041a6:	e0 69 00 c8 	mov	r9,200
+800041aa:	31 ea       	mov	r10,30
+800041ac:	08 9b       	mov	r11,r4
+800041ae:	fe fc 04 52 	ld.w	r12,pc[1106]
+800041b2:	f0 1f 01 13 	mcall	800045fc <main+0x5a0>
+800041b6:	2f ed       	sub	sp,-8
+				state=0;
+			break;
+
+			case 4://Leer ultimo mensaje guardado de la SD y su sector y mostrarlo
+				CLR_disp();
+				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+800041b8:	0e 93       	mov	r3,r7
+				et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
 
 				//Read SD
-				for(j = 1; j <= 5; j++){ //5 Sectors
-					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
-80004234:	fe f6 02 fc 	ld.w	r6,pc[764]
-					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
-					end_of_transfer = false;
-80004238:	fe f4 02 fc 	ld.w	r4,pc[764]
-				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-
-				//Read SD
-				for(j = 1; j <= 5; j++){ //5 Sectors
-					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
-8000423c:	50 06       	stdsp	sp[0x0],r6
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
+				end_of_transfer = false;
+800041ba:	fe f5 04 4a 	ld.w	r5,pc[1098]
+					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+					while(!end_of_transfer);
+					for( i = 0; i < 25; i++){ //First 50 chars
+						usart_message_print[i] = (U8)(*(ram_buffer + i));
+800041be:	fe f7 04 4a 	ld.w	r7,pc[1098]
+800041c2:	50 27       	stdsp	sp[0x8],r7
+						pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+						pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+						pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+						while(!end_of_transfer);
+						for( i = 0; i < 25; i++){ //First 50 chars
+							usart_message_print[i] = (U8)(*(ram_buffer + i));
+800041c4:	50 17       	stdsp	sp[0x4],r7
 	CLR_disp();
 	et024006_PrintString("Waiting", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 	et024006_PrintString("State 0", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 
 	while (1){
 		switch (state){
-8000423e:	fe f8 02 fa 	ld.w	r8,pc[762]
-80004242:	70 08       	ld.w	r8,r8[0x0]
-80004244:	58 38       	cp.w	r8,3
-80004246:	c5 40       	breq	800042ee <main+0x24e>
-80004248:	e0 89 00 07 	brgt	80004256 <main+0x1b6>
-8000424c:	58 18       	cp.w	r8,1
-8000424e:	c0 a0       	breq	80004262 <main+0x1c2>
-80004250:	58 28       	cp.w	r8,2
-80004252:	cf 61       	brne	8000423e <main+0x19e>
-80004254:	c2 58       	rjmp	8000429e <main+0x1fe>
-80004256:	58 48       	cp.w	r8,4
-80004258:	e0 80 00 8d 	breq	80004372 <main+0x2d2>
-8000425c:	58 58       	cp.w	r8,5
-8000425e:	cf 01       	brne	8000423e <main+0x19e>
-80004260:	cc 18       	rjmp	800043e2 <main+0x342>
+800041c6:	fe f9 04 46 	ld.w	r9,pc[1094]
+800041ca:	72 08       	ld.w	r8,r9[0x0]
+800041cc:	58 38       	cp.w	r8,3
+800041ce:	c5 20       	breq	80004272 <main+0x216>
+800041d0:	e0 89 00 07 	brgt	800041de <main+0x182>
+800041d4:	58 18       	cp.w	r8,1
+800041d6:	c0 a0       	breq	800041ea <main+0x18e>
+800041d8:	58 28       	cp.w	r8,2
+800041da:	cf 61       	brne	800041c6 <main+0x16a>
+800041dc:	c2 48       	rjmp	80004224 <main+0x1c8>
+800041de:	58 48       	cp.w	r8,4
+800041e0:	e0 80 00 9d 	breq	8000431a <main+0x2be>
+800041e4:	58 58       	cp.w	r8,5
+800041e6:	cf 01       	brne	800041c6 <main+0x16a>
+800041e8:	c3 09       	rjmp	80004448 <main+0x3ec>
 
 			case 0://Do nothing
 			break;
 
 			case 1:
 				CLR_disp();
-80004262:	f0 1f 00 ae 	mcall	80004518 <main+0x478>
+800041ea:	f0 1f 01 01 	mcall	800045ec <main+0x590>
 				et024006_PrintString("Getting Message ... ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-80004266:	3f f7       	mov	r7,-1
-80004268:	1a d7       	st.w	--sp,r7
-8000426a:	e0 68 ff ff 	mov	r8,65535
-8000426e:	31 e9       	mov	r9,30
-80004270:	12 9a       	mov	r10,r9
-80004272:	06 9b       	mov	r11,r3
-80004274:	fe fc 02 c8 	ld.w	r12,pc[712]
-80004278:	f0 1f 00 ac 	mcall	80004528 <main+0x488>
+800041ee:	1a d3       	st.w	--sp,r3
+800041f0:	e0 68 ff ff 	mov	r8,65535
+800041f4:	31 e9       	mov	r9,30
+800041f6:	12 9a       	mov	r10,r9
+800041f8:	08 9b       	mov	r11,r4
+800041fa:	fe fc 04 16 	ld.w	r12,pc[1046]
+800041fe:	f0 1f 01 00 	mcall	800045fc <main+0x5a0>
 				et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-8000427c:	1a d7       	st.w	--sp,r7
-8000427e:	e0 68 ff ff 	mov	r8,65535
-80004282:	e0 69 00 c8 	mov	r9,200
-80004286:	31 ea       	mov	r10,30
-80004288:	06 9b       	mov	r11,r3
-8000428a:	fe fc 02 b6 	ld.w	r12,pc[694]
-8000428e:	f0 1f 00 a7 	mcall	80004528 <main+0x488>
+80004202:	1a d3       	st.w	--sp,r3
+80004204:	e0 68 ff ff 	mov	r8,65535
+80004208:	e0 69 00 c8 	mov	r9,200
+8000420c:	31 ea       	mov	r10,30
+8000420e:	08 9b       	mov	r11,r4
+80004210:	fe fc 04 04 	ld.w	r12,pc[1028]
+80004214:	f0 1f 00 fa 	mcall	800045fc <main+0x5a0>
 				usart_read(); //DMA read missing
 				state = 0;
-80004292:	30 09       	mov	r9,0
-80004294:	fe f8 02 a4 	ld.w	r8,pc[676]
-80004298:	91 09       	st.w	r8[0x0],r9
+80004218:	30 08       	mov	r8,0
+8000421a:	fe f9 03 f2 	ld.w	r9,pc[1010]
+8000421e:	93 08       	st.w	r9[0x0],r8
 				//ToDo:
 				//Activate DMA completion Interrupt
 				//In its handler, turn LED0 on
 				//The message gets stored in usart_message
 			break;
-8000429a:	2f ed       	sub	sp,-8
-8000429c:	cd 1b       	rjmp	8000423e <main+0x19e>
+80004220:	2f ed       	sub	sp,-8
+80004222:	cd 2b       	rjmp	800041c6 <main+0x16a>
 
 			case 2://Show the received message
 				CLR_disp();
-8000429e:	f0 1f 00 9f 	mcall	80004518 <main+0x478>
+80004224:	f0 1f 00 f2 	mcall	800045ec <main+0x590>
 				et024006_PrintString("Received Message:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-800042a2:	3f f7       	mov	r7,-1
-800042a4:	1a d7       	st.w	--sp,r7
-800042a6:	e0 68 ff ff 	mov	r8,65535
-800042aa:	31 e9       	mov	r9,30
-800042ac:	12 9a       	mov	r10,r9
-800042ae:	06 9b       	mov	r11,r3
-800042b0:	fe fc 02 94 	ld.w	r12,pc[660]
-800042b4:	f0 1f 00 9d 	mcall	80004528 <main+0x488>
+80004228:	1a d3       	st.w	--sp,r3
+8000422a:	e0 68 ff ff 	mov	r8,65535
+8000422e:	31 e9       	mov	r9,30
+80004230:	12 9a       	mov	r10,r9
+80004232:	08 9b       	mov	r11,r4
+80004234:	fe fc 03 e4 	ld.w	r12,pc[996]
+80004238:	f0 1f 00 f1 	mcall	800045fc <main+0x5a0>
 				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-800042b8:	1a d7       	st.w	--sp,r7
-800042ba:	e0 68 ff ff 	mov	r8,65535
-800042be:	33 29       	mov	r9,50
-800042c0:	31 ea       	mov	r10,30
-800042c2:	06 9b       	mov	r11,r3
-800042c4:	fe fc 02 84 	ld.w	r12,pc[644]
-800042c8:	f0 1f 00 98 	mcall	80004528 <main+0x488>
+8000423c:	1a d3       	st.w	--sp,r3
+8000423e:	e0 68 ff ff 	mov	r8,65535
+80004242:	33 29       	mov	r9,50
+80004244:	31 ea       	mov	r10,30
+80004246:	08 9b       	mov	r11,r4
+80004248:	fe fc 03 d4 	ld.w	r12,pc[980]
+8000424c:	f0 1f 00 ec 	mcall	800045fc <main+0x5a0>
 				et024006_PrintString("Last key pressed: DOWN", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-800042cc:	1a d7       	st.w	--sp,r7
-800042ce:	e0 68 ff ff 	mov	r8,65535
-800042d2:	e0 69 00 c8 	mov	r9,200
-800042d6:	31 ea       	mov	r10,30
-800042d8:	06 9b       	mov	r11,r3
-800042da:	fe fc 02 72 	ld.w	r12,pc[626]
-800042de:	f0 1f 00 93 	mcall	80004528 <main+0x488>
+80004250:	1a d3       	st.w	--sp,r3
+80004252:	e0 68 ff ff 	mov	r8,65535
+80004256:	e0 69 00 c8 	mov	r9,200
+8000425a:	31 ea       	mov	r10,30
+8000425c:	08 9b       	mov	r11,r4
+8000425e:	fe fc 03 c2 	ld.w	r12,pc[962]
+80004262:	f0 1f 00 e7 	mcall	800045fc <main+0x5a0>
 				state = 0;
-800042e2:	30 09       	mov	r9,0
-800042e4:	fe f8 02 54 	ld.w	r8,pc[596]
-800042e8:	91 09       	st.w	r8[0x0],r9
+80004266:	30 08       	mov	r8,0
+80004268:	fe f9 03 a4 	ld.w	r9,pc[932]
+8000426c:	93 08       	st.w	r9[0x0],r8
 			break;
-800042ea:	2f dd       	sub	sp,-12
-800042ec:	ca 9b       	rjmp	8000423e <main+0x19e>
+8000426e:	2f dd       	sub	sp,-12
+80004270:	ca bb       	rjmp	800041c6 <main+0x16a>
 
 			case 3://Store message in SD
 				CLR_disp();
-800042ee:	f0 1f 00 8b 	mcall	80004518 <main+0x478>
+80004272:	f0 1f 00 df 	mcall	800045ec <main+0x590>
 				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-800042f2:	3f f8       	mov	r8,-1
-800042f4:	1a d8       	st.w	--sp,r8
-800042f6:	e0 68 ff ff 	mov	r8,65535
-800042fa:	e0 69 00 c8 	mov	r9,200
-800042fe:	31 ea       	mov	r10,30
-80004300:	06 9b       	mov	r11,r3
-80004302:	fe fc 02 4e 	ld.w	r12,pc[590]
-80004306:	f0 1f 00 89 	mcall	80004528 <main+0x488>
+80004276:	1a d3       	st.w	--sp,r3
+80004278:	e0 68 ff ff 	mov	r8,65535
+8000427c:	e0 69 00 c8 	mov	r9,200
+80004280:	31 ea       	mov	r10,30
+80004282:	08 9b       	mov	r11,r4
+80004284:	fe fc 03 a0 	ld.w	r12,pc[928]
+80004288:	f0 1f 00 dd 	mcall	800045fc <main+0x5a0>
 				if(sd_mmc_spi_mem_check()){
-8000430a:	f0 1f 00 77 	mcall	800044e4 <main+0x444>
-8000430e:	2f fd       	sub	sp,-4
-80004310:	58 0c       	cp.w	r12,0
-80004312:	c1 e0       	breq	8000434e <main+0x2ae>
+8000428c:	f0 1f 00 cf 	mcall	800045c8 <main+0x56c>
+80004290:	2f fd       	sub	sp,-4
+80004292:	58 0c       	cp.w	r12,0
+80004294:	c2 60       	breq	800042e0 <main+0x284>
 					if(usart_message){
 						sd_mmc_spi_write_open (Sector_Counter); //Write in a Sector
-80004314:	fe f7 02 40 	ld.w	r7,pc[576]
-80004318:	0f 8c       	ld.ub	r12,r7[0x0]
-8000431a:	f0 1f 00 90 	mcall	80004558 <main+0x4b8>
+80004296:	fe f6 03 92 	ld.w	r6,pc[914]
+8000429a:	0d 8c       	ld.ub	r12,r6[0x0]
+8000429c:	f0 1f 00 e4 	mcall	8000462c <main+0x5d0>
 						sd_mmc_spi_write_sector_from_ram(&usart_message);
-8000431e:	fe fc 02 2a 	ld.w	r12,pc[554]
-80004322:	f0 1f 00 8f 	mcall	8000455c <main+0x4bc>
+800042a0:	fe fc 03 7c 	ld.w	r12,pc[892]
+800042a4:	f0 1f 00 e3 	mcall	80004630 <main+0x5d4>
 						sd_mmc_spi_write_close ();
-80004326:	f0 1f 00 8f 	mcall	80004560 <main+0x4c0>
-						Sector_Counter=(Sector_Counter % 4)+1;//Increase current sector
-8000432a:	0f 88       	ld.ub	r8,r7[0x0]
-8000432c:	f1 d8 c0 02 	bfextu	r8,r8,0x0,0x2
-80004330:	2f f8       	sub	r8,-1
-80004332:	ae 88       	st.b	r7[0x0],r8
+800042a8:	f0 1f 00 e3 	mcall	80004634 <main+0x5d8>
+						Sector_Counter=(Sector_Counter % 5)+1;//Increase current sector
+800042ac:	0d 88       	ld.ub	r8,r6[0x0]
+800042ae:	e0 6b cc cd 	mov	r11,52429
+800042b2:	ea 1b cc cc 	orh	r11,0xcccc
+800042b6:	f0 0b 06 4a 	mulu.d	r10,r8,r11
+800042ba:	f6 09 16 02 	lsr	r9,r11,0x2
+800042be:	f2 09 00 29 	add	r9,r9,r9<<0x2
+800042c2:	12 18       	sub	r8,r9
+800042c4:	2f f8       	sub	r8,-1
+800042c6:	ac 88       	st.b	r6[0x0],r8
 						et024006_PrintString("Message successfully stored", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-80004334:	3f f8       	mov	r8,-1
-80004336:	1a d8       	st.w	--sp,r8
-80004338:	e0 68 ff ff 	mov	r8,65535
-8000433c:	31 e9       	mov	r9,30
-8000433e:	12 9a       	mov	r10,r9
-80004340:	06 9b       	mov	r11,r3
-80004342:	fe fc 02 22 	ld.w	r12,pc[546]
-80004346:	f0 1f 00 79 	mcall	80004528 <main+0x488>
-8000434a:	2f fd       	sub	sp,-4
-8000434c:	c0 f8       	rjmp	8000436a <main+0x2ca>
+800042c8:	1a d3       	st.w	--sp,r3
+800042ca:	e0 68 ff ff 	mov	r8,65535
+800042ce:	31 e9       	mov	r9,30
+800042d0:	12 9a       	mov	r10,r9
+800042d2:	08 9b       	mov	r11,r4
+800042d4:	fe fc 03 64 	ld.w	r12,pc[868]
+800042d8:	f0 1f 00 c9 	mcall	800045fc <main+0x5a0>
+800042dc:	2f fd       	sub	sp,-4
+800042de:	c1 98       	rjmp	80004310 <main+0x2b4>
 					} else {
 						CLR_disp();
 						et024006_PrintString("Message is empty", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 					}//If empty message
 				} else {
 					CLR_disp();
-8000434e:	f0 1f 00 73 	mcall	80004518 <main+0x478>
+800042e0:	f0 1f 00 c3 	mcall	800045ec <main+0x590>
+					et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+800042e4:	1a d3       	st.w	--sp,r3
+800042e6:	e0 68 ff ff 	mov	r8,65535
+800042ea:	e0 69 00 c8 	mov	r9,200
+800042ee:	31 ea       	mov	r10,30
+800042f0:	08 9b       	mov	r11,r4
+800042f2:	fe fc 03 32 	ld.w	r12,pc[818]
+800042f6:	f0 1f 00 c2 	mcall	800045fc <main+0x5a0>
 					et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-80004352:	3f f8       	mov	r8,-1
-80004354:	1a d8       	st.w	--sp,r8
-80004356:	e0 68 ff ff 	mov	r8,65535
-8000435a:	31 e9       	mov	r9,30
-8000435c:	12 9a       	mov	r10,r9
-8000435e:	06 9b       	mov	r11,r3
-80004360:	fe fc 02 08 	ld.w	r12,pc[520]
-80004364:	f0 1f 00 71 	mcall	80004528 <main+0x488>
-80004368:	2f fd       	sub	sp,-4
+800042fa:	1a d3       	st.w	--sp,r3
+800042fc:	e0 68 ff ff 	mov	r8,65535
+80004300:	31 e9       	mov	r9,30
+80004302:	12 9a       	mov	r10,r9
+80004304:	08 9b       	mov	r11,r4
+80004306:	fe fc 03 36 	ld.w	r12,pc[822]
+8000430a:	f0 1f 00 bd 	mcall	800045fc <main+0x5a0>
+8000430e:	2f ed       	sub	sp,-8
 				}//If check mem
 				state=0;
-8000436a:	30 09       	mov	r9,0
-8000436c:	4f 38       	lddpc	r8,80004538 <main+0x498>
-8000436e:	91 09       	st.w	r8[0x0],r9
+80004310:	30 08       	mov	r8,0
+80004312:	fe f9 02 fa 	ld.w	r9,pc[762]
+80004316:	93 08       	st.w	r9[0x0],r8
 			break;
-80004370:	c6 7b       	rjmp	8000423e <main+0x19e>
+80004318:	c5 7b       	rjmp	800041c6 <main+0x16a>
 
 			case 4://Leer ultimo mensaje guardado de la SD y su sector y mostrarlo
 				CLR_disp();
-80004372:	f0 1f 00 6a 	mcall	80004518 <main+0x478>
+8000431a:	f0 1f 00 b5 	mcall	800045ec <main+0x590>
 				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-80004376:	3f f7       	mov	r7,-1
-80004378:	1a d7       	st.w	--sp,r7
-8000437a:	e0 68 ff ff 	mov	r8,65535
-8000437e:	e0 69 00 c8 	mov	r9,200
-80004382:	31 ea       	mov	r10,30
-80004384:	06 9b       	mov	r11,r3
-80004386:	4f ac       	lddpc	r12,8000456c <main+0x4cc>
-80004388:	f0 1f 00 68 	mcall	80004528 <main+0x488>
+8000431e:	1a d3       	st.w	--sp,r3
+80004320:	e0 68 ff ff 	mov	r8,65535
+80004324:	e0 69 00 c8 	mov	r9,200
+80004328:	31 ea       	mov	r10,30
+8000432a:	08 9b       	mov	r11,r4
+8000432c:	fe fc 03 14 	ld.w	r12,pc[788]
+80004330:	f0 1f 00 b3 	mcall	800045fc <main+0x5a0>
 				et024006_PrintString("Last written sector:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-8000438c:	1a d7       	st.w	--sp,r7
-8000438e:	e0 68 ff ff 	mov	r8,65535
-80004392:	31 e9       	mov	r9,30
-80004394:	12 9a       	mov	r10,r9
-80004396:	06 9b       	mov	r11,r3
-80004398:	4f 6c       	lddpc	r12,80004570 <main+0x4d0>
-8000439a:	f0 1f 00 64 	mcall	80004528 <main+0x488>
-				et024006_PrintString(Sector_Counter, (const unsigned char *)&FONT8x8, 130, 30, WHITE, -1);//Does not work
-8000439e:	4e e8       	lddpc	r8,80004554 <main+0x4b4>
-800043a0:	11 8c       	ld.ub	r12,r8[0x0]
-800043a2:	1a d7       	st.w	--sp,r7
-800043a4:	e0 68 ff ff 	mov	r8,65535
-800043a8:	31 e9       	mov	r9,30
-800043aa:	e0 6a 00 82 	mov	r10,130
-800043ae:	06 9b       	mov	r11,r3
-800043b0:	f0 1f 00 5e 	mcall	80004528 <main+0x488>
+80004334:	1a d3       	st.w	--sp,r3
+80004336:	e0 68 ff ff 	mov	r8,65535
+8000433a:	31 e9       	mov	r9,30
+8000433c:	12 9a       	mov	r10,r9
+8000433e:	08 9b       	mov	r11,r4
+80004340:	fe fc 03 04 	ld.w	r12,pc[772]
+80004344:	f0 1f 00 ae 	mcall	800045fc <main+0x5a0>
+				sector_counter_print[0] = Sector_Counter+'0';
+80004348:	fe f6 02 e0 	ld.w	r6,pc[736]
+8000434c:	0d 88       	ld.ub	r8,r6[0x0]
+8000434e:	fe fc 02 fa 	ld.w	r12,pc[762]
+80004352:	2d 08       	sub	r8,-48
+80004354:	b8 88       	st.b	r12[0x0],r8
+				et024006_PrintString(sector_counter_print, (const unsigned char *)&FONT8x8, 200, 30, WHITE, -1);
+80004356:	1a d3       	st.w	--sp,r3
+80004358:	e0 68 ff ff 	mov	r8,65535
+8000435c:	31 e9       	mov	r9,30
+8000435e:	e0 6a 00 c8 	mov	r10,200
+80004362:	08 9b       	mov	r11,r4
+80004364:	f0 1f 00 a6 	mcall	800045fc <main+0x5a0>
 				et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-800043b4:	1a d7       	st.w	--sp,r7
-800043b6:	e0 68 ff ff 	mov	r8,65535
-800043ba:	33 29       	mov	r9,50
-800043bc:	31 ea       	mov	r10,30
-800043be:	06 9b       	mov	r11,r3
-800043c0:	4e dc       	lddpc	r12,80004574 <main+0x4d4>
-800043c2:	f0 1f 00 5a 	mcall	80004528 <main+0x488>
-				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
-800043c6:	1a d7       	st.w	--sp,r7
-800043c8:	e0 68 ff ff 	mov	r8,65535
-800043cc:	34 69       	mov	r9,70
-800043ce:	31 ea       	mov	r10,30
-800043d0:	06 9b       	mov	r11,r3
-800043d2:	4d ec       	lddpc	r12,80004548 <main+0x4a8>
-800043d4:	f0 1f 00 55 	mcall	80004528 <main+0x488>
+80004368:	1a d3       	st.w	--sp,r3
+8000436a:	e0 68 ff ff 	mov	r8,65535
+8000436e:	33 29       	mov	r9,50
+80004370:	31 ea       	mov	r10,30
+80004372:	08 9b       	mov	r11,r4
+80004374:	fe fc 02 d8 	ld.w	r12,pc[728]
+80004378:	f0 1f 00 a1 	mcall	800045fc <main+0x5a0>
+
+				//Read SD
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
+8000437c:	e0 6a 02 00 	mov	r10,512
+80004380:	fe fb 02 d0 	ld.w	r11,pc[720]
+80004384:	30 0c       	mov	r12,0
+80004386:	f0 1f 00 b4 	mcall	80004654 <main+0x5f8>
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
+8000438a:	e0 6a 02 00 	mov	r10,512
+8000438e:	fe fb 02 ca 	ld.w	r11,pc[714]
+80004392:	30 1c       	mov	r12,1
+80004394:	f0 1f 00 b0 	mcall	80004654 <main+0x5f8>
+				end_of_transfer = false;
+80004398:	30 08       	mov	r8,0
+8000439a:	aa 88       	st.b	r5[0x0],r8
+				if(sd_mmc_spi_read_open_PDCA (Sector_Counter)){
+8000439c:	0d 8c       	ld.ub	r12,r6[0x0]
+8000439e:	f0 1f 00 b0 	mcall	8000465c <main+0x600>
+800043a2:	2f cd       	sub	sp,-16
+800043a4:	58 0c       	cp.w	r12,0
+800043a6:	c3 40       	breq	8000440e <main+0x3b2>
+					print_dbg("\r\nSector ");
+800043a8:	fe fc 02 b8 	ld.w	r12,pc[696]
+800043ac:	f0 1f 00 89 	mcall	800045d0 <main+0x574>
+					print_dbg_ulong(Sector_Counter);
+800043b0:	0d 8c       	ld.ub	r12,r6[0x0]
+800043b2:	f0 1f 00 ad 	mcall	80004664 <main+0x608>
+					print_dbg(" :\r\n");
+800043b6:	fe fc 02 b2 	ld.w	r12,pc[690]
+800043ba:	f0 1f 00 86 	mcall	800045d0 <main+0x574>
+					spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
+800043be:	e0 6b 00 ff 	mov	r11,255
+800043c2:	fe 7c 24 00 	mov	r12,-56320
+800043c6:	f0 1f 00 aa 	mcall	8000466c <main+0x610>
+					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+800043ca:	30 0c       	mov	r12,0
+800043cc:	f0 1f 00 a9 	mcall	80004670 <main+0x614>
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+800043d0:	30 0c       	mov	r12,0
+800043d2:	f0 1f 00 a9 	mcall	80004674 <main+0x618>
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+800043d6:	30 1c       	mov	r12,1
+800043d8:	f0 1f 00 a7 	mcall	80004674 <main+0x618>
+					while(!end_of_transfer);
+800043dc:	0b 88       	ld.ub	r8,r5[0x0]
+800043de:	58 08       	cp.w	r8,0
+800043e0:	cf e0       	breq	800043dc <main+0x380>
+800043e2:	30 08       	mov	r8,0
+void init_button_interrupt(void);
+void usart_read(void);
+
+/**************************************************************************/
+
+int main(void){
+800043e4:	fe fa 02 6c 	ld.w	r10,pc[620]
+800043e8:	f0 0a 00 09 	add	r9,r8,r10
+					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+					while(!end_of_transfer);
+					for( i = 0; i < 25; i++){ //First 50 chars
+						usart_message_print[i] = (U8)(*(ram_buffer + i));
+800043ec:	13 89       	ld.ub	r9,r9[0x0]
+800043ee:	ee 08 0b 09 	st.b	r7[r8],r9
+					spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
+					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+					while(!end_of_transfer);
+					for( i = 0; i < 25; i++){ //First 50 chars
+800043f2:	2f f8       	sub	r8,-1
+800043f4:	59 98       	cp.w	r8,25
+800043f6:	cf 91       	brne	800043e8 <main+0x38c>
+						usart_message_print[i] = (U8)(*(ram_buffer + i));
+					}//For
+					et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+800043f8:	1a d3       	st.w	--sp,r3
+800043fa:	e0 68 ff ff 	mov	r8,65535
+800043fe:	34 69       	mov	r9,70
+80004400:	31 ea       	mov	r10,30
+80004402:	08 9b       	mov	r11,r4
+80004404:	40 3c       	lddsp	r12,sp[0xc]
+80004406:	f0 1f 00 7e 	mcall	800045fc <main+0x5a0>
+8000440a:	2f fd       	sub	sp,-4
+8000440c:	c1 98       	rjmp	8000443e <main+0x3e2>
+				}else{
+					CLR_disp();
+8000440e:	f0 1f 00 78 	mcall	800045ec <main+0x590>
+					et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+80004412:	1a d3       	st.w	--sp,r3
+80004414:	e0 68 ff ff 	mov	r8,65535
+80004418:	31 e9       	mov	r9,30
+8000441a:	12 9a       	mov	r10,r9
+8000441c:	08 9b       	mov	r11,r4
+8000441e:	fe fc 02 1e 	ld.w	r12,pc[542]
+80004422:	f0 1f 00 77 	mcall	800045fc <main+0x5a0>
+					et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+80004426:	1a d3       	st.w	--sp,r3
+80004428:	e0 68 ff ff 	mov	r8,65535
+8000442c:	e0 69 00 c8 	mov	r9,200
+80004430:	31 ea       	mov	r10,30
+80004432:	08 9b       	mov	r11,r4
+80004434:	fe fc 02 0c 	ld.w	r12,pc[524]
+80004438:	f0 1f 00 71 	mcall	800045fc <main+0x5a0>
+8000443c:	2f ed       	sub	sp,-8
+				}//IF
+
 				state = 0;
-800043d8:	30 09       	mov	r9,0
-800043da:	4d 88       	lddpc	r8,80004538 <main+0x498>
-800043dc:	91 09       	st.w	r8[0x0],r9
+8000443e:	30 08       	mov	r8,0
+80004440:	4f 39       	lddpc	r9,8000460c <main+0x5b0>
+80004442:	93 08       	st.w	r9[0x0],r8
 			break;
-800043de:	2f bd       	sub	sp,-20
-800043e0:	c2 fb       	rjmp	8000423e <main+0x19e>
+80004444:	fe 9f fe c1 	bral	800041c6 <main+0x16a>
 
 			case 5://Show stored messages
 			  CLR_disp();
-800043e2:	f0 1f 00 4e 	mcall	80004518 <main+0x478>
+80004448:	f0 1f 00 69 	mcall	800045ec <main+0x590>
 				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-800043e6:	3f f7       	mov	r7,-1
-800043e8:	1a d7       	st.w	--sp,r7
-800043ea:	e0 68 ff ff 	mov	r8,65535
-800043ee:	e0 69 00 c8 	mov	r9,200
-800043f2:	31 ea       	mov	r10,30
-800043f4:	06 9b       	mov	r11,r3
-800043f6:	4e 1c       	lddpc	r12,80004578 <main+0x4d8>
-800043f8:	f0 1f 00 4c 	mcall	80004528 <main+0x488>
+8000444c:	1a d3       	st.w	--sp,r3
+8000444e:	e0 68 ff ff 	mov	r8,65535
+80004452:	e0 69 00 c8 	mov	r9,200
+80004456:	31 ea       	mov	r10,30
+80004458:	08 9b       	mov	r11,r4
+8000445a:	fe fc 02 1e 	ld.w	r12,pc[542]
+8000445e:	f0 1f 00 68 	mcall	800045fc <main+0x5a0>
 				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-800043fc:	1a d7       	st.w	--sp,r7
-800043fe:	e0 68 ff ff 	mov	r8,65535
-80004402:	31 e9       	mov	r9,30
-80004404:	12 9a       	mov	r10,r9
-80004406:	06 9b       	mov	r11,r3
-80004408:	4d dc       	lddpc	r12,8000457c <main+0x4dc>
-8000440a:	f0 1f 00 48 	mcall	80004528 <main+0x488>
-8000440e:	30 15       	mov	r5,1
-80004410:	2f ed       	sub	sp,-8
+80004462:	1a d3       	st.w	--sp,r3
+80004464:	e0 68 ff ff 	mov	r8,65535
+80004468:	31 e9       	mov	r9,30
+8000446a:	12 9a       	mov	r10,r9
+8000446c:	08 9b       	mov	r11,r4
+8000446e:	fe fc 02 0e 	ld.w	r12,pc[526]
+80004472:	f0 1f 00 63 	mcall	800045fc <main+0x5a0>
+				et024006_PrintString("Sector 1:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+80004476:	1a d3       	st.w	--sp,r3
+80004478:	e0 68 ff ff 	mov	r8,65535
+8000447c:	33 29       	mov	r9,50
+8000447e:	31 ea       	mov	r10,30
+80004480:	08 9b       	mov	r11,r4
+80004482:	fe fc 01 fe 	ld.w	r12,pc[510]
+80004486:	f0 1f 00 5e 	mcall	800045fc <main+0x5a0>
+				et024006_PrintString("Sector 2:", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+8000448a:	1a d3       	st.w	--sp,r3
+8000448c:	e0 68 ff ff 	mov	r8,65535
+80004490:	34 69       	mov	r9,70
+80004492:	31 ea       	mov	r10,30
+80004494:	08 9b       	mov	r11,r4
+80004496:	4f cc       	lddpc	r12,80004684 <main+0x628>
+80004498:	f0 1f 00 59 	mcall	800045fc <main+0x5a0>
+				et024006_PrintString("Sector 3:", (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
+8000449c:	1a d3       	st.w	--sp,r3
+8000449e:	e0 68 ff ff 	mov	r8,65535
+800044a2:	35 a9       	mov	r9,90
+800044a4:	31 ea       	mov	r10,30
+800044a6:	08 9b       	mov	r11,r4
+800044a8:	4f 8c       	lddpc	r12,80004688 <main+0x62c>
+800044aa:	f0 1f 00 55 	mcall	800045fc <main+0x5a0>
+				et024006_PrintString("Sector 4:", (const unsigned char *)&FONT8x8, 30, 110, WHITE, -1);
+800044ae:	1a d3       	st.w	--sp,r3
+800044b0:	e0 68 ff ff 	mov	r8,65535
+800044b4:	36 e9       	mov	r9,110
+800044b6:	31 ea       	mov	r10,30
+800044b8:	08 9b       	mov	r11,r4
+800044ba:	4f 5c       	lddpc	r12,8000468c <main+0x630>
+800044bc:	f0 1f 00 50 	mcall	800045fc <main+0x5a0>
+				et024006_PrintString("Sector 5:", (const unsigned char *)&FONT8x8, 30, 130, WHITE, -1);
+800044c0:	1a d3       	st.w	--sp,r3
+800044c2:	e0 68 ff ff 	mov	r8,65535
+800044c6:	e0 69 00 82 	mov	r9,130
+800044ca:	31 ea       	mov	r10,30
+800044cc:	08 9b       	mov	r11,r4
+800044ce:	4f 1c       	lddpc	r12,80004690 <main+0x634>
+800044d0:	f0 1f 00 4b 	mcall	800045fc <main+0x5a0>
+800044d4:	33 21       	mov	r1,50
+800044d6:	30 12       	mov	r2,1
+800044d8:	2f 9d       	sub	sp,-28
 
 				//Read SD
 				for(j = 1; j <= 5; j++){ //5 Sectors
 					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
-80004412:	e0 61 02 00 	mov	r1,512
-80004416:	30 02       	mov	r2,0
+800044da:	4d e6       	lddpc	r6,80004650 <main+0x5f4>
+800044dc:	30 00       	mov	r0,0
+800044de:	e0 6a 02 00 	mov	r10,512
+800044e2:	0c 9b       	mov	r11,r6
+800044e4:	00 9c       	mov	r12,r0
+800044e6:	f0 1f 00 5c 	mcall	80004654 <main+0x5f8>
 					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
-80004418:	0a 90       	mov	r0,r5
-				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-
-				//Read SD
-				for(j = 1; j <= 5; j++){ //5 Sectors
-					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
-8000441a:	02 9a       	mov	r10,r1
-8000441c:	40 0b       	lddsp	r11,sp[0x0]
-8000441e:	04 9c       	mov	r12,r2
-80004420:	f0 1f 00 58 	mcall	80004580 <main+0x4e0>
-					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
-80004424:	02 9a       	mov	r10,r1
-80004426:	4d 8b       	lddpc	r11,80004584 <main+0x4e4>
-80004428:	00 9c       	mov	r12,r0
-8000442a:	f0 1f 00 56 	mcall	80004580 <main+0x4e0>
+800044ea:	e0 6a 02 00 	mov	r10,512
+800044ee:	4d bb       	lddpc	r11,80004658 <main+0x5fc>
+800044f0:	30 1c       	mov	r12,1
+800044f2:	f0 1f 00 59 	mcall	80004654 <main+0x5f8>
 					end_of_transfer = false;
-8000442e:	30 08       	mov	r8,0
-80004430:	a8 88       	st.b	r4[0x0],r8
+800044f6:	30 08       	mov	r8,0
+800044f8:	aa 88       	st.b	r5[0x0],r8
+800044fa:	50 02       	stdsp	sp[0x0],r2
 					if(sd_mmc_spi_read_open_PDCA (j)){
-80004432:	0a 9c       	mov	r12,r5
-80004434:	f0 1f 00 55 	mcall	80004588 <main+0x4e8>
-80004438:	c2 60       	breq	80004484 <main+0x3e4>
+800044fc:	04 9c       	mov	r12,r2
+800044fe:	f0 1f 00 58 	mcall	8000465c <main+0x600>
+80004502:	c3 00       	breq	80004562 <main+0x506>
 						print_dbg("\r\nSector ");
-8000443a:	4d 5c       	lddpc	r12,8000458c <main+0x4ec>
-8000443c:	f0 1f 00 21 	mcall	800044c0 <main+0x420>
+80004504:	4d 7c       	lddpc	r12,80004660 <main+0x604>
+80004506:	f0 1f 00 33 	mcall	800045d0 <main+0x574>
 		 				print_dbg_ulong(j);
-80004440:	0a 9c       	mov	r12,r5
-80004442:	f0 1f 00 2e 	mcall	800044f8 <main+0x458>
+8000450a:	40 0c       	lddsp	r12,sp[0x0]
+8000450c:	f0 1f 00 56 	mcall	80004664 <main+0x608>
 		 				print_dbg(" :\r\n");
-80004446:	4d 3c       	lddpc	r12,80004590 <main+0x4f0>
-80004448:	f0 1f 00 1e 	mcall	800044c0 <main+0x420>
+80004510:	4d 6c       	lddpc	r12,80004668 <main+0x60c>
+80004512:	f0 1f 00 30 	mcall	800045d0 <main+0x574>
 						spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
-8000444c:	e0 6b 00 ff 	mov	r11,255
-80004450:	fe 7c 24 00 	mov	r12,-56320
-80004454:	f0 1f 00 50 	mcall	80004594 <main+0x4f4>
+80004516:	e0 6b 00 ff 	mov	r11,255
+8000451a:	fe 7c 24 00 	mov	r12,-56320
+8000451e:	f0 1f 00 54 	mcall	8000466c <main+0x610>
 						pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
-80004458:	04 9c       	mov	r12,r2
-8000445a:	f0 1f 00 50 	mcall	80004598 <main+0x4f8>
+80004522:	00 9c       	mov	r12,r0
+80004524:	f0 1f 00 53 	mcall	80004670 <main+0x614>
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
-8000445e:	04 9c       	mov	r12,r2
-80004460:	f0 1f 00 4f 	mcall	8000459c <main+0x4fc>
+80004528:	00 9c       	mov	r12,r0
+8000452a:	f0 1f 00 53 	mcall	80004674 <main+0x618>
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
-80004464:	00 9c       	mov	r12,r0
-80004466:	f0 1f 00 4e 	mcall	8000459c <main+0x4fc>
+8000452e:	30 1c       	mov	r12,1
+80004530:	f0 1f 00 51 	mcall	80004674 <main+0x618>
 						while(!end_of_transfer);
-8000446a:	09 88       	ld.ub	r8,r4[0x0]
-8000446c:	58 08       	cp.w	r8,0
-8000446e:	cf e0       	breq	8000446a <main+0x3ca>
-80004470:	04 97       	mov	r7,r2
-80004472:	ee 06 00 08 	add	r8,r7,r6
+80004534:	0b 88       	ld.ub	r8,r5[0x0]
+80004536:	58 08       	cp.w	r8,0
+80004538:	cf e0       	breq	80004534 <main+0x4d8>
+8000453a:	00 98       	mov	r8,r0
+void init_button_interrupt(void);
+void usart_read(void);
+
+/**************************************************************************/
+
+int main(void){
+8000453c:	f0 06 00 09 	add	r9,r8,r6
+						pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+						pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+						pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+						while(!end_of_transfer);
 						for( i = 0; i < 25; i++){ //First 50 chars
-							print_dbg_char_hex( (U8)(*(ram_buffer + i)));
-80004476:	11 8c       	ld.ub	r12,r8[0x0]
-80004478:	f0 1f 00 4a 	mcall	800045a0 <main+0x500>
+							usart_message_print[i] = (U8)(*(ram_buffer + i));
+80004540:	13 89       	ld.ub	r9,r9[0x0]
+80004542:	ee 08 0b 09 	st.b	r7[r8],r9
 						spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
 						pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
 						while(!end_of_transfer);
 						for( i = 0; i < 25; i++){ //First 50 chars
-8000447c:	2f f7       	sub	r7,-1
-8000447e:	59 97       	cp.w	r7,25
-80004480:	cf 91       	brne	80004472 <main+0x3d2>
-80004482:	c0 e8       	rjmp	8000449e <main+0x3fe>
-							print_dbg_char_hex( (U8)(*(ram_buffer + i)));
+80004546:	2f f8       	sub	r8,-1
+80004548:	59 98       	cp.w	r8,25
+8000454a:	cf 91       	brne	8000453c <main+0x4e0>
+							usart_message_print[i] = (U8)(*(ram_buffer + i));
 						}//For
+						et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 100, 30+20*j, WHITE, -1);
+8000454c:	1a d3       	st.w	--sp,r3
+8000454e:	e0 68 ff ff 	mov	r8,65535
+80004552:	02 99       	mov	r9,r1
+80004554:	36 4a       	mov	r10,100
+80004556:	08 9b       	mov	r11,r4
+80004558:	40 2c       	lddsp	r12,sp[0x8]
+8000455a:	f0 1f 00 29 	mcall	800045fc <main+0x5a0>
+8000455e:	2f fd       	sub	sp,-4
+80004560:	c1 78       	rjmp	8000458e <main+0x532>
 					}else{
 						CLR_disp();
-80004484:	f0 1f 00 25 	mcall	80004518 <main+0x478>
+80004562:	f0 1f 00 23 	mcall	800045ec <main+0x590>
 						et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-80004488:	3f f8       	mov	r8,-1
-8000448a:	1a d8       	st.w	--sp,r8
-8000448c:	e0 68 ff ff 	mov	r8,65535
-80004490:	31 e9       	mov	r9,30
-80004492:	12 9a       	mov	r10,r9
-80004494:	06 9b       	mov	r11,r3
-80004496:	4b 5c       	lddpc	r12,80004568 <main+0x4c8>
-80004498:	f0 1f 00 24 	mcall	80004528 <main+0x488>
-8000449c:	2f fd       	sub	sp,-4
-			  CLR_disp();
-				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+80004566:	1a d3       	st.w	--sp,r3
+80004568:	e0 68 ff ff 	mov	r8,65535
+8000456c:	31 e9       	mov	r9,30
+8000456e:	12 9a       	mov	r10,r9
+80004570:	08 9b       	mov	r11,r4
+80004572:	4b 3c       	lddpc	r12,8000463c <main+0x5e0>
+80004574:	f0 1f 00 22 	mcall	800045fc <main+0x5a0>
+						et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+80004578:	1a d3       	st.w	--sp,r3
+8000457a:	e0 68 ff ff 	mov	r8,65535
+8000457e:	e0 69 00 c8 	mov	r9,200
+80004582:	31 ea       	mov	r10,30
+80004584:	08 9b       	mov	r11,r4
+80004586:	4b dc       	lddpc	r12,80004678 <main+0x61c>
+80004588:	f0 1f 00 1d 	mcall	800045fc <main+0x5a0>
+8000458c:	2f ed       	sub	sp,-8
+				et024006_PrintString("Sector 3:", (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
+				et024006_PrintString("Sector 4:", (const unsigned char *)&FONT8x8, 30, 110, WHITE, -1);
+				et024006_PrintString("Sector 5:", (const unsigned char *)&FONT8x8, 30, 130, WHITE, -1);
 
 				//Read SD
 				for(j = 1; j <= 5; j++){ //5 Sectors
-8000449e:	2f f5       	sub	r5,-1
-800044a0:	58 65       	cp.w	r5,6
-800044a2:	cb c1       	brne	8000441a <main+0x37a>
-						CLR_disp();
+8000458e:	2f f2       	sub	r2,-1
+80004590:	2e c1       	sub	r1,-20
+80004592:	58 62       	cp.w	r2,6
+80004594:	ca 51       	brne	800044de <main+0x482>
 						et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+						et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 					}//IF
 				}//For
 
 				state = 0;
-800044a4:	30 09       	mov	r9,0
-800044a6:	4a 58       	lddpc	r8,80004538 <main+0x498>
-800044a8:	91 09       	st.w	r8[0x0],r9
-800044aa:	fe 9f fe ca 	bral	8000423e <main+0x19e>
-800044ae:	00 00       	add	r0,r0
-800044b0:	80 00       	ld.sh	r0,r0[0x0]
-800044b2:	38 c0       	mov	r0,-116
-800044b4:	80 00       	ld.sh	r0,r0[0x0]
-800044b6:	3e bc       	mov	r12,-21
-800044b8:	80 00       	ld.sh	r0,r0[0x0]
-800044ba:	3e 48       	mov	r8,-28
-800044bc:	80 00       	ld.sh	r0,r0[0x0]
-800044be:	54 9c       	stdsp	sp[0x124],r12
-800044c0:	80 00       	ld.sh	r0,r0[0x0]
-800044c2:	3d f4       	mov	r4,-33
-800044c4:	80 00       	ld.sh	r0,r0[0x0]
-800044c6:	54 b4       	stdsp	sp[0x12c],r4
-800044c8:	80 00       	ld.sh	r0,r0[0x0]
-800044ca:	56 34       	stdsp	sp[0x18c],r4
-800044cc:	80 00       	ld.sh	r0,r0[0x0]
-800044ce:	56 44       	stdsp	sp[0x190],r4
-800044d0:	80 00       	ld.sh	r0,r0[0x0]
-800044d2:	34 f0       	mov	r0,79
-800044d4:	80 00       	ld.sh	r0,r0[0x0]
-800044d6:	39 c2       	mov	r2,-100
-800044d8:	80 00       	ld.sh	r0,r0[0x0]
-800044da:	39 fa       	mov	r10,-97
-800044dc:	80 00       	ld.sh	r0,r0[0x0]
-800044de:	3b 50       	mov	r0,-75
-800044e0:	80 00       	ld.sh	r0,r0[0x0]
-800044e2:	33 4c       	mov	r12,52
-800044e4:	80 00       	ld.sh	r0,r0[0x0]
-800044e6:	33 24       	mov	r4,50
-800044e8:	80 00       	ld.sh	r0,r0[0x0]
-800044ea:	54 c8       	stdsp	sp[0x130],r8
-800044ec:	80 00       	ld.sh	r0,r0[0x0]
-800044ee:	28 78       	sub	r8,-121
-800044f0:	80 00       	ld.sh	r0,r0[0x0]
-800044f2:	54 dc       	stdsp	sp[0x134],r12
-800044f4:	00 00       	add	r0,r0
-800044f6:	03 88       	ld.ub	r8,r1[0x0]
-800044f8:	80 00       	ld.sh	r0,r0[0x0]
-800044fa:	3d e0       	mov	r0,-34
-800044fc:	80 00       	ld.sh	r0,r0[0x0]
-800044fe:	54 e8       	stdsp	sp[0x138],r8
-80004500:	80 00       	ld.sh	r0,r0[0x0]
-80004502:	3f 30       	mov	r0,-13
-80004504:	80 00       	ld.sh	r0,r0[0x0]
-80004506:	23 d4       	sub	r4,61
-80004508:	80 00       	ld.sh	r0,r0[0x0]
-8000450a:	39 5c       	mov	r12,-107
-8000450c:	00 00       	add	r0,r0
-8000450e:	00 08       	add	r8,r0
-80004510:	80 00       	ld.sh	r0,r0[0x0]
-80004512:	38 ec       	mov	r12,-114
-80004514:	80 00       	ld.sh	r0,r0[0x0]
-80004516:	39 22       	mov	r2,-110
-80004518:	80 00       	ld.sh	r0,r0[0x0]
-8000451a:	3f e4       	mov	r4,-2
-8000451c:	80 00       	ld.sh	r0,r0[0x0]
-8000451e:	39 34       	mov	r4,-109
-80004520:	80 00       	ld.sh	r0,r0[0x0]
-80004522:	4c 00       	lddpc	r0,80004620 <__avr32_udiv64+0x7c>
-80004524:	80 00       	ld.sh	r0,r0[0x0]
-80004526:	54 f0       	stdsp	sp[0x13c],r0
-80004528:	80 00       	ld.sh	r0,r0[0x0]
-8000452a:	20 a8       	sub	r8,10
-8000452c:	80 00       	ld.sh	r0,r0[0x0]
-8000452e:	54 f8       	stdsp	sp[0x13c],r8
-80004530:	00 00       	add	r0,r0
-80004532:	03 bc       	ld.ub	r12,r1[0x3]
-80004534:	00 00       	add	r0,r0
-80004536:	03 b0       	ld.ub	r0,r1[0x3]
-80004538:	00 00       	add	r0,r0
-8000453a:	01 80       	ld.ub	r0,r0[0x0]
-8000453c:	80 00       	ld.sh	r0,r0[0x0]
-8000453e:	55 00       	stdsp	sp[0x140],r0
-80004540:	80 00       	ld.sh	r0,r0[0x0]
-80004542:	55 18       	stdsp	sp[0x144],r8
-80004544:	80 00       	ld.sh	r0,r0[0x0]
-80004546:	55 30       	stdsp	sp[0x14c],r0
-80004548:	00 00       	add	r0,r0
-8000454a:	00 28       	rsub	r8,r0
-8000454c:	80 00       	ld.sh	r0,r0[0x0]
-8000454e:	55 44       	stdsp	sp[0x150],r4
-80004550:	80 00       	ld.sh	r0,r0[0x0]
-80004552:	55 5c       	stdsp	sp[0x154],r12
-80004554:	00 00       	add	r0,r0
-80004556:	00 5c       	eor	r12,r0
-80004558:	80 00       	ld.sh	r0,r0[0x0]
-8000455a:	2a 6c       	sub	r12,-90
-8000455c:	80 00       	ld.sh	r0,r0[0x0]
-8000455e:	2c 0c       	sub	r12,-64
-80004560:	80 00       	ld.sh	r0,r0[0x0]
-80004562:	29 94       	sub	r4,-103
-80004564:	80 00       	ld.sh	r0,r0[0x0]
-80004566:	55 74       	stdsp	sp[0x15c],r4
-80004568:	80 00       	ld.sh	r0,r0[0x0]
-8000456a:	55 90       	stdsp	sp[0x164],r0
-8000456c:	80 00       	ld.sh	r0,r0[0x0]
-8000456e:	55 a4       	stdsp	sp[0x168],r4
-80004570:	80 00       	ld.sh	r0,r0[0x0]
-80004572:	55 bc       	stdsp	sp[0x16c],r12
-80004574:	80 00       	ld.sh	r0,r0[0x0]
-80004576:	55 d4       	stdsp	sp[0x174],r4
-80004578:	80 00       	ld.sh	r0,r0[0x0]
-8000457a:	55 e0       	stdsp	sp[0x178],r0
-8000457c:	80 00       	ld.sh	r0,r0[0x0]
-8000457e:	55 fc       	stdsp	sp[0x17c],r12
-80004580:	80 00       	ld.sh	r0,r0[0x0]
-80004582:	37 9c       	mov	r12,121
-80004584:	80 00       	ld.sh	r0,r0[0x0]
-80004586:	50 68       	stdsp	sp[0x18],r8
-80004588:	80 00       	ld.sh	r0,r0[0x0]
-8000458a:	2d 6c       	sub	r12,-42
-8000458c:	80 00       	ld.sh	r0,r0[0x0]
-8000458e:	56 20       	stdsp	sp[0x188],r0
-80004590:	80 00       	ld.sh	r0,r0[0x0]
-80004592:	56 2c       	stdsp	sp[0x188],r12
-80004594:	80 00       	ld.sh	r0,r0[0x0]
-80004596:	3b 56       	mov	r6,-75
-80004598:	80 00       	ld.sh	r0,r0[0x0]
-8000459a:	37 3c       	mov	r12,115
-8000459c:	80 00       	ld.sh	r0,r0[0x0]
-8000459e:	37 2c       	mov	r12,114
+80004596:	30 08       	mov	r8,0
+80004598:	49 d9       	lddpc	r9,8000460c <main+0x5b0>
+8000459a:	93 08       	st.w	r9[0x0],r8
+8000459c:	fe 9f fe 15 	bral	800041c6 <main+0x16a>
 800045a0:	80 00       	ld.sh	r0,r0[0x0]
-800045a2:	3d 84       	mov	r4,-40
+800045a2:	38 c0       	mov	r0,-116
+800045a4:	80 00       	ld.sh	r0,r0[0x0]
+800045a6:	3e 78       	mov	r8,-25
+800045a8:	80 00       	ld.sh	r0,r0[0x0]
+800045aa:	3e 04       	mov	r4,-32
+800045ac:	80 00       	ld.sh	r0,r0[0x0]
+800045ae:	58 48       	cp.w	r8,4
+800045b0:	80 00       	ld.sh	r0,r0[0x0]
+800045b2:	56 80       	stdsp	sp[0x1a0],r0
+800045b4:	80 00       	ld.sh	r0,r0[0x0]
+800045b6:	34 f0       	mov	r0,79
+800045b8:	80 00       	ld.sh	r0,r0[0x0]
+800045ba:	39 c2       	mov	r2,-100
+800045bc:	80 00       	ld.sh	r0,r0[0x0]
+800045be:	39 fa       	mov	r10,-97
+800045c0:	80 00       	ld.sh	r0,r0[0x0]
+800045c2:	3b 50       	mov	r0,-75
+800045c4:	80 00       	ld.sh	r0,r0[0x0]
+800045c6:	33 4c       	mov	r12,52
+800045c8:	80 00       	ld.sh	r0,r0[0x0]
+800045ca:	33 24       	mov	r4,50
+800045cc:	80 00       	ld.sh	r0,r0[0x0]
+800045ce:	56 a0       	stdsp	sp[0x1a8],r0
+800045d0:	80 00       	ld.sh	r0,r0[0x0]
+800045d2:	3d b0       	mov	r0,-37
+800045d4:	80 00       	ld.sh	r0,r0[0x0]
+800045d6:	3e ec       	mov	r12,-18
+800045d8:	80 00       	ld.sh	r0,r0[0x0]
+800045da:	23 d4       	sub	r4,61
+800045dc:	80 00       	ld.sh	r0,r0[0x0]
+800045de:	39 5c       	mov	r12,-107
+800045e0:	00 00       	add	r0,r0
+800045e2:	00 3c       	cp.w	r12,r0
+800045e4:	80 00       	ld.sh	r0,r0[0x0]
+800045e6:	38 ec       	mov	r12,-114
+800045e8:	80 00       	ld.sh	r0,r0[0x0]
+800045ea:	39 22       	mov	r2,-110
+800045ec:	80 00       	ld.sh	r0,r0[0x0]
+800045ee:	3f a0       	mov	r0,-6
+800045f0:	80 00       	ld.sh	r0,r0[0x0]
+800045f2:	39 34       	mov	r4,-109
+800045f4:	80 00       	ld.sh	r0,r0[0x0]
+800045f6:	4e 00       	lddpc	r0,80004774 <__avr32_udiv64+0xe0>
+800045f8:	80 00       	ld.sh	r0,r0[0x0]
+800045fa:	56 b0       	stdsp	sp[0x1ac],r0
+800045fc:	80 00       	ld.sh	r0,r0[0x0]
+800045fe:	20 a8       	sub	r8,10
+80004600:	80 00       	ld.sh	r0,r0[0x0]
+80004602:	56 b8       	stdsp	sp[0x1ac],r8
+80004604:	00 00       	add	r0,r0
+80004606:	03 b0       	ld.ub	r0,r1[0x3]
+80004608:	00 00       	add	r0,r0
+8000460a:	07 a8       	ld.ub	r8,r3[0x2]
+8000460c:	00 00       	add	r0,r0
+8000460e:	01 80       	ld.ub	r0,r0[0x0]
+80004610:	80 00       	ld.sh	r0,r0[0x0]
+80004612:	56 c0       	stdsp	sp[0x1b0],r0
+80004614:	80 00       	ld.sh	r0,r0[0x0]
+80004616:	56 d8       	stdsp	sp[0x1b4],r8
+80004618:	80 00       	ld.sh	r0,r0[0x0]
+8000461a:	56 f0       	stdsp	sp[0x1bc],r0
+8000461c:	00 00       	add	r0,r0
+8000461e:	00 08       	add	r8,r0
+80004620:	80 00       	ld.sh	r0,r0[0x0]
+80004622:	57 04       	stdsp	sp[0x1c0],r4
+80004624:	80 00       	ld.sh	r0,r0[0x0]
+80004626:	57 1c       	stdsp	sp[0x1c4],r12
+80004628:	00 00       	add	r0,r0
+8000462a:	00 5c       	eor	r12,r0
+8000462c:	80 00       	ld.sh	r0,r0[0x0]
+8000462e:	2a 6c       	sub	r12,-90
+80004630:	80 00       	ld.sh	r0,r0[0x0]
+80004632:	2c 0c       	sub	r12,-64
+80004634:	80 00       	ld.sh	r0,r0[0x0]
+80004636:	29 94       	sub	r4,-103
+80004638:	80 00       	ld.sh	r0,r0[0x0]
+8000463a:	57 34       	stdsp	sp[0x1cc],r4
+8000463c:	80 00       	ld.sh	r0,r0[0x0]
+8000463e:	57 50       	stdsp	sp[0x1d4],r0
+80004640:	80 00       	ld.sh	r0,r0[0x0]
+80004642:	57 64       	stdsp	sp[0x1d8],r4
+80004644:	80 00       	ld.sh	r0,r0[0x0]
+80004646:	57 7c       	stdsp	sp[0x1dc],r12
+80004648:	00 00       	add	r0,r0
+8000464a:	07 a4       	ld.ub	r4,r3[0x2]
+8000464c:	80 00       	ld.sh	r0,r0[0x0]
+8000464e:	57 94       	stdsp	sp[0x1e4],r4
+80004650:	00 00       	add	r0,r0
+80004652:	03 bc       	ld.ub	r12,r1[0x3]
+80004654:	80 00       	ld.sh	r0,r0[0x0]
+80004656:	37 9c       	mov	r12,121
+80004658:	80 00       	ld.sh	r0,r0[0x0]
+8000465a:	52 58       	stdsp	sp[0x94],r8
+8000465c:	80 00       	ld.sh	r0,r0[0x0]
+8000465e:	2d 6c       	sub	r12,-42
+80004660:	80 00       	ld.sh	r0,r0[0x0]
+80004662:	57 a0       	stdsp	sp[0x1e8],r0
+80004664:	80 00       	ld.sh	r0,r0[0x0]
+80004666:	3d 9c       	mov	r12,-39
+80004668:	80 00       	ld.sh	r0,r0[0x0]
+8000466a:	57 ac       	stdsp	sp[0x1e8],r12
+8000466c:	80 00       	ld.sh	r0,r0[0x0]
+8000466e:	3b 56       	mov	r6,-75
+80004670:	80 00       	ld.sh	r0,r0[0x0]
+80004672:	37 3c       	mov	r12,115
+80004674:	80 00       	ld.sh	r0,r0[0x0]
+80004676:	37 2c       	mov	r12,114
+80004678:	80 00       	ld.sh	r0,r0[0x0]
+8000467a:	57 b4       	stdsp	sp[0x1ec],r4
+8000467c:	80 00       	ld.sh	r0,r0[0x0]
+8000467e:	57 d0       	stdsp	sp[0x1f4],r0
+80004680:	80 00       	ld.sh	r0,r0[0x0]
+80004682:	57 f4       	stdsp	sp[0x1fc],r4
+80004684:	80 00       	ld.sh	r0,r0[0x0]
+80004686:	58 00       	cp.w	r0,0
+80004688:	80 00       	ld.sh	r0,r0[0x0]
+8000468a:	58 0c       	cp.w	r12,0
+8000468c:	80 00       	ld.sh	r0,r0[0x0]
+8000468e:	58 18       	cp.w	r8,1
+80004690:	80 00       	ld.sh	r0,r0[0x0]
+80004692:	58 24       	cp.w	r4,2
 
-800045a4 <__avr32_udiv64>:
-800045a4:	d4 31       	pushm	r0-r7,lr
-800045a6:	1a 97       	mov	r7,sp
-800045a8:	20 3d       	sub	sp,12
-800045aa:	10 9c       	mov	r12,r8
-800045ac:	12 9e       	mov	lr,r9
-800045ae:	14 93       	mov	r3,r10
-800045b0:	58 09       	cp.w	r9,0
-800045b2:	e0 81 00 bd 	brne	8000472c <__avr32_udiv64+0x188>
-800045b6:	16 38       	cp.w	r8,r11
-800045b8:	e0 88 00 40 	brls	80004638 <__avr32_udiv64+0x94>
-800045bc:	f0 08 12 00 	clz	r8,r8
-800045c0:	c0 d0       	breq	800045da <__avr32_udiv64+0x36>
-800045c2:	f6 08 09 4b 	lsl	r11,r11,r8
-800045c6:	f0 09 11 20 	rsub	r9,r8,32
-800045ca:	f8 08 09 4c 	lsl	r12,r12,r8
-800045ce:	f4 09 0a 49 	lsr	r9,r10,r9
-800045d2:	f4 08 09 43 	lsl	r3,r10,r8
-800045d6:	f3 eb 10 0b 	or	r11,r9,r11
-800045da:	f8 0e 16 10 	lsr	lr,r12,0x10
-800045de:	f5 dc c0 10 	bfextu	r10,r12,0x0,0x10
-800045e2:	f6 0e 0d 00 	divu	r0,r11,lr
-800045e6:	e6 0b 16 10 	lsr	r11,r3,0x10
-800045ea:	00 99       	mov	r9,r0
-800045ec:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
-800045f0:	e0 0a 02 48 	mul	r8,r0,r10
-800045f4:	10 3b       	cp.w	r11,r8
-800045f6:	c0 a2       	brcc	8000460a <__avr32_udiv64+0x66>
-800045f8:	20 19       	sub	r9,1
-800045fa:	18 0b       	add	r11,r12
-800045fc:	18 3b       	cp.w	r11,r12
-800045fe:	c0 63       	brcs	8000460a <__avr32_udiv64+0x66>
-80004600:	10 3b       	cp.w	r11,r8
-80004602:	f7 b9 03 01 	sublo	r9,1
-80004606:	f7 dc e3 0b 	addcs	r11,r11,r12
-8000460a:	f6 08 01 01 	sub	r1,r11,r8
-8000460e:	e7 d3 c0 10 	bfextu	r3,r3,0x0,0x10
-80004612:	e2 0e 0d 00 	divu	r0,r1,lr
-80004616:	e7 e1 11 03 	or	r3,r3,r1<<0x10
-8000461a:	00 98       	mov	r8,r0
-8000461c:	e0 0a 02 4a 	mul	r10,r0,r10
-80004620:	14 33       	cp.w	r3,r10
-80004622:	c0 82       	brcc	80004632 <__avr32_udiv64+0x8e>
-80004624:	20 18       	sub	r8,1
-80004626:	18 03       	add	r3,r12
-80004628:	18 33       	cp.w	r3,r12
-8000462a:	c0 43       	brcs	80004632 <__avr32_udiv64+0x8e>
-8000462c:	14 33       	cp.w	r3,r10
-8000462e:	f7 b8 03 01 	sublo	r8,1
-80004632:	f1 e9 11 08 	or	r8,r8,r9<<0x10
-80004636:	cd f8       	rjmp	800047f4 <__avr32_udiv64+0x250>
-80004638:	58 08       	cp.w	r8,0
-8000463a:	c0 51       	brne	80004644 <__avr32_udiv64+0xa0>
-8000463c:	30 19       	mov	r9,1
-8000463e:	f2 08 0d 08 	divu	r8,r9,r8
-80004642:	10 9c       	mov	r12,r8
-80004644:	f8 06 12 00 	clz	r6,r12
-80004648:	c0 41       	brne	80004650 <__avr32_udiv64+0xac>
-8000464a:	18 1b       	sub	r11,r12
-8000464c:	30 19       	mov	r9,1
-8000464e:	c4 08       	rjmp	800046ce <__avr32_udiv64+0x12a>
-80004650:	ec 01 11 20 	rsub	r1,r6,32
-80004654:	f4 01 0a 49 	lsr	r9,r10,r1
-80004658:	f8 06 09 4c 	lsl	r12,r12,r6
-8000465c:	f6 06 09 48 	lsl	r8,r11,r6
-80004660:	f6 01 0a 41 	lsr	r1,r11,r1
-80004664:	f3 e8 10 08 	or	r8,r9,r8
-80004668:	f8 03 16 10 	lsr	r3,r12,0x10
-8000466c:	eb dc c0 10 	bfextu	r5,r12,0x0,0x10
-80004670:	e2 03 0d 00 	divu	r0,r1,r3
-80004674:	f0 0b 16 10 	lsr	r11,r8,0x10
-80004678:	00 9e       	mov	lr,r0
-8000467a:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
-8000467e:	e0 05 02 49 	mul	r9,r0,r5
-80004682:	12 3b       	cp.w	r11,r9
-80004684:	c0 a2       	brcc	80004698 <__avr32_udiv64+0xf4>
-80004686:	20 1e       	sub	lr,1
-80004688:	18 0b       	add	r11,r12
-8000468a:	18 3b       	cp.w	r11,r12
-8000468c:	c0 63       	brcs	80004698 <__avr32_udiv64+0xf4>
-8000468e:	12 3b       	cp.w	r11,r9
-80004690:	f7 be 03 01 	sublo	lr,1
-80004694:	f7 dc e3 0b 	addcs	r11,r11,r12
-80004698:	12 1b       	sub	r11,r9
-8000469a:	f1 d8 c0 10 	bfextu	r8,r8,0x0,0x10
-8000469e:	f6 03 0d 02 	divu	r2,r11,r3
-800046a2:	f1 e3 11 08 	or	r8,r8,r3<<0x10
-800046a6:	04 99       	mov	r9,r2
-800046a8:	e4 05 02 4b 	mul	r11,r2,r5
-800046ac:	16 38       	cp.w	r8,r11
-800046ae:	c0 a2       	brcc	800046c2 <__avr32_udiv64+0x11e>
-800046b0:	20 19       	sub	r9,1
-800046b2:	18 08       	add	r8,r12
-800046b4:	18 38       	cp.w	r8,r12
-800046b6:	c0 63       	brcs	800046c2 <__avr32_udiv64+0x11e>
-800046b8:	16 38       	cp.w	r8,r11
-800046ba:	f7 b9 03 01 	sublo	r9,1
-800046be:	f1 dc e3 08 	addcs	r8,r8,r12
-800046c2:	f4 06 09 43 	lsl	r3,r10,r6
-800046c6:	f0 0b 01 0b 	sub	r11,r8,r11
-800046ca:	f3 ee 11 09 	or	r9,r9,lr<<0x10
-800046ce:	f8 06 16 10 	lsr	r6,r12,0x10
-800046d2:	fd dc c0 10 	bfextu	lr,r12,0x0,0x10
-800046d6:	f6 06 0d 00 	divu	r0,r11,r6
-800046da:	e6 0b 16 10 	lsr	r11,r3,0x10
-800046de:	00 9a       	mov	r10,r0
-800046e0:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
-800046e4:	e0 0e 02 48 	mul	r8,r0,lr
-800046e8:	10 3b       	cp.w	r11,r8
-800046ea:	c0 a2       	brcc	800046fe <__avr32_udiv64+0x15a>
-800046ec:	20 1a       	sub	r10,1
-800046ee:	18 0b       	add	r11,r12
-800046f0:	18 3b       	cp.w	r11,r12
-800046f2:	c0 63       	brcs	800046fe <__avr32_udiv64+0x15a>
-800046f4:	10 3b       	cp.w	r11,r8
-800046f6:	f7 ba 03 01 	sublo	r10,1
-800046fa:	f7 dc e3 0b 	addcs	r11,r11,r12
-800046fe:	f6 08 01 01 	sub	r1,r11,r8
-80004702:	e7 d3 c0 10 	bfextu	r3,r3,0x0,0x10
-80004706:	e2 06 0d 00 	divu	r0,r1,r6
-8000470a:	e7 e1 11 03 	or	r3,r3,r1<<0x10
-8000470e:	00 98       	mov	r8,r0
-80004710:	e0 0e 02 4b 	mul	r11,r0,lr
-80004714:	16 33       	cp.w	r3,r11
-80004716:	c0 82       	brcc	80004726 <__avr32_udiv64+0x182>
-80004718:	20 18       	sub	r8,1
-8000471a:	18 03       	add	r3,r12
-8000471c:	18 33       	cp.w	r3,r12
-8000471e:	c0 43       	brcs	80004726 <__avr32_udiv64+0x182>
-80004720:	16 33       	cp.w	r3,r11
-80004722:	f7 b8 03 01 	sublo	r8,1
-80004726:	f1 ea 11 08 	or	r8,r8,r10<<0x10
-8000472a:	c6 98       	rjmp	800047fc <__avr32_udiv64+0x258>
-8000472c:	16 39       	cp.w	r9,r11
-8000472e:	e0 8b 00 65 	brhi	800047f8 <__avr32_udiv64+0x254>
-80004732:	f2 09 12 00 	clz	r9,r9
-80004736:	c0 b1       	brne	8000474c <__avr32_udiv64+0x1a8>
-80004738:	10 3a       	cp.w	r10,r8
-8000473a:	5f 2a       	srhs	r10
-8000473c:	1c 3b       	cp.w	r11,lr
-8000473e:	5f b8       	srhi	r8
-80004740:	10 4a       	or	r10,r8
-80004742:	f2 0a 18 00 	cp.b	r10,r9
-80004746:	c5 90       	breq	800047f8 <__avr32_udiv64+0x254>
-80004748:	30 18       	mov	r8,1
-8000474a:	c5 98       	rjmp	800047fc <__avr32_udiv64+0x258>
-8000474c:	f0 09 09 46 	lsl	r6,r8,r9
-80004750:	f2 03 11 20 	rsub	r3,r9,32
-80004754:	fc 09 09 4e 	lsl	lr,lr,r9
-80004758:	f0 03 0a 48 	lsr	r8,r8,r3
-8000475c:	f6 09 09 4c 	lsl	r12,r11,r9
-80004760:	f4 03 0a 42 	lsr	r2,r10,r3
-80004764:	ef 46 ff f4 	st.w	r7[-12],r6
-80004768:	f6 03 0a 43 	lsr	r3,r11,r3
-8000476c:	18 42       	or	r2,r12
-8000476e:	f1 ee 10 0c 	or	r12,r8,lr
-80004772:	f8 01 16 10 	lsr	r1,r12,0x10
-80004776:	ed dc c0 10 	bfextu	r6,r12,0x0,0x10
-8000477a:	e6 01 0d 04 	divu	r4,r3,r1
-8000477e:	e4 03 16 10 	lsr	r3,r2,0x10
-80004782:	08 9e       	mov	lr,r4
-80004784:	e7 e5 11 03 	or	r3,r3,r5<<0x10
-80004788:	e8 06 02 48 	mul	r8,r4,r6
-8000478c:	10 33       	cp.w	r3,r8
-8000478e:	c0 a2       	brcc	800047a2 <__avr32_udiv64+0x1fe>
-80004790:	20 1e       	sub	lr,1
-80004792:	18 03       	add	r3,r12
-80004794:	18 33       	cp.w	r3,r12
-80004796:	c0 63       	brcs	800047a2 <__avr32_udiv64+0x1fe>
-80004798:	10 33       	cp.w	r3,r8
-8000479a:	f7 be 03 01 	sublo	lr,1
-8000479e:	e7 dc e3 03 	addcs	r3,r3,r12
-800047a2:	10 13       	sub	r3,r8
-800047a4:	f7 d2 c0 10 	bfextu	r11,r2,0x0,0x10
-800047a8:	e6 01 0d 00 	divu	r0,r3,r1
-800047ac:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
-800047b0:	00 98       	mov	r8,r0
-800047b2:	e0 06 02 46 	mul	r6,r0,r6
-800047b6:	0c 3b       	cp.w	r11,r6
-800047b8:	c0 a2       	brcc	800047cc <__avr32_udiv64+0x228>
-800047ba:	20 18       	sub	r8,1
-800047bc:	18 0b       	add	r11,r12
-800047be:	18 3b       	cp.w	r11,r12
-800047c0:	c0 63       	brcs	800047cc <__avr32_udiv64+0x228>
-800047c2:	0c 3b       	cp.w	r11,r6
-800047c4:	f7 dc e3 0b 	addcs	r11,r11,r12
-800047c8:	f7 b8 03 01 	sublo	r8,1
-800047cc:	f1 ee 11 08 	or	r8,r8,lr<<0x10
-800047d0:	ee f4 ff f4 	ld.w	r4,r7[-12]
-800047d4:	0c 1b       	sub	r11,r6
-800047d6:	f0 04 06 42 	mulu.d	r2,r8,r4
-800047da:	06 95       	mov	r5,r3
-800047dc:	16 35       	cp.w	r5,r11
-800047de:	e0 8b 00 0a 	brhi	800047f2 <__avr32_udiv64+0x24e>
-800047e2:	5f 0b       	sreq	r11
-800047e4:	f4 09 09 49 	lsl	r9,r10,r9
-800047e8:	12 32       	cp.w	r2,r9
-800047ea:	5f b9       	srhi	r9
-800047ec:	f7 e9 00 09 	and	r9,r11,r9
-800047f0:	c0 60       	breq	800047fc <__avr32_udiv64+0x258>
-800047f2:	20 18       	sub	r8,1
-800047f4:	30 09       	mov	r9,0
-800047f6:	c0 38       	rjmp	800047fc <__avr32_udiv64+0x258>
-800047f8:	30 09       	mov	r9,0
-800047fa:	12 98       	mov	r8,r9
-800047fc:	10 9a       	mov	r10,r8
-800047fe:	12 93       	mov	r3,r9
-80004800:	10 92       	mov	r2,r8
-80004802:	12 9b       	mov	r11,r9
-80004804:	2f dd       	sub	sp,-12
-80004806:	d8 32       	popm	r0-r7,pc
+80004694 <__avr32_udiv64>:
+80004694:	d4 31       	pushm	r0-r7,lr
+80004696:	1a 97       	mov	r7,sp
+80004698:	20 3d       	sub	sp,12
+8000469a:	10 9c       	mov	r12,r8
+8000469c:	12 9e       	mov	lr,r9
+8000469e:	14 93       	mov	r3,r10
+800046a0:	58 09       	cp.w	r9,0
+800046a2:	e0 81 00 bd 	brne	8000481c <__avr32_udiv64+0x188>
+800046a6:	16 38       	cp.w	r8,r11
+800046a8:	e0 88 00 40 	brls	80004728 <__avr32_udiv64+0x94>
+800046ac:	f0 08 12 00 	clz	r8,r8
+800046b0:	c0 d0       	breq	800046ca <__avr32_udiv64+0x36>
+800046b2:	f6 08 09 4b 	lsl	r11,r11,r8
+800046b6:	f0 09 11 20 	rsub	r9,r8,32
+800046ba:	f8 08 09 4c 	lsl	r12,r12,r8
+800046be:	f4 09 0a 49 	lsr	r9,r10,r9
+800046c2:	f4 08 09 43 	lsl	r3,r10,r8
+800046c6:	f3 eb 10 0b 	or	r11,r9,r11
+800046ca:	f8 0e 16 10 	lsr	lr,r12,0x10
+800046ce:	f5 dc c0 10 	bfextu	r10,r12,0x0,0x10
+800046d2:	f6 0e 0d 00 	divu	r0,r11,lr
+800046d6:	e6 0b 16 10 	lsr	r11,r3,0x10
+800046da:	00 99       	mov	r9,r0
+800046dc:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
+800046e0:	e0 0a 02 48 	mul	r8,r0,r10
+800046e4:	10 3b       	cp.w	r11,r8
+800046e6:	c0 a2       	brcc	800046fa <__avr32_udiv64+0x66>
+800046e8:	20 19       	sub	r9,1
+800046ea:	18 0b       	add	r11,r12
+800046ec:	18 3b       	cp.w	r11,r12
+800046ee:	c0 63       	brcs	800046fa <__avr32_udiv64+0x66>
+800046f0:	10 3b       	cp.w	r11,r8
+800046f2:	f7 b9 03 01 	sublo	r9,1
+800046f6:	f7 dc e3 0b 	addcs	r11,r11,r12
+800046fa:	f6 08 01 01 	sub	r1,r11,r8
+800046fe:	e7 d3 c0 10 	bfextu	r3,r3,0x0,0x10
+80004702:	e2 0e 0d 00 	divu	r0,r1,lr
+80004706:	e7 e1 11 03 	or	r3,r3,r1<<0x10
+8000470a:	00 98       	mov	r8,r0
+8000470c:	e0 0a 02 4a 	mul	r10,r0,r10
+80004710:	14 33       	cp.w	r3,r10
+80004712:	c0 82       	brcc	80004722 <__avr32_udiv64+0x8e>
+80004714:	20 18       	sub	r8,1
+80004716:	18 03       	add	r3,r12
+80004718:	18 33       	cp.w	r3,r12
+8000471a:	c0 43       	brcs	80004722 <__avr32_udiv64+0x8e>
+8000471c:	14 33       	cp.w	r3,r10
+8000471e:	f7 b8 03 01 	sublo	r8,1
+80004722:	f1 e9 11 08 	or	r8,r8,r9<<0x10
+80004726:	cd f8       	rjmp	800048e4 <__avr32_udiv64+0x250>
+80004728:	58 08       	cp.w	r8,0
+8000472a:	c0 51       	brne	80004734 <__avr32_udiv64+0xa0>
+8000472c:	30 19       	mov	r9,1
+8000472e:	f2 08 0d 08 	divu	r8,r9,r8
+80004732:	10 9c       	mov	r12,r8
+80004734:	f8 06 12 00 	clz	r6,r12
+80004738:	c0 41       	brne	80004740 <__avr32_udiv64+0xac>
+8000473a:	18 1b       	sub	r11,r12
+8000473c:	30 19       	mov	r9,1
+8000473e:	c4 08       	rjmp	800047be <__avr32_udiv64+0x12a>
+80004740:	ec 01 11 20 	rsub	r1,r6,32
+80004744:	f4 01 0a 49 	lsr	r9,r10,r1
+80004748:	f8 06 09 4c 	lsl	r12,r12,r6
+8000474c:	f6 06 09 48 	lsl	r8,r11,r6
+80004750:	f6 01 0a 41 	lsr	r1,r11,r1
+80004754:	f3 e8 10 08 	or	r8,r9,r8
+80004758:	f8 03 16 10 	lsr	r3,r12,0x10
+8000475c:	eb dc c0 10 	bfextu	r5,r12,0x0,0x10
+80004760:	e2 03 0d 00 	divu	r0,r1,r3
+80004764:	f0 0b 16 10 	lsr	r11,r8,0x10
+80004768:	00 9e       	mov	lr,r0
+8000476a:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
+8000476e:	e0 05 02 49 	mul	r9,r0,r5
+80004772:	12 3b       	cp.w	r11,r9
+80004774:	c0 a2       	brcc	80004788 <__avr32_udiv64+0xf4>
+80004776:	20 1e       	sub	lr,1
+80004778:	18 0b       	add	r11,r12
+8000477a:	18 3b       	cp.w	r11,r12
+8000477c:	c0 63       	brcs	80004788 <__avr32_udiv64+0xf4>
+8000477e:	12 3b       	cp.w	r11,r9
+80004780:	f7 be 03 01 	sublo	lr,1
+80004784:	f7 dc e3 0b 	addcs	r11,r11,r12
+80004788:	12 1b       	sub	r11,r9
+8000478a:	f1 d8 c0 10 	bfextu	r8,r8,0x0,0x10
+8000478e:	f6 03 0d 02 	divu	r2,r11,r3
+80004792:	f1 e3 11 08 	or	r8,r8,r3<<0x10
+80004796:	04 99       	mov	r9,r2
+80004798:	e4 05 02 4b 	mul	r11,r2,r5
+8000479c:	16 38       	cp.w	r8,r11
+8000479e:	c0 a2       	brcc	800047b2 <__avr32_udiv64+0x11e>
+800047a0:	20 19       	sub	r9,1
+800047a2:	18 08       	add	r8,r12
+800047a4:	18 38       	cp.w	r8,r12
+800047a6:	c0 63       	brcs	800047b2 <__avr32_udiv64+0x11e>
+800047a8:	16 38       	cp.w	r8,r11
+800047aa:	f7 b9 03 01 	sublo	r9,1
+800047ae:	f1 dc e3 08 	addcs	r8,r8,r12
+800047b2:	f4 06 09 43 	lsl	r3,r10,r6
+800047b6:	f0 0b 01 0b 	sub	r11,r8,r11
+800047ba:	f3 ee 11 09 	or	r9,r9,lr<<0x10
+800047be:	f8 06 16 10 	lsr	r6,r12,0x10
+800047c2:	fd dc c0 10 	bfextu	lr,r12,0x0,0x10
+800047c6:	f6 06 0d 00 	divu	r0,r11,r6
+800047ca:	e6 0b 16 10 	lsr	r11,r3,0x10
+800047ce:	00 9a       	mov	r10,r0
+800047d0:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
+800047d4:	e0 0e 02 48 	mul	r8,r0,lr
+800047d8:	10 3b       	cp.w	r11,r8
+800047da:	c0 a2       	brcc	800047ee <__avr32_udiv64+0x15a>
+800047dc:	20 1a       	sub	r10,1
+800047de:	18 0b       	add	r11,r12
+800047e0:	18 3b       	cp.w	r11,r12
+800047e2:	c0 63       	brcs	800047ee <__avr32_udiv64+0x15a>
+800047e4:	10 3b       	cp.w	r11,r8
+800047e6:	f7 ba 03 01 	sublo	r10,1
+800047ea:	f7 dc e3 0b 	addcs	r11,r11,r12
+800047ee:	f6 08 01 01 	sub	r1,r11,r8
+800047f2:	e7 d3 c0 10 	bfextu	r3,r3,0x0,0x10
+800047f6:	e2 06 0d 00 	divu	r0,r1,r6
+800047fa:	e7 e1 11 03 	or	r3,r3,r1<<0x10
+800047fe:	00 98       	mov	r8,r0
+80004800:	e0 0e 02 4b 	mul	r11,r0,lr
+80004804:	16 33       	cp.w	r3,r11
+80004806:	c0 82       	brcc	80004816 <__avr32_udiv64+0x182>
+80004808:	20 18       	sub	r8,1
+8000480a:	18 03       	add	r3,r12
+8000480c:	18 33       	cp.w	r3,r12
+8000480e:	c0 43       	brcs	80004816 <__avr32_udiv64+0x182>
+80004810:	16 33       	cp.w	r3,r11
+80004812:	f7 b8 03 01 	sublo	r8,1
+80004816:	f1 ea 11 08 	or	r8,r8,r10<<0x10
+8000481a:	c6 98       	rjmp	800048ec <__avr32_udiv64+0x258>
+8000481c:	16 39       	cp.w	r9,r11
+8000481e:	e0 8b 00 65 	brhi	800048e8 <__avr32_udiv64+0x254>
+80004822:	f2 09 12 00 	clz	r9,r9
+80004826:	c0 b1       	brne	8000483c <__avr32_udiv64+0x1a8>
+80004828:	10 3a       	cp.w	r10,r8
+8000482a:	5f 2a       	srhs	r10
+8000482c:	1c 3b       	cp.w	r11,lr
+8000482e:	5f b8       	srhi	r8
+80004830:	10 4a       	or	r10,r8
+80004832:	f2 0a 18 00 	cp.b	r10,r9
+80004836:	c5 90       	breq	800048e8 <__avr32_udiv64+0x254>
+80004838:	30 18       	mov	r8,1
+8000483a:	c5 98       	rjmp	800048ec <__avr32_udiv64+0x258>
+8000483c:	f0 09 09 46 	lsl	r6,r8,r9
+80004840:	f2 03 11 20 	rsub	r3,r9,32
+80004844:	fc 09 09 4e 	lsl	lr,lr,r9
+80004848:	f0 03 0a 48 	lsr	r8,r8,r3
+8000484c:	f6 09 09 4c 	lsl	r12,r11,r9
+80004850:	f4 03 0a 42 	lsr	r2,r10,r3
+80004854:	ef 46 ff f4 	st.w	r7[-12],r6
+80004858:	f6 03 0a 43 	lsr	r3,r11,r3
+8000485c:	18 42       	or	r2,r12
+8000485e:	f1 ee 10 0c 	or	r12,r8,lr
+80004862:	f8 01 16 10 	lsr	r1,r12,0x10
+80004866:	ed dc c0 10 	bfextu	r6,r12,0x0,0x10
+8000486a:	e6 01 0d 04 	divu	r4,r3,r1
+8000486e:	e4 03 16 10 	lsr	r3,r2,0x10
+80004872:	08 9e       	mov	lr,r4
+80004874:	e7 e5 11 03 	or	r3,r3,r5<<0x10
+80004878:	e8 06 02 48 	mul	r8,r4,r6
+8000487c:	10 33       	cp.w	r3,r8
+8000487e:	c0 a2       	brcc	80004892 <__avr32_udiv64+0x1fe>
+80004880:	20 1e       	sub	lr,1
+80004882:	18 03       	add	r3,r12
+80004884:	18 33       	cp.w	r3,r12
+80004886:	c0 63       	brcs	80004892 <__avr32_udiv64+0x1fe>
+80004888:	10 33       	cp.w	r3,r8
+8000488a:	f7 be 03 01 	sublo	lr,1
+8000488e:	e7 dc e3 03 	addcs	r3,r3,r12
+80004892:	10 13       	sub	r3,r8
+80004894:	f7 d2 c0 10 	bfextu	r11,r2,0x0,0x10
+80004898:	e6 01 0d 00 	divu	r0,r3,r1
+8000489c:	f7 e1 11 0b 	or	r11,r11,r1<<0x10
+800048a0:	00 98       	mov	r8,r0
+800048a2:	e0 06 02 46 	mul	r6,r0,r6
+800048a6:	0c 3b       	cp.w	r11,r6
+800048a8:	c0 a2       	brcc	800048bc <__avr32_udiv64+0x228>
+800048aa:	20 18       	sub	r8,1
+800048ac:	18 0b       	add	r11,r12
+800048ae:	18 3b       	cp.w	r11,r12
+800048b0:	c0 63       	brcs	800048bc <__avr32_udiv64+0x228>
+800048b2:	0c 3b       	cp.w	r11,r6
+800048b4:	f7 dc e3 0b 	addcs	r11,r11,r12
+800048b8:	f7 b8 03 01 	sublo	r8,1
+800048bc:	f1 ee 11 08 	or	r8,r8,lr<<0x10
+800048c0:	ee f4 ff f4 	ld.w	r4,r7[-12]
+800048c4:	0c 1b       	sub	r11,r6
+800048c6:	f0 04 06 42 	mulu.d	r2,r8,r4
+800048ca:	06 95       	mov	r5,r3
+800048cc:	16 35       	cp.w	r5,r11
+800048ce:	e0 8b 00 0a 	brhi	800048e2 <__avr32_udiv64+0x24e>
+800048d2:	5f 0b       	sreq	r11
+800048d4:	f4 09 09 49 	lsl	r9,r10,r9
+800048d8:	12 32       	cp.w	r2,r9
+800048da:	5f b9       	srhi	r9
+800048dc:	f7 e9 00 09 	and	r9,r11,r9
+800048e0:	c0 60       	breq	800048ec <__avr32_udiv64+0x258>
+800048e2:	20 18       	sub	r8,1
+800048e4:	30 09       	mov	r9,0
+800048e6:	c0 38       	rjmp	800048ec <__avr32_udiv64+0x258>
+800048e8:	30 09       	mov	r9,0
+800048ea:	12 98       	mov	r8,r9
+800048ec:	10 9a       	mov	r10,r8
+800048ee:	12 93       	mov	r3,r9
+800048f0:	10 92       	mov	r2,r8
+800048f2:	12 9b       	mov	r11,r9
+800048f4:	2f dd       	sub	sp,-12
+800048f6:	d8 32       	popm	r0-r7,pc
 
-80004808 <memcpy>:
-80004808:	58 8a       	cp.w	r10,8
-8000480a:	c2 f5       	brlt	80004868 <memcpy+0x60>
-8000480c:	f9 eb 10 09 	or	r9,r12,r11
-80004810:	e2 19 00 03 	andl	r9,0x3,COH
-80004814:	e0 81 00 97 	brne	80004942 <memcpy+0x13a>
-80004818:	e0 4a 00 20 	cp.w	r10,32
-8000481c:	c3 b4       	brge	80004892 <memcpy+0x8a>
-8000481e:	f4 08 14 02 	asr	r8,r10,0x2
-80004822:	f0 09 11 08 	rsub	r9,r8,8
-80004826:	fe 09 00 2f 	add	pc,pc,r9<<0x2
-8000482a:	76 69       	ld.w	r9,r11[0x18]
-8000482c:	99 69       	st.w	r12[0x18],r9
-8000482e:	76 59       	ld.w	r9,r11[0x14]
-80004830:	99 59       	st.w	r12[0x14],r9
-80004832:	76 49       	ld.w	r9,r11[0x10]
-80004834:	99 49       	st.w	r12[0x10],r9
-80004836:	76 39       	ld.w	r9,r11[0xc]
-80004838:	99 39       	st.w	r12[0xc],r9
-8000483a:	76 29       	ld.w	r9,r11[0x8]
-8000483c:	99 29       	st.w	r12[0x8],r9
-8000483e:	76 19       	ld.w	r9,r11[0x4]
-80004840:	99 19       	st.w	r12[0x4],r9
-80004842:	76 09       	ld.w	r9,r11[0x0]
-80004844:	99 09       	st.w	r12[0x0],r9
-80004846:	f6 08 00 2b 	add	r11,r11,r8<<0x2
-8000484a:	f8 08 00 28 	add	r8,r12,r8<<0x2
-8000484e:	e0 1a 00 03 	andl	r10,0x3
-80004852:	f4 0a 11 04 	rsub	r10,r10,4
-80004856:	fe 0a 00 2f 	add	pc,pc,r10<<0x2
-8000485a:	17 a9       	ld.ub	r9,r11[0x2]
-8000485c:	b0 a9       	st.b	r8[0x2],r9
-8000485e:	17 99       	ld.ub	r9,r11[0x1]
-80004860:	b0 99       	st.b	r8[0x1],r9
-80004862:	17 89       	ld.ub	r9,r11[0x0]
-80004864:	b0 89       	st.b	r8[0x0],r9
-80004866:	5e fc       	retal	r12
-80004868:	f4 0a 11 09 	rsub	r10,r10,9
-8000486c:	fe 0a 00 2f 	add	pc,pc,r10<<0x2
-80004870:	17 f9       	ld.ub	r9,r11[0x7]
-80004872:	b8 f9       	st.b	r12[0x7],r9
-80004874:	17 e9       	ld.ub	r9,r11[0x6]
-80004876:	b8 e9       	st.b	r12[0x6],r9
-80004878:	17 d9       	ld.ub	r9,r11[0x5]
-8000487a:	b8 d9       	st.b	r12[0x5],r9
-8000487c:	17 c9       	ld.ub	r9,r11[0x4]
-8000487e:	b8 c9       	st.b	r12[0x4],r9
-80004880:	17 b9       	ld.ub	r9,r11[0x3]
-80004882:	b8 b9       	st.b	r12[0x3],r9
-80004884:	17 a9       	ld.ub	r9,r11[0x2]
-80004886:	b8 a9       	st.b	r12[0x2],r9
-80004888:	17 99       	ld.ub	r9,r11[0x1]
-8000488a:	b8 99       	st.b	r12[0x1],r9
-8000488c:	17 89       	ld.ub	r9,r11[0x0]
-8000488e:	b8 89       	st.b	r12[0x0],r9
-80004890:	5e fc       	retal	r12
-80004892:	eb cd 40 c0 	pushm	r6-r7,lr
-80004896:	18 99       	mov	r9,r12
-80004898:	22 0a       	sub	r10,32
-8000489a:	b7 07       	ld.d	r6,r11++
-8000489c:	b3 26       	st.d	r9++,r6
-8000489e:	b7 07       	ld.d	r6,r11++
-800048a0:	b3 26       	st.d	r9++,r6
-800048a2:	b7 07       	ld.d	r6,r11++
-800048a4:	b3 26       	st.d	r9++,r6
-800048a6:	b7 07       	ld.d	r6,r11++
-800048a8:	b3 26       	st.d	r9++,r6
-800048aa:	22 0a       	sub	r10,32
-800048ac:	cf 74       	brge	8000489a <memcpy+0x92>
-800048ae:	2f 0a       	sub	r10,-16
-800048b0:	c0 65       	brlt	800048bc <memcpy+0xb4>
-800048b2:	b7 07       	ld.d	r6,r11++
-800048b4:	b3 26       	st.d	r9++,r6
-800048b6:	b7 07       	ld.d	r6,r11++
-800048b8:	b3 26       	st.d	r9++,r6
-800048ba:	21 0a       	sub	r10,16
-800048bc:	5c 3a       	neg	r10
-800048be:	fe 0a 00 3f 	add	pc,pc,r10<<0x3
-800048c2:	d7 03       	nop
-800048c4:	d7 03       	nop
-800048c6:	f7 36 00 0e 	ld.ub	r6,r11[14]
-800048ca:	f3 66 00 0e 	st.b	r9[14],r6
-800048ce:	f7 36 00 0d 	ld.ub	r6,r11[13]
-800048d2:	f3 66 00 0d 	st.b	r9[13],r6
-800048d6:	f7 36 00 0c 	ld.ub	r6,r11[12]
-800048da:	f3 66 00 0c 	st.b	r9[12],r6
-800048de:	f7 36 00 0b 	ld.ub	r6,r11[11]
-800048e2:	f3 66 00 0b 	st.b	r9[11],r6
-800048e6:	f7 36 00 0a 	ld.ub	r6,r11[10]
-800048ea:	f3 66 00 0a 	st.b	r9[10],r6
-800048ee:	f7 36 00 09 	ld.ub	r6,r11[9]
-800048f2:	f3 66 00 09 	st.b	r9[9],r6
-800048f6:	f7 36 00 08 	ld.ub	r6,r11[8]
-800048fa:	f3 66 00 08 	st.b	r9[8],r6
-800048fe:	f7 36 00 07 	ld.ub	r6,r11[7]
-80004902:	f3 66 00 07 	st.b	r9[7],r6
-80004906:	f7 36 00 06 	ld.ub	r6,r11[6]
-8000490a:	f3 66 00 06 	st.b	r9[6],r6
-8000490e:	f7 36 00 05 	ld.ub	r6,r11[5]
-80004912:	f3 66 00 05 	st.b	r9[5],r6
-80004916:	f7 36 00 04 	ld.ub	r6,r11[4]
-8000491a:	f3 66 00 04 	st.b	r9[4],r6
-8000491e:	f7 36 00 03 	ld.ub	r6,r11[3]
-80004922:	f3 66 00 03 	st.b	r9[3],r6
-80004926:	f7 36 00 02 	ld.ub	r6,r11[2]
-8000492a:	f3 66 00 02 	st.b	r9[2],r6
-8000492e:	f7 36 00 01 	ld.ub	r6,r11[1]
-80004932:	f3 66 00 01 	st.b	r9[1],r6
-80004936:	f7 36 00 00 	ld.ub	r6,r11[0]
-8000493a:	f3 66 00 00 	st.b	r9[0],r6
-8000493e:	e3 cd 80 c0 	ldm	sp++,r6-r7,pc
-80004942:	20 1a       	sub	r10,1
-80004944:	f6 0a 07 09 	ld.ub	r9,r11[r10]
-80004948:	f8 0a 0b 09 	st.b	r12[r10],r9
-8000494c:	cf b1       	brne	80004942 <memcpy+0x13a>
-8000494e:	5e fc       	retal	r12
+800048f8 <memcpy>:
+800048f8:	58 8a       	cp.w	r10,8
+800048fa:	c2 f5       	brlt	80004958 <memcpy+0x60>
+800048fc:	f9 eb 10 09 	or	r9,r12,r11
+80004900:	e2 19 00 03 	andl	r9,0x3,COH
+80004904:	e0 81 00 97 	brne	80004a32 <memcpy+0x13a>
+80004908:	e0 4a 00 20 	cp.w	r10,32
+8000490c:	c3 b4       	brge	80004982 <memcpy+0x8a>
+8000490e:	f4 08 14 02 	asr	r8,r10,0x2
+80004912:	f0 09 11 08 	rsub	r9,r8,8
+80004916:	fe 09 00 2f 	add	pc,pc,r9<<0x2
+8000491a:	76 69       	ld.w	r9,r11[0x18]
+8000491c:	99 69       	st.w	r12[0x18],r9
+8000491e:	76 59       	ld.w	r9,r11[0x14]
+80004920:	99 59       	st.w	r12[0x14],r9
+80004922:	76 49       	ld.w	r9,r11[0x10]
+80004924:	99 49       	st.w	r12[0x10],r9
+80004926:	76 39       	ld.w	r9,r11[0xc]
+80004928:	99 39       	st.w	r12[0xc],r9
+8000492a:	76 29       	ld.w	r9,r11[0x8]
+8000492c:	99 29       	st.w	r12[0x8],r9
+8000492e:	76 19       	ld.w	r9,r11[0x4]
+80004930:	99 19       	st.w	r12[0x4],r9
+80004932:	76 09       	ld.w	r9,r11[0x0]
+80004934:	99 09       	st.w	r12[0x0],r9
+80004936:	f6 08 00 2b 	add	r11,r11,r8<<0x2
+8000493a:	f8 08 00 28 	add	r8,r12,r8<<0x2
+8000493e:	e0 1a 00 03 	andl	r10,0x3
+80004942:	f4 0a 11 04 	rsub	r10,r10,4
+80004946:	fe 0a 00 2f 	add	pc,pc,r10<<0x2
+8000494a:	17 a9       	ld.ub	r9,r11[0x2]
+8000494c:	b0 a9       	st.b	r8[0x2],r9
+8000494e:	17 99       	ld.ub	r9,r11[0x1]
+80004950:	b0 99       	st.b	r8[0x1],r9
+80004952:	17 89       	ld.ub	r9,r11[0x0]
+80004954:	b0 89       	st.b	r8[0x0],r9
+80004956:	5e fc       	retal	r12
+80004958:	f4 0a 11 09 	rsub	r10,r10,9
+8000495c:	fe 0a 00 2f 	add	pc,pc,r10<<0x2
+80004960:	17 f9       	ld.ub	r9,r11[0x7]
+80004962:	b8 f9       	st.b	r12[0x7],r9
+80004964:	17 e9       	ld.ub	r9,r11[0x6]
+80004966:	b8 e9       	st.b	r12[0x6],r9
+80004968:	17 d9       	ld.ub	r9,r11[0x5]
+8000496a:	b8 d9       	st.b	r12[0x5],r9
+8000496c:	17 c9       	ld.ub	r9,r11[0x4]
+8000496e:	b8 c9       	st.b	r12[0x4],r9
+80004970:	17 b9       	ld.ub	r9,r11[0x3]
+80004972:	b8 b9       	st.b	r12[0x3],r9
+80004974:	17 a9       	ld.ub	r9,r11[0x2]
+80004976:	b8 a9       	st.b	r12[0x2],r9
+80004978:	17 99       	ld.ub	r9,r11[0x1]
+8000497a:	b8 99       	st.b	r12[0x1],r9
+8000497c:	17 89       	ld.ub	r9,r11[0x0]
+8000497e:	b8 89       	st.b	r12[0x0],r9
+80004980:	5e fc       	retal	r12
+80004982:	eb cd 40 c0 	pushm	r6-r7,lr
+80004986:	18 99       	mov	r9,r12
+80004988:	22 0a       	sub	r10,32
+8000498a:	b7 07       	ld.d	r6,r11++
+8000498c:	b3 26       	st.d	r9++,r6
+8000498e:	b7 07       	ld.d	r6,r11++
+80004990:	b3 26       	st.d	r9++,r6
+80004992:	b7 07       	ld.d	r6,r11++
+80004994:	b3 26       	st.d	r9++,r6
+80004996:	b7 07       	ld.d	r6,r11++
+80004998:	b3 26       	st.d	r9++,r6
+8000499a:	22 0a       	sub	r10,32
+8000499c:	cf 74       	brge	8000498a <memcpy+0x92>
+8000499e:	2f 0a       	sub	r10,-16
+800049a0:	c0 65       	brlt	800049ac <memcpy+0xb4>
+800049a2:	b7 07       	ld.d	r6,r11++
+800049a4:	b3 26       	st.d	r9++,r6
+800049a6:	b7 07       	ld.d	r6,r11++
+800049a8:	b3 26       	st.d	r9++,r6
+800049aa:	21 0a       	sub	r10,16
+800049ac:	5c 3a       	neg	r10
+800049ae:	fe 0a 00 3f 	add	pc,pc,r10<<0x3
+800049b2:	d7 03       	nop
+800049b4:	d7 03       	nop
+800049b6:	f7 36 00 0e 	ld.ub	r6,r11[14]
+800049ba:	f3 66 00 0e 	st.b	r9[14],r6
+800049be:	f7 36 00 0d 	ld.ub	r6,r11[13]
+800049c2:	f3 66 00 0d 	st.b	r9[13],r6
+800049c6:	f7 36 00 0c 	ld.ub	r6,r11[12]
+800049ca:	f3 66 00 0c 	st.b	r9[12],r6
+800049ce:	f7 36 00 0b 	ld.ub	r6,r11[11]
+800049d2:	f3 66 00 0b 	st.b	r9[11],r6
+800049d6:	f7 36 00 0a 	ld.ub	r6,r11[10]
+800049da:	f3 66 00 0a 	st.b	r9[10],r6
+800049de:	f7 36 00 09 	ld.ub	r6,r11[9]
+800049e2:	f3 66 00 09 	st.b	r9[9],r6
+800049e6:	f7 36 00 08 	ld.ub	r6,r11[8]
+800049ea:	f3 66 00 08 	st.b	r9[8],r6
+800049ee:	f7 36 00 07 	ld.ub	r6,r11[7]
+800049f2:	f3 66 00 07 	st.b	r9[7],r6
+800049f6:	f7 36 00 06 	ld.ub	r6,r11[6]
+800049fa:	f3 66 00 06 	st.b	r9[6],r6
+800049fe:	f7 36 00 05 	ld.ub	r6,r11[5]
+80004a02:	f3 66 00 05 	st.b	r9[5],r6
+80004a06:	f7 36 00 04 	ld.ub	r6,r11[4]
+80004a0a:	f3 66 00 04 	st.b	r9[4],r6
+80004a0e:	f7 36 00 03 	ld.ub	r6,r11[3]
+80004a12:	f3 66 00 03 	st.b	r9[3],r6
+80004a16:	f7 36 00 02 	ld.ub	r6,r11[2]
+80004a1a:	f3 66 00 02 	st.b	r9[2],r6
+80004a1e:	f7 36 00 01 	ld.ub	r6,r11[1]
+80004a22:	f3 66 00 01 	st.b	r9[1],r6
+80004a26:	f7 36 00 00 	ld.ub	r6,r11[0]
+80004a2a:	f3 66 00 00 	st.b	r9[0],r6
+80004a2e:	e3 cd 80 c0 	ldm	sp++,r6-r7,pc
+80004a32:	20 1a       	sub	r10,1
+80004a34:	f6 0a 07 09 	ld.ub	r9,r11[r10]
+80004a38:	f8 0a 0b 09 	st.b	r12[r10],r9
+80004a3c:	cf b1       	brne	80004a32 <memcpy+0x13a>
+80004a3e:	5e fc       	retal	r12
 
 Disassembly of section .exception:
 
-80004a00 <_evba>:
-80004a00:	c0 08       	rjmp	80004a00 <_evba>
+80004c00 <_evba>:
+80004c00:	c0 08       	rjmp	80004c00 <_evba>
 	...
 
-80004a04 <_handle_TLB_Multiple_Hit>:
-80004a04:	c0 08       	rjmp	80004a04 <_handle_TLB_Multiple_Hit>
+80004c04 <_handle_TLB_Multiple_Hit>:
+80004c04:	c0 08       	rjmp	80004c04 <_handle_TLB_Multiple_Hit>
 	...
 
-80004a08 <_handle_Bus_Error_Data_Fetch>:
-80004a08:	c0 08       	rjmp	80004a08 <_handle_Bus_Error_Data_Fetch>
+80004c08 <_handle_Bus_Error_Data_Fetch>:
+80004c08:	c0 08       	rjmp	80004c08 <_handle_Bus_Error_Data_Fetch>
 	...
 
-80004a0c <_handle_Bus_Error_Instruction_Fetch>:
-80004a0c:	c0 08       	rjmp	80004a0c <_handle_Bus_Error_Instruction_Fetch>
+80004c0c <_handle_Bus_Error_Instruction_Fetch>:
+80004c0c:	c0 08       	rjmp	80004c0c <_handle_Bus_Error_Instruction_Fetch>
 	...
 
-80004a10 <_handle_NMI>:
-80004a10:	c0 08       	rjmp	80004a10 <_handle_NMI>
+80004c10 <_handle_NMI>:
+80004c10:	c0 08       	rjmp	80004c10 <_handle_NMI>
 	...
 
-80004a14 <_handle_Instruction_Address>:
-80004a14:	c0 08       	rjmp	80004a14 <_handle_Instruction_Address>
+80004c14 <_handle_Instruction_Address>:
+80004c14:	c0 08       	rjmp	80004c14 <_handle_Instruction_Address>
 	...
 
-80004a18 <_handle_ITLB_Protection>:
-80004a18:	c0 08       	rjmp	80004a18 <_handle_ITLB_Protection>
+80004c18 <_handle_ITLB_Protection>:
+80004c18:	c0 08       	rjmp	80004c18 <_handle_ITLB_Protection>
 	...
 
-80004a1c <_handle_Breakpoint>:
-80004a1c:	c0 08       	rjmp	80004a1c <_handle_Breakpoint>
+80004c1c <_handle_Breakpoint>:
+80004c1c:	c0 08       	rjmp	80004c1c <_handle_Breakpoint>
 	...
 
-80004a20 <_handle_Illegal_Opcode>:
-80004a20:	c0 08       	rjmp	80004a20 <_handle_Illegal_Opcode>
+80004c20 <_handle_Illegal_Opcode>:
+80004c20:	c0 08       	rjmp	80004c20 <_handle_Illegal_Opcode>
 	...
 
-80004a24 <_handle_Unimplemented_Instruction>:
-80004a24:	c0 08       	rjmp	80004a24 <_handle_Unimplemented_Instruction>
+80004c24 <_handle_Unimplemented_Instruction>:
+80004c24:	c0 08       	rjmp	80004c24 <_handle_Unimplemented_Instruction>
 	...
 
-80004a28 <_handle_Privilege_Violation>:
-80004a28:	c0 08       	rjmp	80004a28 <_handle_Privilege_Violation>
+80004c28 <_handle_Privilege_Violation>:
+80004c28:	c0 08       	rjmp	80004c28 <_handle_Privilege_Violation>
 	...
 
-80004a2c <_handle_Floating_Point>:
-80004a2c:	c0 08       	rjmp	80004a2c <_handle_Floating_Point>
+80004c2c <_handle_Floating_Point>:
+80004c2c:	c0 08       	rjmp	80004c2c <_handle_Floating_Point>
 	...
 
-80004a30 <_handle_Coprocessor_Absent>:
-80004a30:	c0 08       	rjmp	80004a30 <_handle_Coprocessor_Absent>
+80004c30 <_handle_Coprocessor_Absent>:
+80004c30:	c0 08       	rjmp	80004c30 <_handle_Coprocessor_Absent>
 	...
 
-80004a34 <_handle_Data_Address_Read>:
-80004a34:	c0 08       	rjmp	80004a34 <_handle_Data_Address_Read>
+80004c34 <_handle_Data_Address_Read>:
+80004c34:	c0 08       	rjmp	80004c34 <_handle_Data_Address_Read>
 	...
 
-80004a38 <_handle_Data_Address_Write>:
-80004a38:	c0 08       	rjmp	80004a38 <_handle_Data_Address_Write>
+80004c38 <_handle_Data_Address_Write>:
+80004c38:	c0 08       	rjmp	80004c38 <_handle_Data_Address_Write>
 	...
 
-80004a3c <_handle_DTLB_Protection_Read>:
-80004a3c:	c0 08       	rjmp	80004a3c <_handle_DTLB_Protection_Read>
+80004c3c <_handle_DTLB_Protection_Read>:
+80004c3c:	c0 08       	rjmp	80004c3c <_handle_DTLB_Protection_Read>
 	...
 
-80004a40 <_handle_DTLB_Protection_Write>:
-80004a40:	c0 08       	rjmp	80004a40 <_handle_DTLB_Protection_Write>
+80004c40 <_handle_DTLB_Protection_Write>:
+80004c40:	c0 08       	rjmp	80004c40 <_handle_DTLB_Protection_Write>
 	...
 
-80004a44 <_handle_DTLB_Modified>:
-80004a44:	c0 08       	rjmp	80004a44 <_handle_DTLB_Modified>
+80004c44 <_handle_DTLB_Modified>:
+80004c44:	c0 08       	rjmp	80004c44 <_handle_DTLB_Modified>
 	...
 
-80004a50 <_handle_ITLB_Miss>:
-80004a50:	c0 08       	rjmp	80004a50 <_handle_ITLB_Miss>
+80004c50 <_handle_ITLB_Miss>:
+80004c50:	c0 08       	rjmp	80004c50 <_handle_ITLB_Miss>
 	...
 
-80004a60 <_handle_DTLB_Miss_Read>:
-80004a60:	c0 08       	rjmp	80004a60 <_handle_DTLB_Miss_Read>
+80004c60 <_handle_DTLB_Miss_Read>:
+80004c60:	c0 08       	rjmp	80004c60 <_handle_DTLB_Miss_Read>
 	...
 
-80004a70 <_handle_DTLB_Miss_Write>:
-80004a70:	c0 08       	rjmp	80004a70 <_handle_DTLB_Miss_Write>
+80004c70 <_handle_DTLB_Miss_Write>:
+80004c70:	c0 08       	rjmp	80004c70 <_handle_DTLB_Miss_Write>
 	...
 
-80004b00 <_handle_Supervisor_Call>:
-80004b00:	c0 08       	rjmp	80004b00 <_handle_Supervisor_Call>
-80004b02:	d7 03       	nop
+80004d00 <_handle_Supervisor_Call>:
+80004d00:	c0 08       	rjmp	80004d00 <_handle_Supervisor_Call>
+80004d02:	d7 03       	nop
 
-80004b04 <_int0>:
-80004b04:	30 0c       	mov	r12,0
-80004b06:	fe b0 f5 e5 	rcall	800036d0 <_get_interrupt_handler>
-80004b0a:	58 0c       	cp.w	r12,0
-80004b0c:	f8 0f 17 10 	movne	pc,r12
-80004b10:	d6 03       	rete
+80004d04 <_int0>:
+80004d04:	30 0c       	mov	r12,0
+80004d06:	fe b0 f4 e5 	rcall	800036d0 <_get_interrupt_handler>
+80004d0a:	58 0c       	cp.w	r12,0
+80004d0c:	f8 0f 17 10 	movne	pc,r12
+80004d10:	d6 03       	rete
 
-80004b12 <_int1>:
-80004b12:	30 1c       	mov	r12,1
-80004b14:	fe b0 f5 de 	rcall	800036d0 <_get_interrupt_handler>
-80004b18:	58 0c       	cp.w	r12,0
-80004b1a:	f8 0f 17 10 	movne	pc,r12
-80004b1e:	d6 03       	rete
+80004d12 <_int1>:
+80004d12:	30 1c       	mov	r12,1
+80004d14:	fe b0 f4 de 	rcall	800036d0 <_get_interrupt_handler>
+80004d18:	58 0c       	cp.w	r12,0
+80004d1a:	f8 0f 17 10 	movne	pc,r12
+80004d1e:	d6 03       	rete
 
-80004b20 <_int2>:
-80004b20:	30 2c       	mov	r12,2
-80004b22:	fe b0 f5 d7 	rcall	800036d0 <_get_interrupt_handler>
-80004b26:	58 0c       	cp.w	r12,0
-80004b28:	f8 0f 17 10 	movne	pc,r12
-80004b2c:	d6 03       	rete
+80004d20 <_int2>:
+80004d20:	30 2c       	mov	r12,2
+80004d22:	fe b0 f4 d7 	rcall	800036d0 <_get_interrupt_handler>
+80004d26:	58 0c       	cp.w	r12,0
+80004d28:	f8 0f 17 10 	movne	pc,r12
+80004d2c:	d6 03       	rete
 
-80004b2e <_int3>:
-80004b2e:	30 3c       	mov	r12,3
-80004b30:	fe b0 f5 d0 	rcall	800036d0 <_get_interrupt_handler>
-80004b34:	58 0c       	cp.w	r12,0
-80004b36:	f8 0f 17 10 	movne	pc,r12
-80004b3a:	d6 03       	rete
-80004b3c:	d7 03       	nop
-80004b3e:	d7 03       	nop
-80004b40:	d7 03       	nop
-80004b42:	d7 03       	nop
-80004b44:	d7 03       	nop
-80004b46:	d7 03       	nop
-80004b48:	d7 03       	nop
-80004b4a:	d7 03       	nop
-80004b4c:	d7 03       	nop
-80004b4e:	d7 03       	nop
-80004b50:	d7 03       	nop
-80004b52:	d7 03       	nop
-80004b54:	d7 03       	nop
-80004b56:	d7 03       	nop
-80004b58:	d7 03       	nop
-80004b5a:	d7 03       	nop
-80004b5c:	d7 03       	nop
-80004b5e:	d7 03       	nop
-80004b60:	d7 03       	nop
-80004b62:	d7 03       	nop
-80004b64:	d7 03       	nop
-80004b66:	d7 03       	nop
-80004b68:	d7 03       	nop
-80004b6a:	d7 03       	nop
-80004b6c:	d7 03       	nop
-80004b6e:	d7 03       	nop
-80004b70:	d7 03       	nop
-80004b72:	d7 03       	nop
-80004b74:	d7 03       	nop
-80004b76:	d7 03       	nop
-80004b78:	d7 03       	nop
-80004b7a:	d7 03       	nop
-80004b7c:	d7 03       	nop
-80004b7e:	d7 03       	nop
-80004b80:	d7 03       	nop
-80004b82:	d7 03       	nop
-80004b84:	d7 03       	nop
-80004b86:	d7 03       	nop
-80004b88:	d7 03       	nop
-80004b8a:	d7 03       	nop
-80004b8c:	d7 03       	nop
-80004b8e:	d7 03       	nop
-80004b90:	d7 03       	nop
-80004b92:	d7 03       	nop
-80004b94:	d7 03       	nop
-80004b96:	d7 03       	nop
-80004b98:	d7 03       	nop
-80004b9a:	d7 03       	nop
-80004b9c:	d7 03       	nop
-80004b9e:	d7 03       	nop
-80004ba0:	d7 03       	nop
-80004ba2:	d7 03       	nop
-80004ba4:	d7 03       	nop
-80004ba6:	d7 03       	nop
-80004ba8:	d7 03       	nop
-80004baa:	d7 03       	nop
-80004bac:	d7 03       	nop
-80004bae:	d7 03       	nop
-80004bb0:	d7 03       	nop
-80004bb2:	d7 03       	nop
-80004bb4:	d7 03       	nop
-80004bb6:	d7 03       	nop
-80004bb8:	d7 03       	nop
-80004bba:	d7 03       	nop
-80004bbc:	d7 03       	nop
-80004bbe:	d7 03       	nop
-80004bc0:	d7 03       	nop
-80004bc2:	d7 03       	nop
-80004bc4:	d7 03       	nop
-80004bc6:	d7 03       	nop
-80004bc8:	d7 03       	nop
-80004bca:	d7 03       	nop
-80004bcc:	d7 03       	nop
-80004bce:	d7 03       	nop
-80004bd0:	d7 03       	nop
-80004bd2:	d7 03       	nop
-80004bd4:	d7 03       	nop
-80004bd6:	d7 03       	nop
-80004bd8:	d7 03       	nop
-80004bda:	d7 03       	nop
-80004bdc:	d7 03       	nop
-80004bde:	d7 03       	nop
-80004be0:	d7 03       	nop
-80004be2:	d7 03       	nop
-80004be4:	d7 03       	nop
-80004be6:	d7 03       	nop
-80004be8:	d7 03       	nop
-80004bea:	d7 03       	nop
-80004bec:	d7 03       	nop
-80004bee:	d7 03       	nop
-80004bf0:	d7 03       	nop
-80004bf2:	d7 03       	nop
-80004bf4:	d7 03       	nop
-80004bf6:	d7 03       	nop
-80004bf8:	d7 03       	nop
-80004bfa:	d7 03       	nop
-80004bfc:	d7 03       	nop
-80004bfe:	d7 03       	nop
+80004d2e <_int3>:
+80004d2e:	30 3c       	mov	r12,3
+80004d30:	fe b0 f4 d0 	rcall	800036d0 <_get_interrupt_handler>
+80004d34:	58 0c       	cp.w	r12,0
+80004d36:	f8 0f 17 10 	movne	pc,r12
+80004d3a:	d6 03       	rete
+80004d3c:	d7 03       	nop
+80004d3e:	d7 03       	nop
+80004d40:	d7 03       	nop
+80004d42:	d7 03       	nop
+80004d44:	d7 03       	nop
+80004d46:	d7 03       	nop
+80004d48:	d7 03       	nop
+80004d4a:	d7 03       	nop
+80004d4c:	d7 03       	nop
+80004d4e:	d7 03       	nop
+80004d50:	d7 03       	nop
+80004d52:	d7 03       	nop
+80004d54:	d7 03       	nop
+80004d56:	d7 03       	nop
+80004d58:	d7 03       	nop
+80004d5a:	d7 03       	nop
+80004d5c:	d7 03       	nop
+80004d5e:	d7 03       	nop
+80004d60:	d7 03       	nop
+80004d62:	d7 03       	nop
+80004d64:	d7 03       	nop
+80004d66:	d7 03       	nop
+80004d68:	d7 03       	nop
+80004d6a:	d7 03       	nop
+80004d6c:	d7 03       	nop
+80004d6e:	d7 03       	nop
+80004d70:	d7 03       	nop
+80004d72:	d7 03       	nop
+80004d74:	d7 03       	nop
+80004d76:	d7 03       	nop
+80004d78:	d7 03       	nop
+80004d7a:	d7 03       	nop
+80004d7c:	d7 03       	nop
+80004d7e:	d7 03       	nop
+80004d80:	d7 03       	nop
+80004d82:	d7 03       	nop
+80004d84:	d7 03       	nop
+80004d86:	d7 03       	nop
+80004d88:	d7 03       	nop
+80004d8a:	d7 03       	nop
+80004d8c:	d7 03       	nop
+80004d8e:	d7 03       	nop
+80004d90:	d7 03       	nop
+80004d92:	d7 03       	nop
+80004d94:	d7 03       	nop
+80004d96:	d7 03       	nop
+80004d98:	d7 03       	nop
+80004d9a:	d7 03       	nop
+80004d9c:	d7 03       	nop
+80004d9e:	d7 03       	nop
+80004da0:	d7 03       	nop
+80004da2:	d7 03       	nop
+80004da4:	d7 03       	nop
+80004da6:	d7 03       	nop
+80004da8:	d7 03       	nop
+80004daa:	d7 03       	nop
+80004dac:	d7 03       	nop
+80004dae:	d7 03       	nop
+80004db0:	d7 03       	nop
+80004db2:	d7 03       	nop
+80004db4:	d7 03       	nop
+80004db6:	d7 03       	nop
+80004db8:	d7 03       	nop
+80004dba:	d7 03       	nop
+80004dbc:	d7 03       	nop
+80004dbe:	d7 03       	nop
+80004dc0:	d7 03       	nop
+80004dc2:	d7 03       	nop
+80004dc4:	d7 03       	nop
+80004dc6:	d7 03       	nop
+80004dc8:	d7 03       	nop
+80004dca:	d7 03       	nop
+80004dcc:	d7 03       	nop
+80004dce:	d7 03       	nop
+80004dd0:	d7 03       	nop
+80004dd2:	d7 03       	nop
+80004dd4:	d7 03       	nop
+80004dd6:	d7 03       	nop
+80004dd8:	d7 03       	nop
+80004dda:	d7 03       	nop
+80004ddc:	d7 03       	nop
+80004dde:	d7 03       	nop
+80004de0:	d7 03       	nop
+80004de2:	d7 03       	nop
+80004de4:	d7 03       	nop
+80004de6:	d7 03       	nop
+80004de8:	d7 03       	nop
+80004dea:	d7 03       	nop
+80004dec:	d7 03       	nop
+80004dee:	d7 03       	nop
+80004df0:	d7 03       	nop
+80004df2:	d7 03       	nop
+80004df4:	d7 03       	nop
+80004df6:	d7 03       	nop
+80004df8:	d7 03       	nop
+80004dfa:	d7 03       	nop
+80004dfc:	d7 03       	nop
+80004dfe:	d7 03       	nop

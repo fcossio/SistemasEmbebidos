@@ -50,8 +50,10 @@ volatile avr32_pdca_channel_t* pdca_channelrx ;
 volatile avr32_pdca_channel_t* pdca_channeltx ;
 volatile bool end_of_transfer; //DMA SD flag
 volatile char ram_buffer[1000]; //DMA SD buffer
-volatile char usart_message [51] = {"Initial message"}; //Read from USART (UP Key)
+volatile char usart_message [51] = {"InitialMessage\0"}; //Read from USART (UP Key)
 volatile uint8_t Sector_Counter = 1; //Curren sector
+char sector_counter_print[1]; //Converts current sector to string
+char usart_message_print[51]; //Converts message to string
 
 //Functions
 static void tft_bl_init(void);
@@ -78,15 +80,9 @@ int main(void){
 
 	//SDCARD
 	init_dbg_rs232(PBA_HZ);
-	print_dbg("\r\nInit SD/MMC Driver");
-	print_dbg("\r\nInsert SD/MMC...");
 	sd_mmc_resources_init();
 	while (!sd_mmc_spi_mem_check());
-	print_dbg("\r\nCard detected!");
-	sd_mmc_spi_get_capacity();
-	print_dbg("Capacity = ");
-	print_dbg_ulong(capacity >> 20);
-	print_dbg(" MBytes");
+	print_dbg("\r\nCard ready");
 
 	Enable_global_interrupt();
 	local_pdca_init(); //DMA initialization
@@ -147,6 +143,7 @@ int main(void){
 					}//If empty message
 				} else {
 					CLR_disp();
+					et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 					et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				}//If check mem
 				state=0;
@@ -156,10 +153,33 @@ int main(void){
 				CLR_disp();
 				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				et024006_PrintString("Last written sector:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-				et024006_PrintString(Sector_Counter, (const unsigned char *)&FONT8x8, 130, 30, WHITE, -1);//Does not work
+				sector_counter_print[0] = Sector_Counter+'0';
+				et024006_PrintString(sector_counter_print, (const unsigned char *)&FONT8x8, 200, 30, WHITE, -1);
 				et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
-				
+
+				//Read SD
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
+				end_of_transfer = false;
+				if(sd_mmc_spi_read_open_PDCA (Sector_Counter)){
+					print_dbg("\r\nSector ");
+					print_dbg_ulong(Sector_Counter);
+					print_dbg(" :\r\n");
+					spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
+					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+					while(!end_of_transfer);
+					for( i = 0; i < 25; i++){ //First 50 chars
+						usart_message_print[i] = (U8)(*(ram_buffer + i));
+					}//For
+					et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+				}else{
+					CLR_disp();
+					et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				}//IF
+
 				state = 0;
 			break;
 
@@ -167,6 +187,11 @@ int main(void){
 			  CLR_disp();
 				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				et024006_PrintString("Sector 1:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+				et024006_PrintString("Sector 2:", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+				et024006_PrintString("Sector 3:", (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
+				et024006_PrintString("Sector 4:", (const unsigned char *)&FONT8x8, 30, 110, WHITE, -1);
+				et024006_PrintString("Sector 5:", (const unsigned char *)&FONT8x8, 30, 130, WHITE, -1);
 
 				//Read SD
 				for(j = 1; j <= 5; j++){ //5 Sectors
@@ -183,11 +208,13 @@ int main(void){
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
 						while(!end_of_transfer);
 						for( i = 0; i < 25; i++){ //First 50 chars
-							print_dbg_char_hex( (U8)(*(ram_buffer + i)));
+							usart_message_print[i] = (U8)(*(ram_buffer + i));
 						}//For
+						et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 100, 30+20*j, WHITE, -1);
 					}else{
 						CLR_disp();
 						et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+						et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 					}//IF
 				}//For
 
