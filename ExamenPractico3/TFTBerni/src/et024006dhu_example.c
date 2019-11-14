@@ -148,7 +148,10 @@ int main(void){
 				leds(1);//Change to LED0
 			break;
 			case 2://Desplegar mensaje de memoria en display
-				//Don at handler
+				//Done at handler
+
+
+
 				leds(2);
 			break;
 			case 3://Guardar mensaje en la SD
