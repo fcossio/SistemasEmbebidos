@@ -15,14 +15,12 @@
 #include "delay.h"
 #include "pwm.h"
 
-#define RGB(r,g,b) r<<11|g<<5|b
-
 //SPI SDCARD
 const char dummy_data[] =
 #include "dummy.h"
-;//No borrar, dummy_data
+;//Dummy_data
 
-//Keys and LEDs
+//GPIOs
 #define BTN_UP   AVR32_PIN_PB22
 #define BTN_DOWN AVR32_PIN_PB23
 #define BTN_RIGHT AVR32_PIN_PB24
@@ -41,7 +39,7 @@ const char dummy_data[] =
 #define AVR32_PDCA_CHANNEL_SPI_RX 0 // In the example we will use the pdca channel 0.
 #define AVR32_PDCA_CHANNEL_SPI_TX 1 // In the example we will use the pdca channel 1.
 
-//Logic
+//State machine logic
 enum btn{NONE, UP, DOWN, LEFT, RIGHT, CENTER};
 enum btn btn_pressed = NONE;
 volatile int state = 0;
@@ -50,15 +48,14 @@ volatile int state = 0;
 avr32_pwm_channel_t pwm_channel6 = {.cdty = 0,.cprd = 100};
 volatile avr32_pdca_channel_t* pdca_channelrx ;
 volatile avr32_pdca_channel_t* pdca_channeltx ;
-volatile bool end_of_transfer;
-volatile char ram_buffer[1000];
-volatile char usart_message [51] = {"HOLAAA"}; //Read from USART (UP Key)
-volatile uint8_t Sector_Counter = 1;
+volatile bool end_of_transfer; //DMA SD flag
+volatile char ram_buffer[1000]; //DMA SD buffer
+volatile char usart_message [51] = {"Initial message"}; //Read from USART (UP Key)
+volatile uint8_t Sector_Counter = 1; //Curren sector
 
 //Functions
 static void tft_bl_init(void);
 void CLR_disp(void);
-void wait();
 __attribute__((__interrupt__)) static void pdca_int_handler(void);
 __attribute__ ((__interrupt__)) void btn_interrupt_routine (void);
 static void sd_mmc_resources_init(void);
@@ -67,6 +64,8 @@ void leds(uint8_t value);
 void init_button_interrupt(void);
 void usart_read(void);
 
+/**************************************************************************/
+
 int main(void){
 
 	int i, j; //j for sectors, i for bytes
@@ -74,7 +73,7 @@ int main(void){
 	//PM
 	pm_switch_to_osc0(&AVR32_PM, PBA_HZ, 3);
 
-	//Button interrupt
+	//Key interrupts
 	init_button_interrupt();
 
 	//SDCARD
@@ -82,7 +81,6 @@ int main(void){
 	print_dbg("\r\nInit SD/MMC Driver");
 	print_dbg("\r\nInsert SD/MMC...");
 	sd_mmc_resources_init();
-
 	while (!sd_mmc_spi_mem_check());
 	print_dbg("\r\nCard detected!");
 	sd_mmc_spi_get_capacity();
@@ -93,48 +91,18 @@ int main(void){
 	Enable_global_interrupt();
 	local_pdca_init(); //DMA initialization
 
-	for(j = 1; j <= 5; j++){ //5 Sectores
-
-		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
-		pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
-		end_of_transfer = false;
-
-		if(sd_mmc_spi_read_open_PDCA (j)){
-
-			print_dbg("\r\nFirst 512 Bytes of Transfer number ");
-			print_dbg_ulong(j);
-			print_dbg(" :\r\n");
-
-			spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
-			pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
-			pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
-			pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
-			while(!end_of_transfer);
-
-			for( i = 0; i < 20; i++){ //20 primeros bytes
-				print_dbg_char_hex( (U8)(*(ram_buffer + i)));
-			}//For
-		}else{
-			print_dbg("\r\n! Unable to open memory \r\n");
-		}//IF
-	}//For
-
-	print_dbg("\r\nEnd of the example.\r\n");
-
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
 	tft_bl_init();
 	CLR_disp();
-
 	while(pwm_channel6.cdty < pwm_channel6.cprd){
 		pwm_channel6.cdty++;
 		pwm_channel6.cupd = pwm_channel6.cdty;
 		pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
 		delay_ms(1);
 	}//PWM
-
 	CLR_disp();
-	et024006_PrintString("En Espera", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+	et024006_PrintString("Waiting", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 	et024006_PrintString("State 0", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 
 	while (1){
@@ -147,18 +115,18 @@ int main(void){
 				CLR_disp();
 				et024006_PrintString("Getting Message ... ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				usart_read(); //DMA READ!
+				usart_read(); //DMA read missing
 				state = 0;
-				//ToDo
+				//ToDo:
 				//Activate DMA completion Interrupt
 				//In its handler, turn LED0 on
-				//The message goes to usart_message
+				//The message gets stored in usart_message
 			break;
 
-			case 2://Show the message received
+			case 2://Show the received message
 				CLR_disp();
 				et024006_PrintString("Received Message:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1); //test
+				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
 				et024006_PrintString("Last key pressed: DOWN", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				state = 0;
 			break;
@@ -168,18 +136,18 @@ int main(void){
 				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				if(sd_mmc_spi_mem_check()){
 					if(usart_message){
-						print_dbg("\r\nCard detected!");
 						sd_mmc_spi_write_open (Sector_Counter); //Write in a Sector
 						sd_mmc_spi_write_sector_from_ram(&usart_message);
 						sd_mmc_spi_write_close ();
-						Sector_Counter=(Sector_Counter % 4)+1;//Increase current sector
+						Sector_Counter=(Sector_Counter % 5)+1;//Increase current sector
+						et024006_PrintString("Message successfully stored", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 					} else {
 						CLR_disp();
-						et024006_PrintString("No hay Mensaje", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+						et024006_PrintString("Message is empty", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 					}//If empty message
 				} else {
 					CLR_disp();
-					et024006_PrintString("No hay tarjeta", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				}//If check mem
 				state=0;
 			break;
@@ -187,12 +155,42 @@ int main(void){
 			case 4://Leer ultimo mensaje guardado de la SD y su sector y mostrarlo
 				CLR_disp();
 				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				et024006_PrintString("Last written sector:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				et024006_PrintString(Sector_Counter, (const unsigned char *)&FONT8x8, 130, 30, WHITE, -1);//Does not work
+				et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+				
 				state = 0;
 			break;
 
-			case 5://Mostrar todos los mensajes guardados
+			case 5://Show stored messages
 			  CLR_disp();
 				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+
+				//Read SD
+				for(j = 1; j <= 5; j++){ //5 Sectors
+					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
+					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
+					end_of_transfer = false;
+					if(sd_mmc_spi_read_open_PDCA (j)){
+						print_dbg("\r\nSector ");
+		 				print_dbg_ulong(j);
+		 				print_dbg(" :\r\n");
+						spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
+						pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+						pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+						pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+						while(!end_of_transfer);
+						for( i = 0; i < 25; i++){ //First 50 chars
+							print_dbg_char_hex( (U8)(*(ram_buffer + i)));
+						}//For
+					}else{
+						CLR_disp();
+						et024006_PrintString("No SD card present", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					}//IF
+				}//For
+
 				state = 0;
 			break;
 
