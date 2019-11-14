@@ -63,7 +63,6 @@ src/et024006dhu_example.d src/et024006dhu_example.o \
  ../src/config/conf_sd_mmc_spi.h ../src/config/conf_access.h \
  ../src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.h \
  ../src/config/conf_access.h ../src/ASF/avr32/drivers/usart/usart.h \
- ../src/ASF/avr32/utils/debug/print_funcs.h \
  ../src/ASF/avr32/drivers/pdca/pdca.h ../src/ASF/avr32/drivers/pm/pm.h \
  ../src/ASF/avr32/components/display/et024006dhu/et024006dhu.h \
  ../src/ASF/common/services/delay/delay.h \
@@ -211,8 +210,6 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr32\avr32-gnu-toolchain\bi
 ../src/config/conf_access.h:
 
 ../src/ASF/avr32/drivers/usart/usart.h:
-
-../src/ASF/avr32/utils/debug/print_funcs.h:
 
 ../src/ASF/avr32/drivers/pdca/pdca.h:
 

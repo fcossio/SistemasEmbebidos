@@ -7,7 +7,6 @@
 #include "conf_sd_mmc_spi.h"
 #include "sd_mmc_spi.h"
 #include "usart.h"
-#include "print_funcs.h"
 #include "pdca.h"
 #include "intc.h"
 #include "pm.h"
@@ -79,13 +78,15 @@ int main(void){
 	init_button_interrupt();
 
 	//SDCARD
-	init_dbg_rs232(PBA_HZ);
 	sd_mmc_resources_init();
 	while (!sd_mmc_spi_mem_check());
-	print_dbg("\r\nCard ready");
 
+	//DMA for SDCARD
 	Enable_global_interrupt();
 	local_pdca_init(); //DMA initialization
+
+	//DMA for USART
+	//**missing**
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
@@ -201,9 +202,6 @@ int main(void){
 					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
 					end_of_transfer = false;
 					if(sd_mmc_spi_read_open_PDCA (j)){
-						print_dbg("\r\nSector ");
-		 				print_dbg_ulong(j);
-		 				print_dbg(" :\r\n");
 						spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
 						pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
@@ -242,16 +240,11 @@ void CLR_disp(void){
 	et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
 }//CLR_disp
 
-void wait(){
-	volatile int i;
-	for(i = 0 ; i < 5000; i++);
-}//Wait
-
 static void pdca_int_handler(void){
 	Disable_global_interrupt();
 	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
 	sd_mmc_spi_read_close_PDCA();
-	wait();
+	delay_us(10);
 	pdca_disable(AVR32_PDCA_CHANNEL_SPI_TX);
 	pdca_disable(AVR32_PDCA_CHANNEL_SPI_RX);
 	Enable_global_interrupt();
