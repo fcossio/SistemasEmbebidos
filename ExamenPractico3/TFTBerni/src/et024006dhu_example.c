@@ -52,7 +52,8 @@ volatile avr32_pdca_channel_t* pdca_channelrx ;
 volatile avr32_pdca_channel_t* pdca_channeltx ;
 volatile bool end_of_transfer;
 volatile char ram_buffer[1000];
-volatile char usart_message[51]; //Read from USART (UP Key)
+volatile char usart_message [51] = {"HOLAAA"}; //Read from USART (UP Key)
+volatile uint8_t Sector_Counter = 1;
 
 //Functions
 static void tft_bl_init(void);
@@ -64,6 +65,7 @@ static void sd_mmc_resources_init(void);
 void local_pdca_init(void);
 void leds(uint8_t value);
 void init_button_interrupt(void);
+void usart_read(void);
 
 int main(void){
 
@@ -80,6 +82,7 @@ int main(void){
 	print_dbg("\r\nInit SD/MMC Driver");
 	print_dbg("\r\nInsert SD/MMC...");
 	sd_mmc_resources_init();
+
 	while (!sd_mmc_spi_mem_check());
 	print_dbg("\r\nCard detected!");
 	sd_mmc_spi_get_capacity();
@@ -88,7 +91,7 @@ int main(void){
 	print_dbg(" MBytes");
 
 	Enable_global_interrupt();
-	local_pdca_init();
+	local_pdca_init(); //DMA initialization
 
 	for(j = 1; j <= 5; j++){ //5 Sectores
 
@@ -130,38 +133,67 @@ int main(void){
 		delay_ms(1);
 	}//PWM
 
+	CLR_disp();
+	et024006_PrintString("En Espera", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+	et024006_PrintString("State 0", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+
 	while (1){
 		switch (state){
+
 			case 0://Do nothing
-				et024006_PrintString("Estado 0", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 			break;
-			case 1:/*
-				if (!usart_dma_started){
-					//inicializar DMA
-				}else{
-					//Transfer complete
-					if(end_of_transfer){
-						leds(0b1000);
-						delay_ms(100);
-					}//If
-				}//IF */
-				leds(1);//Change to LED0
-			break;
-			case 2://Desplegar mensaje de memoria en display
-				//Done at handler
 
-
-
-				leds(2);
+			case 1:
+				CLR_disp();
+				et024006_PrintString("Getting Message ... ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				usart_read(); //DMA READ!
+				state = 0;
+				//ToDo
+				//Activate DMA completion Interrupt
+				//In its handler, turn LED0 on
+				//The message goes to usart_message
 			break;
-			case 3://Guardar mensaje en la SD
-				leds(3);
+
+			case 2://Show the message received
+				CLR_disp();
+				et024006_PrintString("Received Message:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1); //test
+				et024006_PrintString("Last key pressed: DOWN", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				state = 0;
 			break;
+
+			case 3://Store message in SD
+				CLR_disp();
+				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				if(sd_mmc_spi_mem_check()){
+					if(usart_message){
+						print_dbg("\r\nCard detected!");
+						sd_mmc_spi_write_open (Sector_Counter); //Write in a Sector
+						sd_mmc_spi_write_sector_from_ram(&usart_message);
+						sd_mmc_spi_write_close ();
+						Sector_Counter=(Sector_Counter % 4)+1;//Increase current sector
+					} else {
+						CLR_disp();
+						et024006_PrintString("No hay Mensaje", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					}//If empty message
+				} else {
+					CLR_disp();
+					et024006_PrintString("No hay tarjeta", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				}//If check mem
+				state=0;
+			break;
+
 			case 4://Leer ultimo mensaje guardado de la SD y su sector y mostrarlo
-				leds(4);
+				CLR_disp();
+				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				state = 0;
 			break;
+
 			case 5://Mostrar todos los mensajes guardados
-				leds(5);
+			  CLR_disp();
+				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				state = 0;
 			break;
 
 		}//Switch
@@ -279,41 +311,32 @@ void btn_interrupt_routine (void){
 	CLR_disp();
 	if (gpio_get_pin_interrupt_flag(BTN_UP)) {
 		btn_pressed=UP;
-		usart_read();
+		state = 1;
 		gpio_clear_pin_interrupt_flag(BTN_UP);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_DOWN)){
 		btn_pressed=DOWN;
 		state=2;
-		//et024006_PrintString("Estado 2", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-		et024006_PrintString("Mensaje recibido:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-		et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1); //test
 		gpio_clear_pin_interrupt_flag(BTN_DOWN);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_RIGHT)){
 		btn_pressed=RIGHT;
 		state=3;
-		et024006_PrintString("Estado 3", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 		gpio_clear_pin_interrupt_flag(BTN_RIGHT);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_LEFT)){
 		btn_pressed=LEFT;
 		state=4;
-		et024006_PrintString("Estado 4", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 		gpio_clear_pin_interrupt_flag(BTN_LEFT);
 	}
 	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
 		gpio_clear_pin_interrupt_flag(BTN_CENTER);
 		btn_pressed=CENTER;
 		state=5;
-		et024006_PrintString("Estado 5", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 	}
 	gpio_get_pin_interrupt_flag(BTN_CENTER);
 } //Fin Botones
 
 void usart_read(void){
-	//We should read USART
-	usart_message = {"usart message"};
-	state=1;
-	et024006_PrintString("Estado 1", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+	//Leer por DMA
 }//usart_read
