@@ -1,4 +1,4 @@
-#define dbg 0
+
 #include <avr32/io.h>
 #include "compiler.h"
 #include "board.h"
@@ -42,7 +42,7 @@ const char dummy_data[] =
 
 //USART POR DMA
 #define AVR32_PDCA_CHANNEL_USED_RX_USART  AVR32_PDCA_PID_USART0_RX
-#define AVR32_PDCA_CHANNEL_USART_RX 0 // In the example we will use the pdca channel 2 for USART0 in RX.
+#define AVR32_PDCA_CHANNEL_USART_RX 0
 
 //State machine logic
 enum btn{NONE, UP, DOWN, LEFT, RIGHT, CENTER};
@@ -55,45 +55,43 @@ volatile avr32_pdca_channel_t* pdca_channelrx ;
 volatile avr32_pdca_channel_t* pdca_channeltx ;
 volatile bool end_of_transfer; //DMA SD flag
 volatile char ram_buffer[1000]; //DMA SD buffer
-volatile uint8_t usart_message_rx_complete = 0;
-volatile char usart_message [51] = {"NoMessage\0"}; //Read from USART (UP Key)
+
+volatile uint8_t usart_message_rx_complete = 0; //50 characters
+volatile char usart_message [50];// = {"NoMessage\0"}; //Read from USART (UP Key)
 volatile uint8_t Sector_Counter = 0; //Current sector
 char sector_counter_print[1]; //Converts current sector to string
-char usart_message_print[51]; //Converts message to string
+char usart_message_print[50]; //Converts message to string
+volatile char debug_print[1];
+volatile debug_counter = 0;
+volatile usart_char;
+volatile uint8_t usart_char_rx_complete =0; //one char
 
 //Functions
 static void tft_bl_init(void);
 void CLR_disp(void);
-__attribute__((__interrupt__)) static void pdca_int_handler(void);
+__attribute__((__interrupt__)) static void pdca_int_handler(void); //SD
 __attribute__((__interrupt__)) static void pdca_int_handler_usart(void);
 __attribute__((__interrupt__)) void btn_interrupt_routine (void);
+
 static void sd_mmc_resources_init(void);
-void local_pdca_init(void);
+void local_pdca_init(void); //For SPI  DMA CONFIG
+void local_pdca_init_usart(void); //For USART  DMA CONFIG
 void leds(uint8_t value);
 void init_button_interrupt(void);
+
 
 /**************************************************************************/
 
 int main(void){
-
+	state = 0;
 	int i, j; //j for sectors, i for bytes
 
 	//PM
 	pm_switch_to_osc0(&AVR32_PM, PBA_HZ, 3);
-	if(dbg) init_dbg_rs232(PBA_HZ);
 
 	//Key interrupts
 	init_button_interrupt();
 
-	//SDCARD
-	sd_mmc_resources_init();
-	REINIT:while (!sd_mmc_spi_mem_check());
-
-	//DMA for SDCARD
-	Enable_global_interrupt();
-	local_pdca_init(); //DMA initialization INCLUDES USART and SPI
-
-	//DMA for USART
 	//First Configuring USART0
 	static const gpio_map_t USART_GPIO_MAP ={
 	  {AVR32_USART0_RXD_0_0_PIN, AVR32_USART0_RXD_0_0_FUNCTION}
@@ -105,9 +103,16 @@ int main(void){
 	  .stopbits     = USART_1_STOPBIT,
 	  .channelmode  = USART_NORMAL_CHMODE
 	};// USART options
+	gpio_enable_module(USART_GPIO_MAP,sizeof(USART_GPIO_MAP) / sizeof(USART_GPIO_MAP[0]));
+	usart_init_rs232(&AVR32_USART0, &USART_OPTIONS, 12000000);
 
-	if(!dbg) gpio_enable_module(USART_GPIO_MAP,sizeof(USART_GPIO_MAP) / sizeof(USART_GPIO_MAP[0]));
-	if(!dbg) usart_init_rs232(&AVR32_USART0, &USART_OPTIONS, 12000000);
+	//SDCARD
+	sd_mmc_resources_init();
+	REINIT: while (!sd_mmc_spi_mem_check());
+
+	//DMA for SDCARD
+	Enable_global_interrupt();
+	local_pdca_init(); //DMA initialization SPI
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
@@ -120,6 +125,7 @@ int main(void){
 		pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
 		delay_ms(1);
 	}//PWM
+
 	CLR_disp();
 	et024006_PrintString("Welcome", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 	et024006_PrintString("No keys pressed yet", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
@@ -128,33 +134,45 @@ int main(void){
 		switch (state){
 
 			case 0://Do nothing
-				//---
-				if(usart_message_rx_complete) leds(8);
-
-				if(dbg){
-					print_dbg("STATE 0 \r\n");
-					CLR_disp();
-					et024006_PrintString("STATE 0",(const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-					et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-				}
-
 			break;
 
 			case 1:
-				if(dbg) print_dbg("STATE TECLA UP \r\n");
 				CLR_disp();
 				et024006_PrintString("Getting Message ... ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+
+				for(short i=0; i<sizeof(usart_message);i++){
+					usart_message[i] = 0x000;
+				}//For
+
+				//usart_char = '0';
 				usart_message_rx_complete=0;
-				pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_USART_RX); //Enable DMA and its RX intertupt
-				pdca_enable(AVR32_PDCA_CHANNEL_USART_RX);
+
+				for (short i = 0; i<50; i++){
+					local_pdca_init_usart();//hace configuracion USART DMA y activa con enable
+					while (usart_char_rx_complete); //waits for char.  activated by the handler
+					usart_char_rx_complete=0;
+
+					if (usart_char == '0'){
+						et024006_PrintString("char0", (const unsigned char *)&FONT8x8, 100, 190, WHITE, -1);
+						break;
+					}//If
+
+					et024006_PrintString("bfnull", (const unsigned char *)&FONT8x8, 100, 100, WHITE, -1);
+
+					if (usart_char != 0x000){ //if it is not null
+						usart_message [i]= usart_char;
+						et024006_PrintString("nonull", (const unsigned char *)&FONT8x8, 100, 170, WHITE, -1);
+					}//if
+
+				}//for
+
+				//usart_message_rx_complete=1; // there are 50 chars
 				state = 0;
-				//In its handler, turn LED0 on
-				//The message gets stored in usart_message
+
 			break;
 
 			case 2://Show the received message
-				if(dbg) print_dbg("STATE TECLA DOWN \r\n");
 				CLR_disp();
 				et024006_PrintString("Received Message:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
@@ -163,12 +181,10 @@ int main(void){
 			break;
 
 			case 3://Store message in SD
-				if(dbg) print_dbg("STATE TECLA RIGHT \r\n");
 				CLR_disp();
 				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				if(sd_mmc_spi_mem_check()){
 					if(usart_message_rx_complete){
-						usart_message_rx_complete = 0; //Do this routine only once
 						Sector_Counter=(Sector_Counter % 5)+1;//Increase current sector
 						sd_mmc_spi_write_open (Sector_Counter); //Write in a Sector
 						sd_mmc_spi_write_sector_from_ram(&usart_message);
@@ -197,7 +213,6 @@ int main(void){
 			break;
 
 			case 4://Swhow last stored value and its sector
-				if(dbg) print_dbg("STATE TECLA LEFT \r\n");
 
 				CLR_disp();
 				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
@@ -234,7 +249,6 @@ int main(void){
 			break;
 
 			case 5://Show stored messages
-				print_dbg("STATE TECLA CENTER \r\n");
 			  CLR_disp();
 				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
@@ -293,7 +307,6 @@ void CLR_disp(void){
 	et024006_PutPixmap(avr32_logo, 320, 0, 0, 0, 0, 320, 240);
 }//CLR_disp
 
-
 static void pdca_int_handler(void){
 	Disable_global_interrupt();
 	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
@@ -308,15 +321,16 @@ static void pdca_int_handler(void){
 
 static void pdca_int_handler_usart(void){
 
-	//et024006_PrintString("INTERRUPT", (const unsigned char *)&FONT8x8, 100, 100, WHITE, -1);
-	Disable_global_interrupt();
+	et024006_PrintString("int", (const unsigned char *)&FONT8x8, 100, 120, WHITE, -1);
+	debug_counter++;
+	debug_print[0] = usart_char + '0';
+	et024006_PrintString(debug_print, (const unsigned char *)&FONT8x8, 150+debug_counter*5, 120+debug_counter*5, WHITE, -1);
+	//Disable_global_interrupt();
 	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_USART_RX);
-	//sd_mmc_spi_read_close_PDCA();
-	//delay_us(10);
 	pdca_disable(AVR32_PDCA_CHANNEL_USART_RX);
-	Enable_global_interrupt();
-	usart_message_rx_complete=1;
-	//leds(8); //Turn LED0 on
+	//Enable_global_interrupt();
+	usart_char_rx_complete=1;
+
 }//pdca_int_handler_usart
 
 static void sd_mmc_resources_init(void) {
@@ -349,6 +363,24 @@ static void sd_mmc_resources_init(void) {
 
 }//sd_mmc_resources_init
 
+void local_pdca_init_usart(void){
+
+	pdca_channel_options_t pdca_options_USART_RX ={ //RX
+		.addr = &usart_char,            // memory address.
+		.size = 1,                              // transfer counter: here the size of the string
+		.r_addr = NULL,                           // next memory address after 1st transfer complete
+		.r_size = 0,                              // next transfer counter not used here
+		.pid = AVR32_PDCA_CHANNEL_USED_RX_USART,        // select peripheral ID - data are on reception from USART0
+		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
+	};//pdca_options_SPI_TX
+
+	pdca_init_channel(AVR32_PDCA_CHANNEL_USART_RX, &pdca_options_USART_RX);
+	INTC_register_interrupt(&pdca_int_handler_usart, 96, 3);  // pdca_channel_usart_RX = 0 irq 96
+	pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_USART_RX); //Enable DMA and its RX intertupt
+	pdca_enable (AVR32_PDCA_CHANNEL_USART_RX);
+
+}
+
 void local_pdca_init(void){
 
 	pdca_channel_options_t pdca_options_SPI_RX ={ //RX
@@ -369,20 +401,9 @@ void local_pdca_init(void){
 		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
 	};//pdca_options_SPI_TX
 
-	pdca_channel_options_t pdca_options_USART_RX ={ //RX
-		.addr = &usart_message[0],            // memory address.
-		.size = 5,                              // transfer counter: here the size of the string
-		.r_addr = NULL,                           // next memory address after 1st transfer complete
-		.r_size = 0,                              // next transfer counter not used here
-		.pid = AVR32_PDCA_CHANNEL_USED_RX_USART,        // select peripheral ID - data are on reception from USART0
-		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
-	};//pdca_options_SPI_TX
-
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_TX, &pdca_options_SPI_TX);
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_RX, &pdca_options_SPI_RX);
-	pdca_init_channel(AVR32_PDCA_CHANNEL_USART_RX, &pdca_options_USART_RX);
-	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_1, AVR32_INTC_INT1);  // pdca_channel_spi1_RX = 0
-	INTC_register_interrupt(&pdca_int_handler_usart, AVR32_PDCA_IRQ_0, AVR32_INTC_INT1);  // pdca_channel_usart_RX = 0
+	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_1, 3);  // FOR SPI (SD CARD)
 
 } //local_pdca_init
 
