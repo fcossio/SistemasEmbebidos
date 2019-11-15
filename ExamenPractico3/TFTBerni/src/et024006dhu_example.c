@@ -16,119 +16,106 @@
 #include "avr32_logo.h"
 #include "print_funcs.h"
 
-//SPI SDCARD
-const char dummy_data[] =
-#include "dummy.h"
-;//Dummy_data
-
-//GPIOs
+//Interface
 #define BTN_UP   AVR32_PIN_PB22
 #define BTN_DOWN AVR32_PIN_PB23
 #define BTN_RIGHT AVR32_PIN_PB24
 #define BTN_LEFT AVR32_PIN_PB25
 #define BTN_CENTER AVR32_PIN_PB26
-
 #define LED0   AVR32_PIN_PB27
 #define LED1   AVR32_PIN_PB28
 #define LED2   AVR32_PIN_PA05
 #define LED3   AVR32_PIN_PA06
 
-#define PBA_HZ                12000000
-#define BUFFERSIZE            64    //Number of bytes in the receive buffer in slave
-#define AVR32_PDCA_CHANNEL_USED_RX AVR32_PDCA_PID_SPI0_RX
-#define AVR32_PDCA_CHANNEL_USED_TX AVR32_PDCA_PID_SPI0_TX
-#define AVR32_PDCA_CHANNEL_SPI_RX 1 // In the example we will use the pdca channel 0.
-#define AVR32_PDCA_CHANNEL_SPI_TX 2 // In the example we will use the pdca channel 1.
+//Serial Channels
+#define USART_DMA_CHANNEL			0
+#define AVR32_PDCA_CHANNEL_SPI_RX	1
+#define AVR32_PDCA_CHANNEL_SPI_TX	2
 
-//USART POR DMA
-#define AVR32_PDCA_CHANNEL_USED_RX_USART  AVR32_PDCA_PID_USART0_RX
-#define AVR32_PDCA_CHANNEL_USART_RX 0
+//SPI SDCARD
+const char dummy_data[] =
+#include "dummy.h"
+;//Dummy_data
 
-//State machine logic
-enum btn{NONE, UP, DOWN, LEFT, RIGHT, CENTER};
-enum btn btn_pressed = NONE;
+//Variables:
+
+//TFT Variables
+avr32_pwm_channel_t pwm_channel6 = {.cdty = 0,.cprd = 100};
+//SPI Variables
+volatile bool spi_flag; //DMA SD flag
+volatile char spi_message[1000]; //DMA SD buffer
+volatile uint8_t current_sector = 0; //Current sector
+//USART Variables
+volatile short usart_flag=1;
+volatile char usart_message[50];//={"Nothing"};
+volatile char usart_char;
+//Interface Variables
+char current_sector_print[1]; //Converts current sector to string
+char usart_message_print[50]; //Converts message to string
 volatile int state = 0;
 
-//Variables
-avr32_pwm_channel_t pwm_channel6 = {.cdty = 0,.cprd = 100};
-volatile avr32_pdca_channel_t* pdca_channelrx ;
-volatile avr32_pdca_channel_t* pdca_channeltx ;
-volatile bool end_of_transfer; //DMA SD flag
-volatile char ram_buffer[1000]; //DMA SD buffer
+//Functions:
 
-volatile uint8_t usart_message_rx_complete = 0; //50 characters
-volatile char usart_message [50];// = {"NoMessage\0"}; //Read from USART (UP Key)
-volatile uint8_t Sector_Counter = 0; //Current sector
-char sector_counter_print[1]; //Converts current sector to string
-char usart_message_print[50]; //Converts message to string
-volatile char debug_print[1];
-volatile debug_counter = 0;
-volatile usart_char;
-volatile uint8_t usart_char_rx_complete =0; //one char
-
-//Functions
-static void tft_bl_init(void);
-void CLR_disp(void);
-__attribute__((__interrupt__)) static void pdca_int_handler(void); //SD
-__attribute__((__interrupt__)) static void pdca_int_handler_usart(void);
-__attribute__((__interrupt__)) void btn_interrupt_routine (void);
-
-static void sd_mmc_resources_init(void);
-void local_pdca_init(void); //For SPI  DMA CONFIG
-void local_pdca_init_usart(void); //For USART  DMA CONFIG
-void leds(uint8_t value);
+//TFT Functions
+static void tft_init(void);
+void tft_clear(void);
+//SPI Functions
+static void sd_init(void);
+void spi_dma(void);
+__attribute__((__interrupt__)) static void spi_dma_handler(void);
+//USART Functions
+void usart_init(void);
+void usart_dma(void);
+__attribute__ ((__interrupt__))static void usart_dma_handler(void);
+//Interface Functions
 void init_button_interrupt(void);
-
-
-/**************************************************************************/
+__attribute__((__interrupt__)) void button_handler (void);
+void leds(uint8_t value);
 
 int main(void){
+	
+	//Variable init
 	state = 0;
-	int i, j; //j for sectors, i for bytes
+	int i, j; //j:sectors i: bytes
 
 	//PM
-	pm_switch_to_osc0(&AVR32_PM, PBA_HZ, 3);
+	pm_switch_to_osc0(&AVR32_PM, FOSC0, 3);
 
-	//Key interrupts
+	//INTC
 	init_button_interrupt();
-
-	//First Configuring USART0
-	static const gpio_map_t USART_GPIO_MAP ={
-	  {AVR32_USART0_RXD_0_0_PIN, AVR32_USART0_RXD_0_0_FUNCTION}
-	};// USART GPIOs
-	static const usart_options_t USART_OPTIONS ={
-	  .baudrate     = 9600,
-	  .charlength   = 8,
-	  .paritytype   = USART_NO_PARITY,
-	  .stopbits     = USART_1_STOPBIT,
-	  .channelmode  = USART_NORMAL_CHMODE
-	};// USART options
-	gpio_enable_module(USART_GPIO_MAP,sizeof(USART_GPIO_MAP) / sizeof(USART_GPIO_MAP[0]));
-	usart_init_rs232(&AVR32_USART0, &USART_OPTIONS, 12000000);
+	
+	//Debug
+	init_dbg_rs232(FOSC0);
 
 	//SDCARD
-	sd_mmc_resources_init();
+	sd_init();
 	REINIT: while (!sd_mmc_spi_mem_check());
 
-	//DMA for SDCARD
+	//DMA
 	Enable_global_interrupt();
-	local_pdca_init(); //DMA initialization SPI
+	spi_dma();
 
 	//TFT
 	et024006_Init( FOSC0, FOSC0 );
-	tft_bl_init();
-	CLR_disp();
-
+	tft_init();
+	tft_clear();
 	while(pwm_channel6.cdty < pwm_channel6.cprd){
 		pwm_channel6.cdty++;
 		pwm_channel6.cupd = pwm_channel6.cdty;
 		pwm_async_update_channel(AVR32_PWM_ENA_CHID6, &pwm_channel6);
 		delay_ms(1);
 	}//PWM
-
-	CLR_disp();
+	tft_clear();
 	et024006_PrintString("Welcome", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 	et024006_PrintString("No keys pressed yet", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+	
+	//USART
+	usart_init();
+	Enable_global_interrupt();
+	
+	for (short i=0;i<sizeof(usart_message);i++){
+		usart_message[i]=0x000;
+	}//Fill message array
 
 	while (1){
 		switch (state){
@@ -136,204 +123,193 @@ int main(void){
 			case 0://Do nothing
 			break;
 
-			case 1:
-				CLR_disp();
-				et024006_PrintString("Getting Message ... ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-				et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-
-				for(short i=0; i<sizeof(usart_message);i++){
-					usart_message[i] = 0x000;
-				}//For
-
-				//usart_char = '0';
-				usart_message_rx_complete=0;
-
-				for (short i = 0; i<50; i++){
-					local_pdca_init_usart();//hace configuracion USART DMA y activa con enable
-					while (usart_char_rx_complete); //waits for char.  activated by the handler
-					usart_char_rx_complete=0;
-
-					if (usart_char == '0'){
-						et024006_PrintString("char0", (const unsigned char *)&FONT8x8, 100, 190, WHITE, -1);
-						break;
-					}//If
-
-					et024006_PrintString("bfnull", (const unsigned char *)&FONT8x8, 100, 100, WHITE, -1);
-
-					if (usart_char != 0x000){ //if it is not null
-						usart_message [i]= usart_char;
-						et024006_PrintString("nonull", (const unsigned char *)&FONT8x8, 100, 170, WHITE, -1);
-					}//if
-
-				}//for
-
-				//usart_message_rx_complete=1; // there are 50 chars
-				state = 0;
-
+			case 1://Wait for USART message
+			tft_clear();
+			leds(0);//Turn LEDs off
+			et024006_PrintString("Waiting for message ... ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+			et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+			
+			for (short i=0;i<sizeof(usart_message);i++){
+				usart_message[i]=0x000;
+			}//Fill message array
+			
+			usart_char = "a";
+			for (short i = 0; i<50; i++){
+				usart_dma();
+				while (usart_flag == 0);
+				if (usart_char == '\r'){
+					break;//Exit character
+				}//If break
+				usart_message[i]=usart_char;
+				usart_write_line(&AVR32_USART0,&usart_char);
+			}//For 50 chars max
+			
+			leds(8);//Turn LED0 on
+			tft_clear();
+			et024006_PrintString("Message Received", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+			et024006_PrintString("Last key pressed: UP", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+			state = 0;
 			break;
 
 			case 2://Show the received message
-				CLR_disp();
+			if(usart_message[0]==0x000){//No received value
+				tft_clear();
+				et024006_PrintString("Last key pressed: DOWN", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				et024006_PrintString("Message has not been received", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				}else{
+				tft_clear();
+				leds(0);//Turn LEDs off
 				et024006_PrintString("Received Message:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 				et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
 				et024006_PrintString("Last key pressed: DOWN", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				state = 0;
+			}//No received value
+			state = 0;
 			break;
 
 			case 3://Store message in SD
-				CLR_disp();
-				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				if(sd_mmc_spi_mem_check()){
-					if(usart_message_rx_complete){
-						Sector_Counter=(Sector_Counter % 5)+1;//Increase current sector
-						sd_mmc_spi_write_open (Sector_Counter); //Write in a Sector
-						sd_mmc_spi_write_sector_from_ram(&usart_message);
-						sd_mmc_spi_write_close ();
-						et024006_PrintString("Message successfully stored", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-						sector_counter_print[0] = Sector_Counter+'0';
-						et024006_PrintString("Sector:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-						et024006_PrintString(sector_counter_print, (const unsigned char *)&FONT8x8, 100, 50, WHITE, -1);
-						et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
-						et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
+			tft_clear();
+			leds(0);//Turn LEDs off
+			et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+			if(sd_mmc_spi_mem_check()){
+				if(usart_message[0]!=0x000){//flag
+					current_sector=(current_sector % 5)+1;//Increase current sector
+					sd_mmc_spi_write_open (current_sector); //Write in a Sector
+					sd_mmc_spi_write_sector_from_ram(&usart_message);
+					sd_mmc_spi_write_close ();
+					et024006_PrintString("Message successfully stored", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					current_sector_print[0] = current_sector+'0';
+					et024006_PrintString("Sector:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+					et024006_PrintString(current_sector_print, (const unsigned char *)&FONT8x8, 100, 50, WHITE, -1);
+					et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+					et024006_PrintString(usart_message, (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
 					} else {
-						CLR_disp();
-						et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-						et024006_PrintString("Message has not been received", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-					}//If empty message
-				} else {
-					CLR_disp();
+					tft_clear();
 					et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-					et024006_PrintString("No SD card detected: ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-					et024006_PrintString("Will reinit the system ", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-					et024006_PrintString("Waiting for SD card ...", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
-					state = 0;
-					goto REINIT;//wait for SD to be reinserted Re-init everything
-				}//If check mem
-				state=0;
-			break;
-
-			case 4://Swhow last stored value and its sector
-
-				CLR_disp();
-				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				et024006_PrintString("Last written sector:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-				sector_counter_print[0] = Sector_Counter+'0';
-				et024006_PrintString(sector_counter_print, (const unsigned char *)&FONT8x8, 200, 30, WHITE, -1);
-				et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-
-				//Read SD
-				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
-				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
-				end_of_transfer = false;
-				if(sd_mmc_spi_read_open_PDCA (Sector_Counter)){
-					spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
-					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
-					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
-					pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
-					while(!end_of_transfer);
-					for( i = 0; i < 25; i++){ //First 50 chars
-						usart_message_print[i] = (U8)(*(ram_buffer + i));
-					}//For
-					et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
-				}else{
-					CLR_disp();
-					et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-					et024006_PrintString("No SD card detected: ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-					et024006_PrintString("Will reinit the system ", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-					et024006_PrintString("Waiting for SD card ...", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
-					state = 0;
-					goto REINIT;//wait for SD to be reinserted Re-init everything
-				}//IF
-
+					et024006_PrintString("Message has not been received", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				}//No received value
+				} else {
+				tft_clear();
+				et024006_PrintString("Last key pressed: RIGHT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				et024006_PrintString("No SD card detected: ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				et024006_PrintString("Will reinit the system ", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+				et024006_PrintString("Waiting for SD card ...", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
 				state = 0;
+				goto REINIT;//wait for SD to be reinserted Re-init everything
+			}//If check mem
+			state=0;
 			break;
 
-			case 5://Show stored messages
-			  CLR_disp();
-				et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
-				et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
-				et024006_PrintString("Sector 1:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
-				et024006_PrintString("Sector 2:", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
-				et024006_PrintString("Sector 3:", (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
-				et024006_PrintString("Sector 4:", (const unsigned char *)&FONT8x8, 30, 110, WHITE, -1);
-				et024006_PrintString("Sector 5:", (const unsigned char *)&FONT8x8, 30, 130, WHITE, -1);
-
-				//Read SD
-				for(j = 1; j <= 5; j++){ //5 Sectors
-					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &ram_buffer,512);
+			case 4://Show last stored value and its sector
+			if(usart_message[0]==0x000){//No received value
+				tft_clear();
+				et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+				et024006_PrintString("Message has not been received", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+				}else{
+				leds(0);//Turn LEDs off
+				if (current_sector == 0){
+					tft_clear();
+					et024006_PrintString("Nothing saved yet", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+					}else{
+					tft_clear();
+					current_sector_print[0] = current_sector+'0';
+					et024006_PrintString("Last written sector:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					et024006_PrintString(current_sector_print, (const unsigned char *)&FONT8x8, 200, 30, WHITE, -1);
+					et024006_PrintString("Message:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+					et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+					
+					//Read SD
+					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &spi_message,512);
 					pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
-					end_of_transfer = false;
-					if(sd_mmc_spi_read_open_PDCA (j)){
+					spi_flag = false;
+					if(sd_mmc_spi_read_open_PDCA (current_sector)){
 						spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
 						pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
 						pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
-						while(!end_of_transfer);
-						for( i = 0; i < 25; i++){ //First 50 chars
-							usart_message_print[i] = (U8)(*(ram_buffer + i));
+						while(!spi_flag);
+						for( i = 0; i < 50; i++){ //First 50 chars
+							usart_message_print[i] = (U8)(*(spi_message + i));
 						}//For
-						et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 100, 30+20*j, WHITE, -1);
-					}else{
-						CLR_disp();
-						et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+						et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+						}else{
+						tft_clear();
+						et024006_PrintString("Last key pressed: LEFT", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
 						et024006_PrintString("No SD card detected: ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
 						et024006_PrintString("Will reinit the system ", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
 						et024006_PrintString("Waiting for SD card ...", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
 						state = 0;
 						goto REINIT;//wait for SD to be reinserted Re-init everything
 					}//IF
-				}//For
+				}//Sector 0
+			}//No received value
+			state = 0;
+			break;
 
-				state = 0;
+			case 5://Show stored messages
+			tft_clear();
+			leds(0);//Turn LEDs off
+			et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+			et024006_PrintString("The SD card data is shown below:", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+			et024006_PrintString("Sector 1:", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+			et024006_PrintString("Sector 2:", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+			et024006_PrintString("Sector 3:", (const unsigned char *)&FONT8x8, 30, 90, WHITE, -1);
+			et024006_PrintString("Sector 4:", (const unsigned char *)&FONT8x8, 30, 110, WHITE, -1);
+			et024006_PrintString("Sector 5:", (const unsigned char *)&FONT8x8, 30, 130, WHITE, -1);
+
+			//Read SD
+			for(j = 1; j <= 5; j++){ //5 Sectors
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_RX, &spi_message,512);
+				pdca_load_channel( AVR32_PDCA_CHANNEL_SPI_TX,(void *)&dummy_data,512); //send dummy
+				spi_flag = false;
+				if(sd_mmc_spi_read_open_PDCA (j)){
+					spi_write(SD_MMC_SPI,0xFF); // Write a first dummy data to synchronize transfer
+					pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_RX);
+					pdca_enable(AVR32_PDCA_CHANNEL_SPI_TX);
+					while(!spi_flag);
+					for( i = 0; i < 25; i++){ //First 50 chars
+						usart_message_print[i] = (U8)(*(spi_message + i));
+					}//For
+					et024006_PrintString(usart_message_print, (const unsigned char *)&FONT8x8, 100, 30+20*j, WHITE, -1);
+					}else{
+					tft_clear();
+					et024006_PrintString("Last key pressed: CENTER", (const unsigned char *)&FONT8x8, 30, 200, WHITE, -1);
+					et024006_PrintString("No SD card detected: ", (const unsigned char *)&FONT8x8, 30, 30, WHITE, -1);
+					et024006_PrintString("Will reinit the system ", (const unsigned char *)&FONT8x8, 30, 50, WHITE, -1);
+					et024006_PrintString("Waiting for SD card ...", (const unsigned char *)&FONT8x8, 30, 70, WHITE, -1);
+					state = 0;
+					goto REINIT;//wait for SD to be reinserted Re-init everything
+				}//IF
+			}//For
+			state = 0;
 			break;
 
 		}//Switch
 	}//While
 }//Main
 
-static void tft_bl_init(void){
-  pwm_opt_t opt = {.diva = 0,.divb = 0,.prea = 0,.preb = 0};
-  pwm_init(&opt);
-  pwm_channel6.CMR.calg = PWM_MODE_LEFT_ALIGNED;
-  pwm_channel6.CMR.cpol = PWM_POLARITY_HIGH; //PWM_POLARITY_LOW;//PWM_POLARITY_HIGH;
-  pwm_channel6.CMR.cpd = PWM_UPDATE_DUTY;
-  pwm_channel6.CMR.cpre = AVR32_PWM_CMR_CPRE_MCK_DIV_2;
-  pwm_channel_init(6, &pwm_channel6);
-  pwm_start_channels(AVR32_PWM_ENA_CHID6_MASK);
-}//tft_bl_init
+//TFT Functions
 
-void CLR_disp(void){
+static void tft_init(void){
+	pwm_opt_t opt = {.diva = 0,.divb = 0,.prea = 0,.preb = 0};
+	pwm_init(&opt);
+	pwm_channel6.CMR.calg = PWM_MODE_LEFT_ALIGNED;
+	pwm_channel6.CMR.cpol = PWM_POLARITY_HIGH; //PWM_POLARITY_LOW;//PWM_POLARITY_HIGH;
+	pwm_channel6.CMR.cpd = PWM_UPDATE_DUTY;
+	pwm_channel6.CMR.cpre = AVR32_PWM_CMR_CPRE_MCK_DIV_2;
+	pwm_channel_init(6, &pwm_channel6);
+	pwm_start_channels(AVR32_PWM_ENA_CHID6_MASK);
+}//tft_init
+
+void tft_clear(void){
 	et024006_DrawFilledRect(0 , 0, ET024006_WIDTH, ET024006_HEIGHT, BLACK );
 	et024006_PutPixmap(avr32_logo, 320, 0, 0, 0, 0, 320, 240);
-}//CLR_disp
+}//tft_clear
 
-static void pdca_int_handler(void){
-	Disable_global_interrupt();
-	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
-	sd_mmc_spi_read_close_PDCA();
-	delay_us(10);
-	pdca_disable(AVR32_PDCA_CHANNEL_SPI_TX);
-	pdca_disable(AVR32_PDCA_CHANNEL_SPI_RX);
-	Enable_global_interrupt();
-	end_of_transfer = true;
+//SPI Functions
 
-}//pdca_int_handler
-
-static void pdca_int_handler_usart(void){
-
-	et024006_PrintString("int", (const unsigned char *)&FONT8x8, 100, 120, WHITE, -1);
-	debug_counter++;
-	debug_print[0] = usart_char + '0';
-	et024006_PrintString(debug_print, (const unsigned char *)&FONT8x8, 150+debug_counter*5, 120+debug_counter*5, WHITE, -1);
-	//Disable_global_interrupt();
-	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_USART_RX);
-	pdca_disable(AVR32_PDCA_CHANNEL_USART_RX);
-	//Enable_global_interrupt();
-	usart_char_rx_complete=1;
-
-}//pdca_int_handler_usart
-
-static void sd_mmc_resources_init(void) {
+static void sd_init(void) {
 
 	static const gpio_map_t SD_MMC_SPI_GPIO_MAP = {
 		{SD_MMC_SPI_SCK_PIN,  SD_MMC_SPI_SCK_FUNCTION },  // SPI Clock.
@@ -359,36 +335,18 @@ static void sd_mmc_resources_init(void) {
 	spi_initMaster(SD_MMC_SPI, &spiOptions);
 	spi_selectionMode(SD_MMC_SPI, 0, 0, 0);
 	spi_enable(SD_MMC_SPI);
-	sd_mmc_spi_init(spiOptions, PBA_HZ);
+	sd_mmc_spi_init(spiOptions, FOSC0);
 
-}//sd_mmc_resources_init
+}//sd_init
 
-void local_pdca_init_usart(void){
-
-	pdca_channel_options_t pdca_options_USART_RX ={ //RX
-		.addr = &usart_char,            // memory address.
-		.size = 1,                              // transfer counter: here the size of the string
-		.r_addr = NULL,                           // next memory address after 1st transfer complete
-		.r_size = 0,                              // next transfer counter not used here
-		.pid = AVR32_PDCA_CHANNEL_USED_RX_USART,        // select peripheral ID - data are on reception from USART0
-		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
-	};//pdca_options_SPI_TX
-
-	pdca_init_channel(AVR32_PDCA_CHANNEL_USART_RX, &pdca_options_USART_RX);
-	INTC_register_interrupt(&pdca_int_handler_usart, 96, 3);  // pdca_channel_usart_RX = 0 irq 96
-	pdca_enable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_USART_RX); //Enable DMA and its RX intertupt
-	pdca_enable (AVR32_PDCA_CHANNEL_USART_RX);
-
-}
-
-void local_pdca_init(void){
+void spi_dma(void){
 
 	pdca_channel_options_t pdca_options_SPI_RX ={ //RX
-		.addr = ram_buffer,						  //Dummy data h
+		.addr = spi_message,						  //Dummy data h
 		.size = 512,                              // transfer counter: here the size of the string
 		.r_addr = NULL,                           // next memory address after 1st transfer complete
 		.r_size = 0,                              // next transfer counter not used here
-		.pid = AVR32_PDCA_CHANNEL_USED_RX,        // select peripheral ID - data are on reception from SPI1 RX line
+		.pid = AVR32_PDCA_PID_SPI0_RX,        // select peripheral ID - data are on reception from SPI1 RX line
 		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
 	};//pdca_options_SPI_RX
 
@@ -397,21 +355,76 @@ void local_pdca_init(void){
 		.size = 512,                              // transfer counter: here the size of the string
 		.r_addr = NULL,                           // next memory address after 1st transfer complete
 		.r_size = 0,                              // next transfer counter not used here
-		.pid = AVR32_PDCA_CHANNEL_USED_TX,        // select peripheral ID - data are on reception from SPI1 RX line
+		.pid = AVR32_PDCA_PID_SPI0_TX,        // select peripheral ID - data are on reception from SPI1 RX line
 		.transfer_size = PDCA_TRANSFER_SIZE_BYTE  // select size of the transfer: 8,16,32 bits
 	};//pdca_options_SPI_TX
 
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_TX, &pdca_options_SPI_TX);
 	pdca_init_channel(AVR32_PDCA_CHANNEL_SPI_RX, &pdca_options_SPI_RX);
-	INTC_register_interrupt(&pdca_int_handler, AVR32_PDCA_IRQ_1, 3);  // FOR SPI (SD CARD)
+	INTC_register_interrupt(&spi_dma_handler, AVR32_PDCA_IRQ_1, 3);  // FOR SPI (SD CARD)
 
-} //local_pdca_init
+} //spi_dma
+
+static void spi_dma_handler(void){
+	Disable_global_interrupt();
+	pdca_disable_interrupt_transfer_complete(AVR32_PDCA_CHANNEL_SPI_RX);
+	sd_mmc_spi_read_close_PDCA();
+	delay_us(10);
+	pdca_disable(AVR32_PDCA_CHANNEL_SPI_TX);
+	pdca_disable(AVR32_PDCA_CHANNEL_SPI_RX);
+	Enable_global_interrupt();
+	spi_flag = true;
+
+}//spi_dma_handler
+
+//USART Functions
+
+void usart_init(void){
+	static const gpio_map_t USART_GPIO_MAP = {
+		{AVR32_USART0_RXD_0_0_PIN, AVR32_USART0_RXD_0_0_FUNCTION},
+		{AVR32_USART0_TXD_0_0_PIN, AVR32_USART0_TXD_0_0_FUNCTION}
+	};//USART Map
+	static const usart_options_t USART_OPTIONS = {
+		.baudrate = 57600,
+		.charlength = 8,
+		.paritytype = USART_NO_PARITY,
+		.stopbits = USART_1_STOPBIT,
+		.channelmode = USART_NORMAL_CHMODE
+	};//USART options
+	gpio_enable_module(USART_GPIO_MAP,sizeof(USART_GPIO_MAP) /
+	sizeof(USART_GPIO_MAP[0]));
+	usart_init_rs232(&AVR32_USART0, &USART_OPTIONS, FOSC0);
+}//conf_usart
+
+void usart_dma(void) {
+	const pdca_channel_options_t PDCA_OPTIONS = {
+		.pid = AVR32_PDCA_PID_USART0_RX,
+		.transfer_size = PDCA_TRANSFER_SIZE_BYTE,
+		.addr = &usart_char,
+		.size =sizeof(usart_char),
+		.r_addr = NULL,
+		.r_size =0,
+	};//PDCA_OPTIONS
+	pdca_init_channel(USART_DMA_CHANNEL,&PDCA_OPTIONS);
+	INTC_register_interrupt(&usart_dma_handler,96,1);
+	pdca_enable_interrupt_transfer_complete(USART_DMA_CHANNEL);
+	pdca_enable(USART_DMA_CHANNEL);
+	usart_flag=0;
+}//config_UsartDma
+
+static void usart_dma_handler(void){
+	pdca_disable_interrupt_transfer_complete(USART_DMA_CHANNEL);
+	pdca_disable(USART_DMA_CHANNEL);
+	usart_flag =1;
+}//usart_dma_handler
+
+//Interface Functions
 
 void init_button_interrupt(void){//inicializar interrupciones de botones
 	Disable_global_interrupt();
 	INTC_init_interrupts();
-	INTC_register_interrupt(&btn_interrupt_routine, 70, 3);
-	INTC_register_interrupt(&btn_interrupt_routine, 71, 3);
+	INTC_register_interrupt(&button_handler, 70, 3);
+	INTC_register_interrupt(&button_handler, 71, 3);
 	uint16_t button_ref [] = {BTN_UP,BTN_DOWN,BTN_RIGHT,BTN_LEFT,BTN_CENTER};
 	for(uint8_t i=0; i<5; i++){
 		gpio_enable_gpio_pin(button_ref[i]);
@@ -421,6 +434,31 @@ void init_button_interrupt(void){//inicializar interrupciones de botones
 	Enable_global_interrupt();
 }//init_button_interrupt
 
+void button_handler(void){
+	tft_clear();
+	if (gpio_get_pin_interrupt_flag(BTN_UP)) {
+		state = 1;
+		gpio_clear_pin_interrupt_flag(BTN_UP);
+	}//UP
+	if (gpio_get_pin_interrupt_flag(BTN_DOWN)){
+		state=2;
+		gpio_clear_pin_interrupt_flag(BTN_DOWN);
+	}//DOWN
+	if (gpio_get_pin_interrupt_flag(BTN_RIGHT)){
+		state=3;
+		gpio_clear_pin_interrupt_flag(BTN_RIGHT);
+	}//RIGHT
+	if (gpio_get_pin_interrupt_flag(BTN_LEFT)){
+		state=4;
+		gpio_clear_pin_interrupt_flag(BTN_LEFT);
+	}//LEFT
+	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
+		state=5;
+		gpio_clear_pin_interrupt_flag(BTN_CENTER);
+	}//CENTER
+	gpio_get_pin_interrupt_flag(BTN_CENTER);
+}//button_handler
+
 void leds(uint8_t value){
 	if ((value & 0b1000)>>3)gpio_clr_gpio_pin(LED0); else gpio_set_gpio_pin(LED0);
 	if ((value & 0b0100)>>2)gpio_clr_gpio_pin(LED1); else gpio_set_gpio_pin(LED1);
@@ -428,32 +466,5 @@ void leds(uint8_t value){
 	if (value & 0b0001)gpio_clr_gpio_pin(LED3); else gpio_set_gpio_pin(LED3);
 }//Fin Fn
 
-void btn_interrupt_routine (void){
-	CLR_disp();
-	if (gpio_get_pin_interrupt_flag(BTN_UP)) {
-		btn_pressed=UP;
-		state = 1;
-		gpio_clear_pin_interrupt_flag(BTN_UP);
-	}
-	if (gpio_get_pin_interrupt_flag(BTN_DOWN)){
-		btn_pressed=DOWN;
-		state=2;
-		gpio_clear_pin_interrupt_flag(BTN_DOWN);
-	}
-	if (gpio_get_pin_interrupt_flag(BTN_RIGHT)){
-		btn_pressed=RIGHT;
-		state=3;
-		gpio_clear_pin_interrupt_flag(BTN_RIGHT);
-	}
-	if (gpio_get_pin_interrupt_flag(BTN_LEFT)){
-		btn_pressed=LEFT;
-		state=4;
-		gpio_clear_pin_interrupt_flag(BTN_LEFT);
-	}
-	if (gpio_get_pin_interrupt_flag(BTN_CENTER)){
-		btn_pressed=CENTER;
-		state=5;
-		gpio_clear_pin_interrupt_flag(BTN_CENTER);
-	}
-	gpio_get_pin_interrupt_flag(BTN_CENTER);
-} //Fin Botones
+
+

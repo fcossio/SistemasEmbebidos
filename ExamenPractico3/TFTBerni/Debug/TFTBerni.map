@@ -8,25 +8,22 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/
 Allocating common symbols
 Common symbol       size              file
 
+current_sector_print
+                    0x1               src/et024006dhu_example.o
 data_mem            0x201             src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
-end_of_transfer     0x1               src/et024006dhu_example.o
 capacity            0x8               src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
-pdca_channeltx      0x4               src/et024006dhu_example.o
-pdca_channelrx      0x4               src/et024006dhu_example.o
-ram_buffer          0x3e8             src/et024006dhu_example.o
 capacity_mult       0x2               src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
-debug_print         0x1               src/et024006dhu_example.o
+spi_message         0x3e8             src/et024006dhu_example.o
 usart_message       0x32              src/et024006dhu_example.o
 erase_group_size    0x2               src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
 sd_mmc_spi_last_block_address
                     0x4               src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
 r2                  0x2               src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
 card_type           0x1               src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
-usart_char          0x4               src/et024006dhu_example.o
-sector_counter_print
-                    0x1               src/et024006dhu_example.o
+usart_char          0x1               src/et024006dhu_example.o
 usart_message_print
                     0x32              src/et024006dhu_example.o
+spi_flag            0x1               src/et024006dhu_example.o
 csd                 0x10              src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
 r1                  0x1               src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
 
@@ -578,18 +575,12 @@ Discarded input sections
                 0x00000000        0x8 src/ASF/avr32/drivers/usart/usart.o
  .text.usart_spi_unselectChip
                 0x00000000       0x1e src/ASF/avr32/drivers/usart/usart.o
- .text.usart_write_char
-                0x00000000       0x14 src/ASF/avr32/drivers/usart/usart.o
  .text.usart_send_address
                 0x00000000       0x34 src/ASF/avr32/drivers/usart/usart.o
- .text.usart_putchar
-                0x00000000       0x2c src/ASF/avr32/drivers/usart/usart.o
  .text.usart_read_char
                 0x00000000       0x22 src/ASF/avr32/drivers/usart/usart.o
  .text.usart_getchar
                 0x00000000       0x2c src/ASF/avr32/drivers/usart/usart.o
- .text.usart_write_line
-                0x00000000       0x24 src/ASF/avr32/drivers/usart/usart.o
  .text.usart_get_echo_line
                 0x00000000       0x50 src/ASF/avr32/drivers/usart/usart.o
  .text.usart_init_spi_slave
@@ -621,11 +612,6 @@ Discarded input sections
  .text          0x00000000        0x0 src/ASF/avr32/utils/debug/print_funcs.o
  .data          0x00000000        0x0 src/ASF/avr32/utils/debug/print_funcs.o
  .bss           0x00000000        0x0 src/ASF/avr32/utils/debug/print_funcs.o
- .debug_abbrev  0x00000000      0x19b src/ASF/avr32/utils/debug/print_funcs.o
- .debug_info    0x00000000     0x1681 src/ASF/avr32/utils/debug/print_funcs.o
- .debug_line    0x00000000      0x818 src/ASF/avr32/utils/debug/print_funcs.o
- .debug_macinfo
-                0x00000000    0xf065e src/ASF/avr32/utils/debug/print_funcs.o
  .text.print_char
                 0x00000000        0xc src/ASF/avr32/utils/debug/print_funcs.o
  .text.print_dbg_char
@@ -649,23 +635,8 @@ Discarded input sections
                 0x00000000       0x14 src/ASF/avr32/utils/debug/print_funcs.o
  .text.print_dbg
                 0x00000000       0x14 src/ASF/avr32/utils/debug/print_funcs.o
- .text.init_dbg_rs232_ex
-                0x00000000       0x40 src/ASF/avr32/utils/debug/print_funcs.o
- .text.init_dbg_rs232
-                0x00000000       0x14 src/ASF/avr32/utils/debug/print_funcs.o
- .rodata.DBG_USART_GPIO_MAP.10878
-                0x00000000       0x10 src/ASF/avr32/utils/debug/print_funcs.o
  .rodata.HEX_DIGITS
                 0x00000000       0x10 src/ASF/avr32/utils/debug/print_funcs.o
- .debug_frame   0x00000000      0x17c src/ASF/avr32/utils/debug/print_funcs.o
- .debug_loc     0x00000000      0x3bc src/ASF/avr32/utils/debug/print_funcs.o
- .debug_pubnames
-                0x00000000      0x10f src/ASF/avr32/utils/debug/print_funcs.o
- .debug_aranges
-                0x00000000       0x88 src/ASF/avr32/utils/debug/print_funcs.o
- .debug_ranges  0x00000000       0x80 src/ASF/avr32/utils/debug/print_funcs.o
- .debug_str     0x00000000      0x641 src/ASF/avr32/utils/debug/print_funcs.o
- .comment       0x00000000       0x31 src/ASF/avr32/utils/debug/print_funcs.o
  .text          0x00000000        0x0 src/ASF/avr32/utils/startup/startup_uc3.o
  .data          0x00000000        0x0 src/ASF/avr32/utils/startup/startup_uc3.o
  .bss           0x00000000        0x0 src/ASF/avr32/utils/startup/startup_uc3.o
@@ -746,7 +717,6 @@ Discarded input sections
  .text          0x00000000        0x0 src/et024006dhu_example.o
  .data          0x00000000        0x0 src/et024006dhu_example.o
  .bss           0x00000000        0x0 src/et024006dhu_example.o
- .text.leds     0x00000000       0x64 src/et024006dhu_example.o
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/../../../../avr32/lib/ucr2\libc.a(lib_a-memcpy.o)
@@ -913,7 +883,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
 .plt
  *(.plt)
 
-.text           0x80002008     0x2d18
+.text           0x80002008     0x2ebc
  *(.text .stub .text.* .gnu.linkonce.t.*)
  .text.et024006_SetLimits
                 0x80002008       0x50 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
@@ -1128,92 +1098,113 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
                 0x80003c82                spi_read
  .text.usart_set_async_baudrate
                 0x80003ca2       0x5a src/ASF/avr32/drivers/usart/usart.o
+ .text.usart_write_char
+                0x80003cfc       0x14 src/ASF/avr32/drivers/usart/usart.o
+                0x80003cfc                usart_write_char
+ .text.usart_putchar
+                0x80003d10       0x2c src/ASF/avr32/drivers/usart/usart.o
+                0x80003d10                usart_putchar
+ .text.usart_write_line
+                0x80003d3c       0x24 src/ASF/avr32/drivers/usart/usart.o
+                0x80003d3c                usart_write_line
  .text.usart_reset
-                0x80003cfc       0x2c src/ASF/avr32/drivers/usart/usart.o
-                0x80003cfc                usart_reset
+                0x80003d60       0x2c src/ASF/avr32/drivers/usart/usart.o
+                0x80003d60                usart_reset
  .text.usart_init_rs232
-                0x80003d28       0xcc src/ASF/avr32/drivers/usart/usart.o
-                0x80003d28                usart_init_rs232
- .text._stext   0x80003df4       0x3c src/ASF/avr32/utils/startup/startup_uc3.o
+                0x80003d8c       0xcc src/ASF/avr32/drivers/usart/usart.o
+                0x80003d8c                usart_init_rs232
+ .text.init_dbg_rs232_ex
+                0x80003e58       0x40 src/ASF/avr32/utils/debug/print_funcs.o
+                0x80003e58                init_dbg_rs232_ex
+ .text.init_dbg_rs232
+                0x80003e98       0x14 src/ASF/avr32/utils/debug/print_funcs.o
+                0x80003e98                init_dbg_rs232
+ .text._stext   0x80003eac       0x3c src/ASF/avr32/utils/startup/startup_uc3.o
                                  0x50 (size before relaxing)
-                0x80003df4                _stext
+                0x80003eac                _stext
+ .text.leds     0x80003ee8       0x64 src/et024006dhu_example.o
+                0x80003ee8                leds
  .text.init_button_interrupt
-                0x80003e30       0x74 src/et024006dhu_example.o
-                0x80003e30                init_button_interrupt
- .text.local_pdca_init
-                0x80003ea4       0x74 src/et024006dhu_example.o
-                0x80003ea4                local_pdca_init
- .text.pdca_int_handler
-                0x80003f18       0x60 src/et024006dhu_example.o
- .text.local_pdca_init_usart
-                0x80003f78       0x5c src/et024006dhu_example.o
-                0x80003f78                local_pdca_init_usart
- .text.pdca_int_handler_usart
-                0x80003fd4       0x94 src/et024006dhu_example.o
- .text.CLR_disp
-                0x80004068       0x40 src/et024006dhu_example.o
-                0x80004068                CLR_disp
- .text.btn_interrupt_routine
-                0x800040a8       0xa0 src/et024006dhu_example.o
-                0x800040a8                btn_interrupt_routine
- .text.main     0x80004148      0x82c src/et024006dhu_example.o
-                0x80004148                main
- .text          0x80004974      0x264 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
-                0x80004974                __avr32_udiv64
-                0x80004974                __udivdi3
- .text          0x80004bd8      0x148 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/../../../../avr32/lib/ucr2\libc.a(lib_a-memcpy.o)
-                0x80004bd8                memcpy
+                0x80003f4c       0x74 src/et024006dhu_example.o
+                0x80003f4c                init_button_interrupt
+ .text.spi_dma  0x80003fc0       0x74 src/et024006dhu_example.o
+                0x80003fc0                spi_dma
+ .text.usart_dma
+                0x80004034       0x68 src/et024006dhu_example.o
+                0x80004034                usart_dma
+ .text.usart_dma_handler
+                0x8000409c       0x24 src/et024006dhu_example.o
+ .text.usart_init
+                0x800040c0       0x30 src/et024006dhu_example.o
+                0x800040c0                usart_init
+ .text.spi_dma_handler
+                0x800040f0       0x60 src/et024006dhu_example.o
+ .text.tft_clear
+                0x80004150       0x40 src/et024006dhu_example.o
+                0x80004150                tft_clear
+ .text.button_handler
+                0x80004190       0x84 src/et024006dhu_example.o
+                0x80004190                button_handler
+ .text.main     0x80004214      0x904 src/et024006dhu_example.o
+                0x80004214                main
+ .text          0x80004b18      0x264 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+                0x80004b18                __avr32_udiv64
+                0x80004b18                __udivdi3
+ .text          0x80004d7c      0x148 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/../../../../avr32/lib/ucr2\libc.a(lib_a-memcpy.o)
+                0x80004d7c                memcpy
  *(.text.*personality*)
  *(.gnu.warning)
 
-.exception      0x80004e00      0x200
- .exception     0x80004e00      0x200 src/ASF/avr32/drivers/intc/exception.o
-                0x80004e00                _evba
-                0x80004f04                _int0
-                0x80004f12                _int1
-                0x80004f20                _int2
-                0x80004f2e                _int3
+.exception      0x80005000      0x200
+ .exception     0x80005000      0x200 src/ASF/avr32/drivers/intc/exception.o
+                0x80005000                _evba
+                0x80005104                _int0
+                0x80005112                _int1
+                0x80005120                _int2
+                0x8000512e                _int3
 
 .fini
  *(.fini)
-                0x80005000                PROVIDE (__etext, .)
-                0x80005000                PROVIDE (_etext, .)
-                0x80005000                PROVIDE (etext, .)
+                0x80005200                PROVIDE (__etext, .)
+                0x80005200                PROVIDE (_etext, .)
+                0x80005200                PROVIDE (etext, .)
 
-.rodata         0x80005000    0x262d4
+.rodata         0x80005200    0x26300
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.FONT8x8
-                0x80005000      0x308 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
-                0x80005000                FONT8x8
+                0x80005200      0x308 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
+                0x80005200                FONT8x8
  .rodata.SMC_EBI_GPIO_MAP.10637
-                0x80005308       0xa0 src/ASF/avr32/drivers/ebi/smc/smc.o
+                0x80005508       0xa0 src/ASF/avr32/drivers/ebi/smc/smc.o
  .rodata._int_handler_table
-                0x800053a8       0xa0 src/ASF/avr32/drivers/intc/intc.o
+                0x800055a8       0xa0 src/ASF/avr32/drivers/intc/intc.o
+ .rodata.DBG_USART_GPIO_MAP.10878
+                0x80005648       0x10 src/ASF/avr32/utils/debug/print_funcs.o
  .rodata.avr32_logo
-                0x80005448    0x25800 src/avr32_logo.o
-                0x80005448                avr32_logo
+                0x80005658    0x25800 src/avr32_logo.o
+                0x80005658                avr32_logo
  .rodata.dummy_data
-                0x8002ac48      0x404 src/et024006dhu_example.o
-                0x8002ac48                dummy_data
- .rodata.C.90.12276
-                0x8002b04c       0x10 src/et024006dhu_example.o
- .rodata.C.93.12288
-                0x8002b05c       0x18 src/et024006dhu_example.o
- .rodata.C.91.12281
-                0x8002b074       0x18 src/et024006dhu_example.o
- .rodata.USART_GPIO_MAP.12136
-                0x8002b08c        0x8 src/et024006dhu_example.o
- .rodata.str1.4
-                0x8002b094      0x1f0 src/et024006dhu_example.o
- .rodata.USART_OPTIONS.12137
-                0x8002b284        0xc src/et024006dhu_example.o
- .rodata.C.94.12297
-                0x8002b290        0xa src/et024006dhu_example.o
- *fill*         0x8002b29a        0x2 
- .rodata.C.92.12287
-                0x8002b29c       0x18 src/et024006dhu_example.o
- .rodata.SD_MMC_SPI_GPIO_MAP.12274
+                0x8002ae58      0x404 src/et024006dhu_example.o
+                0x8002ae58                dummy_data
+ .rodata.C.89.12288
+                0x8002b25c        0xa src/et024006dhu_example.o
+ *fill*         0x8002b266        0x2 
+ .rodata.USART_OPTIONS.12271
+                0x8002b268        0xc src/et024006dhu_example.o
+ .rodata.C.88.12276
+                0x8002b274       0x18 src/et024006dhu_example.o
+ .rodata.C.86.12262
+                0x8002b28c       0x18 src/et024006dhu_example.o
+ .rodata.USART_GPIO_MAP.12270
+                0x8002b2a4       0x10 src/et024006dhu_example.o
+ .rodata.SD_MMC_SPI_GPIO_MAP.12254
                 0x8002b2b4       0x20 src/et024006dhu_example.o
+ .rodata.str1.4
+                0x8002b2d4      0x204 src/et024006dhu_example.o
+ .rodata.C.85.12256
+                0x8002b4d8       0x10 src/et024006dhu_example.o
+ .rodata.C.87.12263
+                0x8002b4e8       0x18 src/et024006dhu_example.o
 
 .rodata1
  *(.rodata1)
@@ -1228,10 +1219,9 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  *(.gcc_except_table)
  *(.gcc_except_table.*)
 
-.lalign         0x8002b2d4        0x4
-                0x8002b2d8                . = ALIGN (0x8)
- *fill*         0x8002b2d4        0x4 
-                0x8002b2d8                PROVIDE (_data_lma, .)
+.lalign         0x8002b500        0x0
+                0x8002b500                . = ALIGN (0x8)
+                0x8002b500                PROVIDE (_data_lma, .)
                 0x00000004                . = ORIGIN (INTRAM)
 
 .dalign         0x00000004        0x4
@@ -1297,134 +1287,122 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
 .ramtext
  *(.ramtext .ramtext.*)
 
-.ddalign        0x00000008        0x0 load address 0x8002b2d8
+.ddalign        0x00000008        0x0 load address 0x8002b500
                 0x00000008                . = ALIGN (0x8)
 
-.data           0x00000008       0x20 load address 0x8002b2d8
+.data           0x00000008       0x24 load address 0x8002b500
  *(.data .data.* .gnu.linkonce.d.*)
+ .data.usart_flag
+                0x00000008        0x2 src/et024006dhu_example.o
+                0x00000008                usart_flag
+ *fill*         0x0000000a        0x2 
  .data.pwm_channel6
-                0x00000008       0x20 src/et024006dhu_example.o
-                0x00000008                pwm_channel6
+                0x0000000c       0x20 src/et024006dhu_example.o
+                0x0000000c                pwm_channel6
  *(.gnu.linkonce.d.*personality*)
 
 .data1
  *(.data1)
 
-.balign         0x00000028        0x0 load address 0x8002b2f8
-                0x00000028                . = ALIGN (0x8)
-                0x00000028                PROVIDE (_edata, .)
-                0x00000028                PROVIDE (edata, .)
-                0x00000028                __bss_start = .
+.balign         0x0000002c        0x4 load address 0x8002b524
+                0x00000030                . = ALIGN (0x8)
+ *fill*         0x0000002c        0x4 
+                0x00000030                PROVIDE (_edata, .)
+                0x00000030                PROVIDE (edata, .)
+                0x00000030                __bss_start = .
 
-.bss            0x00000028      0x7c8
+.bss            0x00000030      0x7a8
  *(.dynbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss.tft_data  0x00000028        0x8 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
+ .bss.tft_data  0x00000030        0x8 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
  .bss.gl_ptr_mem
-                0x00000030        0x8 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
+                0x00000038        0x8 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
  .bss.sd_mmc_opt
-                0x00000038       0x10 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
+                0x00000040       0x10 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
  .bss.sd_mmc_pba_hz
-                0x00000048        0x4 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
+                0x00000050        0x4 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
  .bss.sd_mmc_spi_init_done
-                0x0000004c        0x1 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
-                0x0000004c                sd_mmc_spi_init_done
- *fill*         0x0000004d        0x3 
+                0x00000054        0x1 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
+                0x00000054                sd_mmc_spi_init_done
+ *fill*         0x00000055        0x3 
  .bss.smc_tab_cs_size
-                0x00000050        0x8 src/ASF/avr32/drivers/ebi/smc/smc.o
+                0x00000058        0x8 src/ASF/avr32/drivers/ebi/smc/smc.o
  .bss._int_line_handler_table_6
-                0x00000058        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_7
-                0x0000005c        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_8
                 0x00000060        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_9
+ .bss._int_line_handler_table_7
                 0x00000064        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_10
+ .bss._int_line_handler_table_8
                 0x00000068        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_11
+ .bss._int_line_handler_table_9
                 0x0000006c        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_12
+ .bss._int_line_handler_table_10
                 0x00000070        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_13
+ .bss._int_line_handler_table_11
                 0x00000074        0x4 src/ASF/avr32/drivers/intc/intc.o
+ .bss._int_line_handler_table_12
+                0x00000078        0x4 src/ASF/avr32/drivers/intc/intc.o
+ .bss._int_line_handler_table_13
+                0x0000007c        0x4 src/ASF/avr32/drivers/intc/intc.o
  .bss._int_line_handler_table_14
-                0x00000078        0xc src/ASF/avr32/drivers/intc/intc.o
+                0x00000080        0xc src/ASF/avr32/drivers/intc/intc.o
  .bss._int_line_handler_table_15
-                0x00000084        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_16
-                0x00000088        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_17
                 0x0000008c        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_18
+ .bss._int_line_handler_table_16
                 0x00000090        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_19
+ .bss._int_line_handler_table_17
                 0x00000094        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss._int_line_handler_table_0
+ .bss._int_line_handler_table_18
                 0x00000098        0x4 src/ASF/avr32/drivers/intc/intc.o
+ .bss._int_line_handler_table_19
+                0x0000009c        0x4 src/ASF/avr32/drivers/intc/intc.o
+ .bss._int_line_handler_table_0
+                0x000000a0        0x4 src/ASF/avr32/drivers/intc/intc.o
  .bss._int_line_handler_table_1
-                0x0000009c       0x2c src/ASF/avr32/drivers/intc/intc.o
+                0x000000a4       0x2c src/ASF/avr32/drivers/intc/intc.o
  .bss._int_line_handler_table_2
-                0x000000c8       0x38 src/ASF/avr32/drivers/intc/intc.o
+                0x000000d0       0x38 src/ASF/avr32/drivers/intc/intc.o
  .bss._int_line_handler_table_3
-                0x00000100       0x3c src/ASF/avr32/drivers/intc/intc.o
+                0x00000108       0x3c src/ASF/avr32/drivers/intc/intc.o
  .bss._int_line_handler_table_4
-                0x0000013c        0x4 src/ASF/avr32/drivers/intc/intc.o
+                0x00000144        0x4 src/ASF/avr32/drivers/intc/intc.o
  .bss._int_line_handler_table_5
-                0x00000140        0x4 src/ASF/avr32/drivers/intc/intc.o
- .bss.usart_message_rx_complete
-                0x00000144        0x1 src/et024006dhu_example.o
-                0x00000144                usart_message_rx_complete
- *fill*         0x00000145        0x3 
- .bss.btn_pressed
-                0x00000148        0x4 src/et024006dhu_example.o
-                0x00000148                btn_pressed
- .bss.usart_char_rx_complete
+                0x00000148        0x4 src/ASF/avr32/drivers/intc/intc.o
+ .bss.current_sector
                 0x0000014c        0x1 src/et024006dhu_example.o
-                0x0000014c                usart_char_rx_complete
+                0x0000014c                current_sector
  *fill*         0x0000014d        0x3 
  .bss.state     0x00000150        0x4 src/et024006dhu_example.o
                 0x00000150                state
- .bss.debug_counter
-                0x00000154        0x4 src/et024006dhu_example.o
-                0x00000154                debug_counter
- .bss.Sector_Counter
-                0x00000158        0x1 src/et024006dhu_example.o
-                0x00000158                Sector_Counter
  *(COMMON)
- *fill*         0x00000159        0x3 
- COMMON         0x0000015c      0x229 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
-                0x0000015c                data_mem
-                0x00000360                capacity
-                0x00000368                capacity_mult
-                0x0000036a                erase_group_size
-                0x0000036c                sd_mmc_spi_last_block_address
-                0x00000370                r2
-                0x00000372                card_type
-                0x00000374                csd
-                0x00000384                r1
- *fill*         0x00000385        0x3 
- COMMON         0x00000388      0x466 src/et024006dhu_example.o
-                0x00000388                end_of_transfer
-                0x0000038c                pdca_channeltx
-                0x00000390                pdca_channelrx
-                0x00000394                ram_buffer
-                0x0000077c                debug_print
-                0x00000780                usart_message
-                0x000007b4                usart_char
-                0x000007b8                sector_counter_print
-                0x000007bc                usart_message_print
-                0x000007f0                . = ALIGN (0x8)
- *fill*         0x000007ee        0x2 
-                0x000007f0                . = ALIGN (0x8)
-                0x000007f0                _end = .
-                0x000007f0                PROVIDE (end, .)
-                0x000007f0                __heap_start__ = ALIGN (0x8)
+ COMMON         0x00000154      0x229 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
+                0x00000154                data_mem
+                0x00000358                capacity
+                0x00000360                capacity_mult
+                0x00000362                erase_group_size
+                0x00000364                sd_mmc_spi_last_block_address
+                0x00000368                r2
+                0x0000036a                card_type
+                0x0000036c                csd
+                0x0000037c                r1
+ *fill*         0x0000037d        0x3 
+ COMMON         0x00000380      0x453 src/et024006dhu_example.o
+                0x00000380                current_sector_print
+                0x00000384                spi_message
+                0x0000076c                usart_message
+                0x0000079e                usart_char
+                0x000007a0                usart_message_print
+                0x000007d2                spi_flag
+                0x000007d8                . = ALIGN (0x8)
+ *fill*         0x000007d3        0x5 
+                0x000007d8                . = ALIGN (0x8)
+                0x000007d8                _end = .
+                0x000007d8                PROVIDE (end, .)
+                0x000007d8                __heap_start__ = ALIGN (0x8)
 
-.heap           0x000007f0     0xe810
+.heap           0x000007d8     0xe828
  *(.heap)
-                0x0000e810                . = (__heap_size__ == __max_heap_size__)?(((ORIGIN (INTRAM) + 0xfffc) - __stack_size__) - ABSOLUTE (.)):__heap_size__
- *fill*         0x000007f0     0xe810 
+                0x0000e828                . = (__heap_size__ == __max_heap_size__)?(((ORIGIN (INTRAM) + 0xfffc) - __stack_size__) - ABSOLUTE (.)):__heap_size__
+ *fill*         0x000007d8     0xe828 
                 0x0000f000                __heap_end__ = .
 
 .stab
@@ -1458,6 +1436,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .comment       0x00000000       0x31 src/ASF/avr32/drivers/pwm/pwm.o
  .comment       0x00000000       0x31 src/ASF/avr32/drivers/spi/spi.o
  .comment       0x00000000       0x31 src/ASF/avr32/drivers/usart/usart.o
+ .comment       0x00000000       0x31 src/ASF/avr32/utils/debug/print_funcs.o
  .comment       0x00000000       0x31 src/avr32_logo.o
  .comment       0x00000000       0x31 src/et024006dhu_example.o
  .comment       0x00000000       0x31 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
@@ -1474,7 +1453,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x850
+.debug_aranges  0x00000000      0x8e0
  *(.debug_aranges)
  .debug_aranges
                 0x00000000      0x110 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
@@ -1499,16 +1478,18 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_aranges
                 0x000006a8       0xe0 src/ASF/avr32/drivers/usart/usart.o
  .debug_aranges
-                0x00000788       0x28 src/ASF/avr32/utils/startup/startup_uc3.o
+                0x00000788       0x88 src/ASF/avr32/utils/debug/print_funcs.o
  .debug_aranges
-                0x000007b0       0x20 src/ASF/avr32/utils/startup/trampoline_uc3.o
+                0x00000810       0x28 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_aranges
-                0x000007d0       0x60 src/et024006dhu_example.o
+                0x00000838       0x20 src/ASF/avr32/utils/startup/trampoline_uc3.o
  .debug_aranges
-                0x00000830       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+                0x00000858       0x68 src/et024006dhu_example.o
+ .debug_aranges
+                0x000008c0       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
 
 .debug_pubnames
-                0x00000000     0x1703
+                0x00000000     0x177f
  *(.debug_pubnames)
  .debug_pubnames
                 0x00000000      0x317 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
@@ -1531,13 +1512,15 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_pubnames
                 0x000012c5      0x227 src/ASF/avr32/drivers/usart/usart.o
  .debug_pubnames
-                0x000014ec       0x21 src/avr32_logo.o
+                0x000014ec      0x10f src/ASF/avr32/utils/debug/print_funcs.o
  .debug_pubnames
-                0x0000150d      0x1d6 src/et024006dhu_example.o
+                0x000015fb       0x21 src/avr32_logo.o
  .debug_pubnames
-                0x000016e3       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+                0x0000161c      0x143 src/et024006dhu_example.o
+ .debug_pubnames
+                0x0000175f       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
 
-.debug_info     0x00000000     0xe8f5
+.debug_info     0x00000000     0xfacb
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x212c src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
  .debug_info    0x0000212c     0x12d3 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
@@ -1550,13 +1533,14 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_info    0x000071ed      0xa08 src/ASF/avr32/drivers/pwm/pwm.o
  .debug_info    0x00007bf5     0x1090 src/ASF/avr32/drivers/spi/spi.o
  .debug_info    0x00008c85     0x1dcc src/ASF/avr32/drivers/usart/usart.o
- .debug_info    0x0000aa51       0x92 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_info    0x0000aae3       0x99 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_info    0x0000ab7c       0x5e src/avr32_logo.o
- .debug_info    0x0000abda     0x37a0 src/et024006dhu_example.o
- .debug_info    0x0000e37a      0x57b c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+ .debug_info    0x0000aa51     0x1681 src/ASF/avr32/utils/debug/print_funcs.o
+ .debug_info    0x0000c0d2       0x92 src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_info    0x0000c164       0x99 src/ASF/avr32/utils/startup/trampoline_uc3.o
+ .debug_info    0x0000c1fd       0x5e src/avr32_logo.o
+ .debug_info    0x0000c25b     0x32f5 src/et024006dhu_example.o
+ .debug_info    0x0000f550      0x57b c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
 
-.debug_abbrev   0x00000000     0x1e84
+.debug_abbrev   0x00000000     0x1fa9
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x325 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
  .debug_abbrev  0x00000325      0x2b3 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
@@ -1569,13 +1553,14 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_abbrev  0x000011ef      0x19d src/ASF/avr32/drivers/pwm/pwm.o
  .debug_abbrev  0x0000138c      0x281 src/ASF/avr32/drivers/spi/spi.o
  .debug_abbrev  0x0000160d      0x31e src/ASF/avr32/drivers/usart/usart.o
- .debug_abbrev  0x0000192b       0x12 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_abbrev  0x0000193d       0x14 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_abbrev  0x00001951       0x54 src/avr32_logo.o
- .debug_abbrev  0x000019a5      0x385 src/et024006dhu_example.o
- .debug_abbrev  0x00001d2a      0x15a c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+ .debug_abbrev  0x0000192b      0x19b src/ASF/avr32/utils/debug/print_funcs.o
+ .debug_abbrev  0x00001ac6       0x12 src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_abbrev  0x00001ad8       0x14 src/ASF/avr32/utils/startup/trampoline_uc3.o
+ .debug_abbrev  0x00001aec       0x54 src/avr32_logo.o
+ .debug_abbrev  0x00001b40      0x30f src/et024006dhu_example.o
+ .debug_abbrev  0x00001e4f      0x15a c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
 
-.debug_line     0x00000000     0x68cb
+.debug_line     0x00000000     0x70fd
  *(.debug_line)
  .debug_line    0x00000000      0xd5c src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
  .debug_line    0x00000d5c      0xaeb src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
@@ -1588,13 +1573,14 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_line    0x00004213      0x6c6 src/ASF/avr32/drivers/pwm/pwm.o
  .debug_line    0x000048d9      0x7d1 src/ASF/avr32/drivers/spi/spi.o
  .debug_line    0x000050aa      0x919 src/ASF/avr32/drivers/usart/usart.o
- .debug_line    0x000059c3       0xf2 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_line    0x00005ab5       0x67 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_line    0x00005b1c       0x34 src/avr32_logo.o
- .debug_line    0x00005b50      0xba6 src/et024006dhu_example.o
- .debug_line    0x000066f6      0x1d5 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+ .debug_line    0x000059c3      0x818 src/ASF/avr32/utils/debug/print_funcs.o
+ .debug_line    0x000061db       0xf2 src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_line    0x000062cd       0x67 src/ASF/avr32/utils/startup/trampoline_uc3.o
+ .debug_line    0x00006334       0x34 src/avr32_logo.o
+ .debug_line    0x00006368      0xbc0 src/et024006dhu_example.o
+ .debug_line    0x00006f28      0x1d5 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
 
-.debug_frame    0x00000000     0x1694
+.debug_frame    0x00000000     0x1844
  *(.debug_frame)
  .debug_frame   0x00000000      0x3a0 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
  .debug_frame   0x000003a0      0x364 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
@@ -1606,39 +1592,42 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_frame   0x00000f2c       0x70 src/ASF/avr32/drivers/pwm/pwm.o
  .debug_frame   0x00000f9c      0x158 src/ASF/avr32/drivers/spi/spi.o
  .debug_frame   0x000010f4      0x2ac src/ASF/avr32/drivers/usart/usart.o
- .debug_frame   0x000013a0      0x2b0 src/et024006dhu_example.o
- .debug_frame   0x00001650       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+ .debug_frame   0x000013a0      0x17c src/ASF/avr32/utils/debug/print_funcs.o
+ .debug_frame   0x0000151c      0x2e4 src/et024006dhu_example.o
+ .debug_frame   0x00001800       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
 
-.debug_str      0x00000000     0x30e4
+.debug_str      0x00000000     0x30f1
  *(.debug_str)
  .debug_str     0x00000000      0x6d9 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
                                 0x789 (size before relaxing)
- .debug_str     0x000006d9      0x67b src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
+ .debug_str     0x000006d9      0x682 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
                                 0x7de (size before relaxing)
- .debug_str     0x00000d54      0x1c0 src/ASF/avr32/drivers/ebi/smc/smc.o
+ .debug_str     0x00000d5b      0x1c0 src/ASF/avr32/drivers/ebi/smc/smc.o
                                 0x2f0 (size before relaxing)
- .debug_str     0x00000f14      0x413 src/ASF/avr32/drivers/gpio/gpio.o
+ .debug_str     0x00000f1b      0x413 src/ASF/avr32/drivers/gpio/gpio.o
                                 0x52f (size before relaxing)
- .debug_str     0x00001327      0x37d src/ASF/avr32/drivers/intc/intc.o
+ .debug_str     0x0000132e      0x37d src/ASF/avr32/drivers/intc/intc.o
                                 0x483 (size before relaxing)
- .debug_str     0x000016a4      0x36b src/ASF/avr32/drivers/pdca/pdca.o
+ .debug_str     0x000016ab      0x36b src/ASF/avr32/drivers/pdca/pdca.o
                                 0x492 (size before relaxing)
- .debug_str     0x00001a0f      0x79d src/ASF/avr32/drivers/pm/pm.o
+ .debug_str     0x00001a16      0x79d src/ASF/avr32/drivers/pm/pm.o
                                 0x99b (size before relaxing)
- .debug_str     0x000021ac      0x1e3 src/ASF/avr32/drivers/pwm/pwm.o
+ .debug_str     0x000021b3      0x1e3 src/ASF/avr32/drivers/pwm/pwm.o
                                 0x33d (size before relaxing)
- .debug_str     0x0000238f      0x1a2 src/ASF/avr32/drivers/spi/spi.o
+ .debug_str     0x00002396      0x19a src/ASF/avr32/drivers/spi/spi.o
                                 0x568 (size before relaxing)
- .debug_str     0x00002531      0x750 src/ASF/avr32/drivers/usart/usart.o
+ .debug_str     0x00002530      0x756 src/ASF/avr32/drivers/usart/usart.o
                                 0x902 (size before relaxing)
- .debug_str     0x00002c81       0x6c src/avr32_logo.o
+ .debug_str     0x00002c86      0x11a src/ASF/avr32/utils/debug/print_funcs.o
+                                0x641 (size before relaxing)
+ .debug_str     0x00002da0       0x6c src/avr32_logo.o
                                  0x8b (size before relaxing)
- .debug_str     0x00002ced      0x2a5 src/et024006dhu_example.o
-                                0xf24 (size before relaxing)
- .debug_str     0x00002f92      0x152 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+ .debug_str     0x00002e0c      0x193 src/et024006dhu_example.o
+                                0xd8e (size before relaxing)
+ .debug_str     0x00002f9f      0x152 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
                                 0x207 (size before relaxing)
 
-.debug_loc      0x00000000     0x4a1c
+.debug_loc      0x00000000     0x4e33
  *(.debug_loc)
  .debug_loc     0x00000000     0x15dd src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
  .debug_loc     0x000015dd      0x924 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
@@ -1650,10 +1639,11 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_loc     0x00002f4f       0xb4 src/ASF/avr32/drivers/pwm/pwm.o
  .debug_loc     0x00003003      0x3bd src/ASF/avr32/drivers/spi/spi.o
  .debug_loc     0x000033c0      0x9c5 src/ASF/avr32/drivers/usart/usart.o
- .debug_loc     0x00003d85      0x53a src/et024006dhu_example.o
- .debug_loc     0x000042bf      0x75d c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+ .debug_loc     0x00003d85      0x3bc src/ASF/avr32/utils/debug/print_funcs.o
+ .debug_loc     0x00004141      0x595 src/et024006dhu_example.o
+ .debug_loc     0x000046d6      0x75d c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
 
-.debug_macinfo  0x00000000   0xa41748
+.debug_macinfo  0x00000000   0xb31cd6
  *(.debug_macinfo)
  .debug_macinfo
                 0x00000000    0xf0ea1 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
@@ -1676,9 +1666,11 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  .debug_macinfo
                 0x008603e6    0xed03c src/ASF/avr32/drivers/usart/usart.o
  .debug_macinfo
-                0x0094d422      0xc9f src/avr32_logo.o
+                0x0094d422    0xf065e src/ASF/avr32/utils/debug/print_funcs.o
  .debug_macinfo
-                0x0094e0c1    0xf3687 src/et024006dhu_example.o
+                0x00a3da80      0xc9f src/avr32_logo.o
+ .debug_macinfo
+                0x00a3e71f    0xf35b7 src/et024006dhu_example.o
 
 .debug_weaknames
  *(.debug_weaknames)
@@ -1706,7 +1698,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain
  *(.note.GNU-stack)
 OUTPUT(TFTBerni.elf elf32-avr32)
 
-.debug_ranges   0x00000000      0xa48
+.debug_ranges   0x00000000      0xab8
  .debug_ranges  0x00000000      0x318 src/ASF/avr32/components/display/et024006dhu/et024006dhu.o
  .debug_ranges  0x00000318       0xe8 src/ASF/avr32/components/memory/sd_mmc/sd_mmc_spi/sd_mmc_spi.o
  .debug_ranges  0x00000400       0x20 src/ASF/avr32/drivers/ebi/smc/smc.o
@@ -1717,6 +1709,7 @@ OUTPUT(TFTBerni.elf elf32-avr32)
  .debug_ranges  0x00000788       0x40 src/ASF/avr32/drivers/pwm/pwm.o
  .debug_ranges  0x000007c8       0xa0 src/ASF/avr32/drivers/spi/spi.o
  .debug_ranges  0x00000868       0xd8 src/ASF/avr32/drivers/usart/usart.o
- .debug_ranges  0x00000940       0x20 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_ranges  0x00000960       0x70 src/et024006dhu_example.o
- .debug_ranges  0x000009d0       0x78 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
+ .debug_ranges  0x00000940       0x80 src/ASF/avr32/utils/debug/print_funcs.o
+ .debug_ranges  0x000009c0       0x20 src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_ranges  0x000009e0       0x60 src/et024006dhu_example.o
+ .debug_ranges  0x00000a40       0x78 c:/program files (x86)/atmel/studio/7.0/toolchain/avr32/avr32-gnu-toolchain/bin/../lib/gcc/avr32/4.4.7/ucr2\libgcc.a(_udivdi3.o)
