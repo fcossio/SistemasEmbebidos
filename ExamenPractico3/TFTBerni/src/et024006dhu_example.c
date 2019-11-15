@@ -1,4 +1,6 @@
 
+//Bernardo Urriza, Fernando Cossío, Antonio Rivera
+
 #include <avr32/io.h>
 #include "compiler.h"
 #include "board.h"
