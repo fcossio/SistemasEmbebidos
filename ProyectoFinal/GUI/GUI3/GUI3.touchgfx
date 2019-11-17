@@ -1,0 +1,1625 @@
+{
+  "Application": {
+    "Screens": [
+      {
+        "Components": [
+          {
+            "RelativeFilename": "Background1.png",
+            "Alpha": 255,
+            "Name": "image1",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "Image",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 0,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 480,
+                "Height": 272,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 0,
+                  "Green": 102,
+                  "Blue": 153
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 153,
+                  "Blue": 204
+                },
+                "ColorBorderReleased": {
+                  "Red": 0,
+                  "Green": 51,
+                  "Blue": 102
+                },
+                "ColorBorderPressed": {
+                  "Red": 51,
+                  "Green": 102,
+                  "Blue": 153
+                }
+              }
+            ],
+            "Name": "buttonGoToScreen2",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "GoToScreen2",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonGoToScreen2",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen2",
+              "Type": "ActionGotoScreen"
+            }
+          }
+        ],
+        "Name": "Screen1",
+        "OverrideDefaultBufferSize": false,
+        "CanvasBufferSize": 0
+      },
+      {
+        "Components": [
+          {
+            "RelativeFilename": "Background2.png",
+            "Alpha": 255,
+            "Name": "image1",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "Image",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 125,
+                "Height": 40,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonConfiguration",
+            "X": 34,
+            "Y": 198,
+            "Width": 125,
+            "Height": 40,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 90,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonBack",
+            "X": 353,
+            "Y": 190,
+            "Width": 90,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 62,
+                "Height": 39,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonOpen1",
+            "X": 34,
+            "Y": 110,
+            "Width": 62,
+            "Height": 39,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 62,
+                "Height": 39,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonOpen2",
+            "X": 97,
+            "Y": 110,
+            "Width": 62,
+            "Height": 39,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 62,
+                "Height": 39,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonOpen3",
+            "X": 34,
+            "Y": 154,
+            "Width": 62,
+            "Height": 39,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 62,
+                "Height": 39,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonOpen4",
+            "X": 97,
+            "Y": 154,
+            "Width": 62,
+            "Height": 39,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button7",
+            "X": 196,
+            "Y": 85,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button8",
+            "X": 248,
+            "Y": 85,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button9",
+            "X": 301,
+            "Y": 85,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button4",
+            "X": 196,
+            "Y": 138,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button5",
+            "X": 248,
+            "Y": 138,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button6",
+            "X": 301,
+            "Y": 138,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button1",
+            "X": 196,
+            "Y": 190,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button2",
+            "X": 248,
+            "Y": 190,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 51,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "button3",
+            "X": 301,
+            "Y": 190,
+            "Width": 51,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 90,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonClean",
+            "X": 353,
+            "Y": 138,
+            "Width": 90,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 30,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 90,
+                "Height": 48,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 70,
+                  "Green": 70,
+                  "Blue": 70
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonDelete",
+            "X": 353,
+            "Y": 85,
+            "Width": 90,
+            "Height": 48,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "GoToKeyboard",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonConfiguration",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Main",
+              "Type": "ActionGotoScreen"
+            }
+          },
+          {
+            "InteractionName": "GoToScreen1",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonBack",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen1",
+              "Type": "ActionGotoScreen"
+            }
+          }
+        ],
+        "Name": "Screen2",
+        "OverrideDefaultBufferSize": false,
+        "CanvasBufferSize": 0
+      },
+      {
+        "Components": [
+          {
+            "Color": {
+              "Red": 107,
+              "Green": 111,
+              "Blue": 112
+            },
+            "Alpha": 255,
+            "Name": "backgroundBox",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "Box",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "RelativeFilename": "Background0.png",
+            "Alpha": 255,
+            "Name": "image1",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "Image",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 128,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 44,
+                "Height": 44,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonBack",
+            "X": 18,
+            "Y": 114,
+            "Width": 44,
+            "Height": 44,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 128,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 44,
+                "Height": 44,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonIP",
+            "X": 419,
+            "Y": 71,
+            "Width": 44,
+            "Height": 44,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId1",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 186,
+              "Green": 186,
+              "Blue": 186
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textBack",
+            "X": 33,
+            "Y": 115,
+            "Width": 12,
+            "Height": 37,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId2",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 186,
+              "Green": 186,
+              "Blue": 186
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textIP",
+            "X": 433,
+            "Y": 80,
+            "Width": 16,
+            "Height": 27,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 128,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 44,
+                "Height": 44,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonLog",
+            "X": 419,
+            "Y": 158,
+            "Width": 44,
+            "Height": 44,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId5",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 186,
+              "Green": 186,
+              "Blue": 186
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textLog",
+            "X": 427,
+            "Y": 167,
+            "Width": 28,
+            "Height": 27,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "GoToScreen2",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonBack",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen2",
+              "Type": "ActionGotoScreen"
+            }
+          },
+          {
+            "InteractionName": "GoToMain1",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonIP",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Main_1",
+              "Type": "ActionGotoScreen"
+            }
+          },
+          {
+            "InteractionName": "GotoScreen3",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonLog",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen3",
+              "Type": "ActionGotoScreen"
+            }
+          }
+        ],
+        "Name": "Main",
+        "OverrideDefaultBufferSize": false,
+        "CanvasBufferSize": 0
+      },
+      {
+        "Components": [
+          {
+            "RelativeFilename": "Background0.png",
+            "Alpha": 255,
+            "Name": "image1",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "Image",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Components": [],
+            "HorizontalScrollEnabled": false,
+            "VerticalScrollEnabled": true,
+            "ScrollbarsVisible": true,
+            "ScrollbarsVisibleOnPressed": true,
+            "ScrollbarsColor": {
+              "Red": 0,
+              "Green": 0,
+              "Blue": 0
+            },
+            "ScrollbarsAlpha": 255,
+            "Name": "scrollableContainer1",
+            "X": 0,
+            "Y": 84,
+            "Width": 480,
+            "Height": 188,
+            "Type": "ScrollableContainer",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 128,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 44,
+                "Height": 44,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonBack",
+            "X": 19,
+            "Y": 21,
+            "Width": 44,
+            "Height": 44,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId6",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 186,
+              "Green": 186,
+              "Blue": 186
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textBack",
+            "X": 35,
+            "Y": 21,
+            "Width": 12,
+            "Height": 37,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId7",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 209,
+              "Green": 209,
+              "Blue": 209
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textLog",
+            "X": 77,
+            "Y": 21,
+            "Width": 40,
+            "Height": 37,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "GoToScreen2",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonBack",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen2",
+              "Type": "ActionGotoScreen"
+            }
+          }
+        ],
+        "Name": "Screen3",
+        "OverrideDefaultBufferSize": false,
+        "CanvasBufferSize": 0
+      },
+      {
+        "Components": [
+          {
+            "Color": {
+              "Red": 107,
+              "Green": 111,
+              "Blue": 112
+            },
+            "Alpha": 255,
+            "Name": "backgroundBox",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "Box",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "RelativeFilename": "Background0.png",
+            "Alpha": 255,
+            "Name": "image1",
+            "X": 0,
+            "Y": 0,
+            "Width": 480,
+            "Height": 272,
+            "Type": "Image",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Alpha": 128,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "X": 0,
+                "Y": 0,
+                "Width": 44,
+                "Height": 44,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderReleased": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                },
+                "ColorBorderPressed": {
+                  "Red": 0,
+                  "Green": 0,
+                  "Blue": 0
+                }
+              }
+            ],
+            "Name": "buttonBack",
+            "X": 18,
+            "Y": 114,
+            "Width": 44,
+            "Height": 44,
+            "Type": "FlexButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId3",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 186,
+              "Green": 186,
+              "Blue": 186
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textBack",
+            "X": 33,
+            "Y": 115,
+            "Width": 12,
+            "Height": 37,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "GoToScreen2",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "TriggerComponent": "buttonBack",
+              "Type": "TriggerClicked"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen2",
+              "Type": "ActionGotoScreen"
+            }
+          }
+        ],
+        "Name": "Main_1",
+        "OverrideDefaultBufferSize": false,
+        "CanvasBufferSize": 0
+      }
+    ],
+    "CustomContainerDefinitions": [],
+    "TextEntries": [
+      {
+        "TextEntryId": "EnteredText",
+        "IsResource": true
+      },
+      {
+        "TextEntryId": "NumMode",
+        "IsResource": true
+      },
+      {
+        "TextEntryId": "AlphaMode",
+        "IsResource": true
+      },
+      {
+        "TextEntryId": "SingleUseId1",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId2",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId3",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId5",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId6",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId7",
+        "IsResource": false
+      }
+    ],
+    "Name": "GUI3",
+    "Resolution": {
+      "Width": 480,
+      "Height": 272
+    },
+    "SelectedColorDepth": 16,
+    "StartupScreenName": "Screen1",
+    "SelectedStartupLanguage": "GB",
+    "Skin": "Blue",
+    "TouchGfxPath": "touchgfx",
+    "UIPath": ".",
+    "ApplicationTemplate": {
+      "Name": "Simulator",
+      "Version": "2.0.0",
+      "Description": "Simulator Application Template",
+      "AvailableColorDepths": [
+        16,
+        24
+      ],
+      "AvailableSections": [
+        "ExtFlashSection",
+        "IntFlashSection"
+      ],
+      "AvailableResolutions": [
+        {
+          "Width": 480,
+          "Height": 272
+        },
+        {
+          "Width": 640,
+          "Height": 480
+        },
+        {
+          "Width": 800,
+          "Height": 480
+        }
+      ],
+      "PhysicalButtons": [],
+      "GenerateAssetsCommand": "make -f simulator/gcc/Makefile assets -j8",
+      "PostGenerateCommand": "touchgfx update_project --project-file=simulator/msvs/Application.vcxproj",
+      "CompileSimulatorCommand": "make -f simulator/gcc/Makefile -j8",
+      "RunSimulatorCommand": "build\\bin\\simulator.exe",
+      "CompileTargetCommand": "",
+      "FlashTargetCommand": ""
+    },
+    "LandscapeSkinX": 0,
+    "LandscapeSkinY": 0,
+    "PortraitSkinX": 0,
+    "PortraitSkinY": 0,
+    "DisplayOrientation": "Landscape"
+  },
+  "Version": "4.12.3",
+  "CreatedBy": "4.12.3"
+}
